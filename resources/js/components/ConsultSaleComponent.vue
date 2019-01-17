@@ -1,39 +1,31 @@
 <template>
-  <div class="container">
-    <v-card>
-      <v-card-title class="headline font-weight-regular blue-grey white--text">INICIO</v-card-title>
-      <v-card-text>
-        <v-subheader class="pa-0">INGRESA TÚ RUC</v-subheader>
-        <v-autocomplete
-          v-model="model"
-          :hint="!isEditing ? 'Click the icon to edit' : 'Click the icon to save'"
-          :items="states"
-          :readonly="!isEditing"
-          :label="`RUC — ${isEditing ? 'Editable' : 'Readonly'}`"
-          persistent-hint
-          prepend-icon="mdi-city"
-        >
-          <v-slide-x-reverse-transition slot="append-outer" mode="out-in">
-            <v-icon
-              :color="isEditing ? 'success' : 'info'"
-              :key="`icon-${isEditing}`"
-              @click="isEditing = !isEditing"
-              v-text="isEditing ? 'mdi-check-outline' : 'mdi-circle-edit-outline'"
-            ></v-icon>
-          </v-slide-x-reverse-transition>
-        </v-autocomplete>
-
-        <v-btn slot="activator" color="red lighten-2" dark>SIGUIENTE</v-btn>
-      </v-card-text>
-    </v-card>
-  </div>
+  <v-app id="inspire">
+    <v-container bg fill-height grid-list-md text-xs-center>
+      <v-layout row wrap>
+        <v-flex xs10 offset-xs1>
+          <v-card>
+            <v-card-title class="headline font-weight-regular blue-grey white--text">Inicio</v-card-title>
+            <v-card-text>
+              <v-subheader class="pa-0">INGRESA TÚ RUC</v-subheader>
+              <v-autocomplete
+                v-model="model"
+                :items="states"
+                :label="`RUC`"
+                persistent-hint
+                prepend-icon="mdi-city"
+              ></v-autocomplete>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      isEditing: false,
       model: null,
       states: [
         "Alabama",

@@ -1787,17 +1787,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      isEditing: false,
       model: null,
       states: ["Alabama", "Alaska", "American Samoa", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Federated States of Micronesia", "Florida", "Georgia", "Guam", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Marshall Islands", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Northern Mariana Islands", "Ohio", "Oklahoma", "Oregon", "Palau", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virgin Island", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
     };
@@ -19466,90 +19458,70 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { staticClass: "container" },
+    "v-app",
+    { attrs: { id: "inspire" } },
     [
       _c(
-        "v-card",
+        "v-container",
+        {
+          attrs: {
+            bg: "",
+            "fill-height": "",
+            "grid-list-md": "",
+            "text-xs-center": ""
+          }
+        },
         [
           _c(
-            "v-card-title",
-            {
-              staticClass: "headline font-weight-regular blue-grey white--text"
-            },
-            [_vm._v("INICIO")]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-card-text",
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
             [
-              _c("v-subheader", { staticClass: "pa-0" }, [
-                _vm._v("INGRESA TÚ RUC")
-              ]),
-              _vm._v(" "),
               _c(
-                "v-autocomplete",
-                {
-                  attrs: {
-                    hint: !_vm.isEditing
-                      ? "Click the icon to edit"
-                      : "Click the icon to save",
-                    items: _vm.states,
-                    readonly: !_vm.isEditing,
-                    label: "RUC — " + (_vm.isEditing ? "Editable" : "Readonly"),
-                    "persistent-hint": "",
-                    "prepend-icon": "mdi-city"
-                  },
-                  model: {
-                    value: _vm.model,
-                    callback: function($$v) {
-                      _vm.model = $$v
-                    },
-                    expression: "model"
-                  }
-                },
+                "v-flex",
+                { attrs: { xs10: "", "offset-xs1": "" } },
                 [
                   _c(
-                    "v-slide-x-reverse-transition",
-                    {
-                      attrs: { slot: "append-outer", mode: "out-in" },
-                      slot: "append-outer"
-                    },
+                    "v-card",
                     [
-                      _c("v-icon", {
-                        key: "icon-" + _vm.isEditing,
-                        attrs: { color: _vm.isEditing ? "success" : "info" },
-                        domProps: {
-                          textContent: _vm._s(
-                            _vm.isEditing
-                              ? "mdi-check-outline"
-                              : "mdi-circle-edit-outline"
-                          )
+                      _c(
+                        "v-card-title",
+                        {
+                          staticClass:
+                            "headline font-weight-regular blue-grey white--text"
                         },
-                        on: {
-                          click: function($event) {
-                            _vm.isEditing = !_vm.isEditing
-                          }
-                        }
-                      })
+                        [_vm._v("Inicio")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        [
+                          _c("v-subheader", { staticClass: "pa-0" }, [
+                            _vm._v("INGRESA TÚ RUC")
+                          ]),
+                          _vm._v(" "),
+                          _c("v-autocomplete", {
+                            attrs: {
+                              items: _vm.states,
+                              label: "RUC",
+                              "persistent-hint": "",
+                              "prepend-icon": "mdi-city"
+                            },
+                            model: {
+                              value: _vm.model,
+                              callback: function($$v) {
+                                _vm.model = $$v
+                              },
+                              expression: "model"
+                            }
+                          })
+                        ],
+                        1
+                      )
                     ],
                     1
                   )
                 ],
                 1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: {
-                    slot: "activator",
-                    color: "red lighten-2",
-                    dark: ""
-                  },
-                  slot: "activator"
-                },
-                [_vm._v("SIGUIENTE")]
               )
             ],
             1
@@ -54836,15 +54808,14 @@ if (token) {
 /*!**********************************************************!*\
   !*** ./resources/js/components/ConsultSaleComponent.vue ***!
   \**********************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ConsultSaleComponent_vue_vue_type_template_id_7ba43bd5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ConsultSaleComponent.vue?vue&type=template&id=7ba43bd5& */ "./resources/js/components/ConsultSaleComponent.vue?vue&type=template&id=7ba43bd5&");
 /* harmony import */ var _ConsultSaleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ConsultSaleComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/ConsultSaleComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ConsultSaleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ConsultSaleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -54874,7 +54845,7 @@ component.options.__file = "resources/js/components/ConsultSaleComponent.vue"
 /*!***********************************************************************************!*\
   !*** ./resources/js/components/ConsultSaleComponent.vue?vue&type=script&lang=js& ***!
   \***********************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
