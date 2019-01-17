@@ -11,6 +11,8 @@ window.Vue = require('vue');
 
 import Vuetify from 'vuetify'
 Vue.use(Vuetify)
+
+Vue.component('consult-sale-component', require('./components/ConsultSaleComponent.vue').default);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

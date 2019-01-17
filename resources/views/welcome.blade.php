@@ -10,12 +10,10 @@
         <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
 </head>
     <body>
-        
+
         <div id="app">
-            <h1>Yey!</h1>
-            <v-btn primary>Material Button</v-btn>
-        </div>
-            
+            <consult-sale-component></consult-sale-component>
+      </div>
         <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>
