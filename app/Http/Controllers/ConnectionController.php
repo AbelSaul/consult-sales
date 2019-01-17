@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Connection;
 
 class ConnectionController extends Controller
@@ -17,18 +16,6 @@ class ConnectionController extends Controller
     {
         $connections = Connection::all();
         return $connections;
-    }
-    
-    /**
-     * Set connection database.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function setConnection(Request $request)
-    {
-        config(['database.connections.mysql.database' => $request->database]);
-        DB::reconnect('mysql');
-        return Connection::all();
     }
 
     /**
