@@ -12,7 +12,11 @@
     <body>
 
         <div id="app">
-            <consult-sale-component></consult-sale-component>
+            <v-app>
+                <consult-sale-component></consult-sale-component>
+                <login-component></login-component>
+
+            </v-app>
       </div>
         <script src="{{ asset('js/app.js') }}"></script>
     </body>

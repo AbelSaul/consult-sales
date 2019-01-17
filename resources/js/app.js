@@ -13,6 +13,8 @@ import Vuetify from 'vuetify'
 Vue.use(Vuetify)
 
 Vue.component('consult-sale-component', require('./components/ConsultSaleComponent.vue').default);
+Vue.component('login-component', require('./components/LoginComponent.vue').default);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
