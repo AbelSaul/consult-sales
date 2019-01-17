@@ -16,3 +16,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('connections', 'ConnectionController@index');
+Route::post('set-connection', 'ConnectionController@setConnection');
