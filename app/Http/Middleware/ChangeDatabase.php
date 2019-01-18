@@ -16,8 +16,9 @@ class ChangeDatabase
      */
     public function handle($request, Closure $next)
     {
-        if ($request->database) {
-            config(['database.connections.mysql.database' => $request->database]);
+        if ($request->database || $request->header('database')) {
+            $database = $request->database ? $request->database : $request->header('database');
+            config(['database.connections.mysql.database' => $database]);
             DB::reconnect('mysql');
         }
         return $next($request);
