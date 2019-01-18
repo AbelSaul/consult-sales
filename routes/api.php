@@ -18,4 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('connections', 'ConnectionController@index');
-Route::post('set-connection', 'ConnectionController@setConnection');
+Route::get('products', 'ProductController@index');
+Route::get('sellers', 'SellerController@index');
+Route::get('clients', 'ClientController@index');
