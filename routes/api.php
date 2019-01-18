@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('connections', 'ConnectionController@index');
-Route::get('products', 'ProductController@index');
+Route::get('products', 'ProductController@index')->middleware('changedb');
 Route::get('sellers', 'SellerController@index');
 Route::get('clients', 'ClientController@index');
+Route::post('proforma/create', 'ProformaController@create');
