@@ -14,6 +14,8 @@ Vue.use(Vuetify)
 
 Vue.component('consult-sale-component', require('./components/ConsultSaleComponent.vue').default);
 Vue.component('login-component', require('./components/LoginComponent.vue').default);
+Vue.component('new-order-component', require('./components/NewOrderComponent.vue').default);
+
 
 /**
  * The following block of code may be used to automatically register your

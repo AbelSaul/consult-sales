@@ -15,6 +15,8 @@
             <v-app>
                 <consult-sale-component></consult-sale-component>
                 <login-component></login-component>
+                <new-order-component></new-order-component>
+
 
             </v-app>
       </div>

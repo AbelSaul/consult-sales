@@ -6,13 +6,7 @@
           <v-card-title class="headline font-weight-regular blue-grey white--text">Inicio</v-card-title>
           <v-card-text>
             <v-subheader class="pa-0">INGRESA TÚ RUC</v-subheader>
-            <v-autocomplete
-              v-model="model"
-              :items="states"
-              :label="`RUC`"
-              persistent-hint
-              prepend-icon="mdi-city"
-            ></v-autocomplete>
+            <v-autocomplete v-model="model" :items="states" :label="`RUC`" persistent-hint></v-autocomplete>
             <v-btn color="success darken-1" dark>SIGUIENTE</v-btn>
           </v-card-text>
         </v-card>
