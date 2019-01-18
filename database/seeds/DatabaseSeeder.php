@@ -12,16 +12,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Connection::create([
-            "ruc" => "12312312312",
-            "database" => "nbdata2018_1",
-        ]);
-        
-        Connection::create([
-            "ruc" => "12312312315",
-            "database" => "nbdata2018_2",
-        ]);
-        
-        $this->call(ConnectionTableSeeder::class);
+        if (env('DB_DATABASE') == 'connection') {
+            Connection::create([
+                "ruc" => "12312312312",
+                "database" => "nbdata2018_1",
+            ]);
+            
+            Connection::create([
+                "ruc" => "12312312315",
+                "database" => "nbdata2018_2",
+            ]);
+            
+            $this->call(ConnectionTableSeeder::class);
+        } else {
+            $this->call(AppSeeder::class);
+        }
     }
 }
