@@ -1,7 +1,7 @@
 <template>
   <v-container bg fill-height grid-list-md text-xs-center>
     <v-layout row wrap>
-      <v-flex xs6 offset-xs3>
+      <v-flex xs12 sm8 offset-sm2 md8 offset-md2>
         <v-card>
           <v-card-title class="headline font-weight-regular blue-grey white--text">Login</v-card-title>
           <v-card-text>

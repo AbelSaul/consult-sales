@@ -1,61 +1,54 @@
 <template>
   <v-container bg fill-height grid-list-md text-xs-center>
     <v-layout row wrap>
-      <v-flex xs12>
+      <v-flex xs12 sm12 md12>
         <v-card>
           <v-card-title class="headline font-weight-regular blue-grey white--text">NUEVO PEDIDO</v-card-title>
           <v-card-text>
             <v-form v-model="valid">
-              <v-container>
-                <v-layout>
-                  <v-flex xs12 md4>
-                    <v-autocomplete
-                      v-model="model"
-                      :items="states"
-                      :label="`Cliente`"
-                      persistent-hint
-                    ></v-autocomplete>
-                  </v-flex>
-
-                  <v-flex xs12 md4>
-                    <v-autocomplete
-                      v-model="model"
-                      :items="states"
-                      :label="`Vendedor`"
-                      persistent-hint
-                    ></v-autocomplete>
-                  </v-flex>
-
-                  <v-flex xs12 md4>
-                    <v-text-field
-                      v-model="paymentConditions"
-                      :rules="nameRules"
-                      label="Condiciones de pago"
-                      required
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs12 md4>
-                    <v-text-field
-                      v-model="observations"
-                      :rules="nameRules"
-                      label="Observaciones"
-                      required
-                    ></v-text-field>
-                  </v-flex>
-                </v-layout>
-              </v-container>
+              <v-layout wrap>
+                <v-flex xs12 sm6 md3>
+                  <v-autocomplete
+                    v-model="model"
+                    :items="clients"
+                    :label="`Cliente`"
+                    persistent-hint
+                  ></v-autocomplete>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-autocomplete
+                    v-model="model"
+                    :items="sellers"
+                    :label="`Vendedor`"
+                    persistent-hint
+                  ></v-autocomplete>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-text-field
+                    v-model="paymentConditions"
+                    :rules="nameRules"
+                    label="Condiciones de pago"
+                    required
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-text-field
+                    v-model="observations"
+                    :rules="nameRules"
+                    label="Observaciones"
+                    required
+                  ></v-text-field>
+                </v-flex>
+              </v-layout>
             </v-form>
-
             <v-toolbar flat color="white">
+              <v-spacer></v-spacer>
               <v-dialog v-model="dialog" max-width="500px">
-                <v-btn slot="activator" color="primary" dark class="mb-2">AGREGAR PRODUCTO</v-btn>
-
+                <v-btn slot="activator" color="primary" dark class="mb-2">AGREGAR</v-btn>
                 <v-card>
                   <v-card-title>
                     <span class="headline">{{ formTitle }}</span>
                   </v-card-title>
-
                   <v-card-text>
                     <v-container grid-list-md>
                       <v-layout wrap>
@@ -85,7 +78,6 @@
                 </v-card>
               </v-dialog>
             </v-toolbar>
-
             <v-data-table :headers="headers" :items="orders" class="elevation-1">
               <template slot="items" slot-scope="props">
                 <td>{{ props.item.code }}</td>
@@ -99,18 +91,17 @@
               </template>
             </v-data-table>
           </v-card-text>
-          <v-btn color="success">Guardar Pedido</v-btn>
+          <v-btn color="success darken-1" dark>Guardar Pedido</v-btn>
         </v-card>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
-
-
 <script>
 export default {
   data: () => ({
+    sellers: [],
     dialog: false,
     model: null,
     states: ["Alabama", "Alaska", "American Samoa", "Arizona"],
@@ -143,13 +134,19 @@ export default {
       protein: 0
     }
   }),
-
+  mounted() {
+    axios.get("/api/clients").then(({ data }) => {
+      this.clients = data;
+    });
+    axios.get("/api/selleres").then(({ data }) => {
+      this.sellers = data;
+    });
+  },
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     }
   },
-
   watch: {
     dialog(val) {
       val || this.close();

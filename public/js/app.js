@@ -1780,18 +1780,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       model: null,
-      states: ["Alabama", "Alaska", "American Samoa", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Federated States of Micronesia", "Florida", "Georgia", "Guam", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Marshall Islands", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Northern Mariana Islands", "Ohio", "Oklahoma", "Oregon", "Palau", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virgin Island", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
+      rucs: []
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
     axios.get("/api/connections").then(function (_ref) {
       var data = _ref.data;
-      return console.log(data);
+      _this.rucs = data;
     });
+  },
+  methods: {
+    onSubmit: function onSubmit() {
+      console.log(this.model);
+    }
   }
 });
 
@@ -1939,19 +1954,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      sellers: [],
       dialog: false,
       model: null,
       states: ["Alabama", "Alaska", "American Samoa", "Arizona"],
@@ -1995,6 +2001,18 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get("/api/clients").then(function (_ref) {
+      var data = _ref.data;
+      _this.clients = data;
+    });
+    axios.get("/api/selleres").then(function (_ref2) {
+      var data = _ref2.data;
+      _this.sellers = data;
+    });
+  },
   computed: {
     formTitle: function formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
@@ -2019,12 +2037,12 @@ __webpack_require__.r(__webpack_exports__);
       }];
     },
     close: function close() {
-      var _this = this;
+      var _this2 = this;
 
       this.dialog = false;
       setTimeout(function () {
-        _this.editedItem = Object.assign({}, _this.defaultItem);
-        _this.editedIndex = -1;
+        _this2.editedItem = Object.assign({}, _this2.defaultItem);
+        _this2.editedIndex = -1;
       }, 300);
     },
     save: function save() {
@@ -19684,7 +19702,15 @@ var render = function() {
         [
           _c(
             "v-flex",
-            { attrs: { xs6: "", "offset-xs3": "" } },
+            {
+              attrs: {
+                xs12: "",
+                sm8: "",
+                "offset-sm2": "",
+                md8: "",
+                "offset-md2": ""
+              }
+            },
             [
               _c(
                 "v-card",
@@ -19707,9 +19733,12 @@ var render = function() {
                       _vm._v(" "),
                       _c("v-autocomplete", {
                         attrs: {
-                          items: _vm.states,
+                          items: _vm.rucs,
                           label: "RUC",
-                          "persistent-hint": ""
+                          "persistent-hint": "",
+                          "item-text": "ruc",
+                          "item-value": "database",
+                          "no-data-text": "No se encontro este RUC"
                         },
                         model: {
                           value: _vm.model,
@@ -19722,7 +19751,10 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "v-btn",
-                        { attrs: { color: "success darken-1", dark: "" } },
+                        {
+                          attrs: { color: "success darken-1", dark: "" },
+                          on: { click: _vm.onSubmit }
+                        },
                         [_vm._v("SIGUIENTE")]
                       )
                     ],
@@ -19827,7 +19859,15 @@ var render = function() {
         [
           _c(
             "v-flex",
-            { attrs: { xs6: "", "offset-xs3": "" } },
+            {
+              attrs: {
+                xs12: "",
+                sm8: "",
+                "offset-sm2": "",
+                md8: "",
+                "offset-md2": ""
+              }
+            },
             [
               _c(
                 "v-card",
@@ -19947,7 +19987,7 @@ var render = function() {
         [
           _c(
             "v-flex",
-            { attrs: { xs12: "" } },
+            { attrs: { xs12: "", sm12: "", md12: "" } },
             [
               _c(
                 "v-card",
@@ -19977,98 +20017,93 @@ var render = function() {
                         },
                         [
                           _c(
-                            "v-container",
+                            "v-layout",
+                            { attrs: { wrap: "" } },
                             [
                               _c(
-                                "v-layout",
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md3: "" } },
                                 [
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "", md4: "" } },
-                                    [
-                                      _c("v-autocomplete", {
-                                        attrs: {
-                                          items: _vm.states,
-                                          label: "Cliente",
-                                          "persistent-hint": ""
-                                        },
-                                        model: {
-                                          value: _vm.model,
-                                          callback: function($$v) {
-                                            _vm.model = $$v
-                                          },
-                                          expression: "model"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "", md4: "" } },
-                                    [
-                                      _c("v-autocomplete", {
-                                        attrs: {
-                                          items: _vm.states,
-                                          label: "Vendedor",
-                                          "persistent-hint": ""
-                                        },
-                                        model: {
-                                          value: _vm.model,
-                                          callback: function($$v) {
-                                            _vm.model = $$v
-                                          },
-                                          expression: "model"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "", md4: "" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: {
-                                          rules: _vm.nameRules,
-                                          label: "Condiciones de pago",
-                                          required: ""
-                                        },
-                                        model: {
-                                          value: _vm.paymentConditions,
-                                          callback: function($$v) {
-                                            _vm.paymentConditions = $$v
-                                          },
-                                          expression: "paymentConditions"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "", md4: "" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: {
-                                          rules: _vm.nameRules,
-                                          label: "Observaciones",
-                                          required: ""
-                                        },
-                                        model: {
-                                          value: _vm.observations,
-                                          callback: function($$v) {
-                                            _vm.observations = $$v
-                                          },
-                                          expression: "observations"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  )
+                                  _c("v-autocomplete", {
+                                    attrs: {
+                                      items: _vm.clients,
+                                      label: "Cliente",
+                                      "persistent-hint": ""
+                                    },
+                                    model: {
+                                      value: _vm.model,
+                                      callback: function($$v) {
+                                        _vm.model = $$v
+                                      },
+                                      expression: "model"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md3: "" } },
+                                [
+                                  _c("v-autocomplete", {
+                                    attrs: {
+                                      items: _vm.sellers,
+                                      label: "Vendedor",
+                                      "persistent-hint": ""
+                                    },
+                                    model: {
+                                      value: _vm.model,
+                                      callback: function($$v) {
+                                        _vm.model = $$v
+                                      },
+                                      expression: "model"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      rules: _vm.nameRules,
+                                      label: "Condiciones de pago",
+                                      required: ""
+                                    },
+                                    model: {
+                                      value: _vm.paymentConditions,
+                                      callback: function($$v) {
+                                        _vm.paymentConditions = $$v
+                                      },
+                                      expression: "paymentConditions"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      rules: _vm.nameRules,
+                                      label: "Observaciones",
+                                      required: ""
+                                    },
+                                    model: {
+                                      value: _vm.observations,
+                                      callback: function($$v) {
+                                        _vm.observations = $$v
+                                      },
+                                      expression: "observations"
+                                    }
+                                  })
                                 ],
                                 1
                               )
@@ -20083,6 +20118,8 @@ var render = function() {
                         "v-toolbar",
                         { attrs: { flat: "", color: "white" } },
                         [
+                          _c("v-spacer"),
+                          _vm._v(" "),
                           _c(
                             "v-dialog",
                             {
@@ -20107,7 +20144,7 @@ var render = function() {
                                   },
                                   slot: "activator"
                                 },
-                                [_vm._v("AGREGAR PRODUCTO")]
+                                [_vm._v("AGREGAR")]
                               ),
                               _vm._v(" "),
                               _c(
@@ -20383,9 +20420,11 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c("v-btn", { attrs: { color: "success" } }, [
-                    _vm._v("Guardar Pedido")
-                  ])
+                  _c(
+                    "v-btn",
+                    { attrs: { color: "success darken-1", dark: "" } },
+                    [_vm._v("Guardar Pedido")]
+                  )
                 ],
                 1
               )
