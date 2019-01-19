@@ -46,7 +46,7 @@
                     <v-text-field
                       v-model="search"
                       append-icon="search"
-                      label="Search"
+                      label="Buscar"
                       single-line
                       hide-details
                     ></v-text-field>
@@ -105,7 +105,19 @@
               </template>
             </v-data-table>
           </v-card-text>
-          <v-btn color="success darken-1" dark @click="onSubmitOrder">Guardar Pedido</v-btn>
+          <v-btn color="success darken-1" dark @click="snackbar = true;">Guardar Pedido</v-btn>
+
+          <v-snackbar
+            v-model="snackbar"
+            :multi-line="true"
+            :right="true"
+            :timeout="timeout"
+            :top="true"
+            :color="color"
+          >
+            {{ text }}
+            <v-btn dark flat @click="snackbar = false">Close</v-btn>
+          </v-snackbar>
         </v-card>
       </v-flex>
     </v-layout>
@@ -160,7 +172,14 @@ export default {
     sellerId: "",
     observation: "",
     condition: "",
-    total: 0
+    total: 0,
+    snackbar: false,
+    y: "top",
+    x: null,
+    mode: "",
+    color: "error",
+    timeout: 3000,
+    text: "Ocurrio un eror :("
   }),
   mounted() {
     axios.get("/api/clients").then(({ data }) => {
@@ -225,6 +244,21 @@ export default {
         products: this.selected
       };
       console.log(data);
+
+      axios
+        .post("/api/proforma/create", {
+          clientId: this.clientId,
+          sellerId: this.sellerId,
+          condition: this.condition,
+          observation: this.observation,
+          products: this.selected
+        })
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };

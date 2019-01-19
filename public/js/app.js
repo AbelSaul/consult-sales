@@ -1939,6 +1939,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2012,7 +2024,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       sellerId: "",
       observation: "",
       condition: "",
-      total: 0
+      total: 0,
+      snackbar: false,
+      y: "top",
+      x: null,
+      mode: "",
+      color: "error",
+      timeout: 3000,
+      text: "Ocurrio un eror :("
     };
   },
   mounted: function mounted() {
@@ -2084,6 +2103,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         products: this.selected
       };
       console.log(data);
+      axios.post("/api/proforma/create", {
+        clientId: this.clientId,
+        sellerId: this.sellerId,
+        condition: this.condition,
+        observation: this.observation,
+        products: this.selected
+      }).then(function (response) {
+        console.log(response);
+      }).catch(function (error) {
+        console.log(error);
+      });
     }
   }
 });
@@ -3028,7 +3058,7 @@ var render = function() {
                                       _c("v-text-field", {
                                         attrs: {
                                           "append-icon": "search",
-                                          label: "Search",
+                                          label: "Buscar",
                                           "single-line": "",
                                           "hide-details": ""
                                         },
@@ -3312,9 +3342,51 @@ var render = function() {
                     "v-btn",
                     {
                       attrs: { color: "success darken-1", dark: "" },
-                      on: { click: _vm.onSubmitOrder }
+                      on: {
+                        click: function($event) {
+                          _vm.snackbar = true
+                        }
+                      }
                     },
                     [_vm._v("Guardar Pedido")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-snackbar",
+                    {
+                      attrs: {
+                        "multi-line": true,
+                        right: true,
+                        timeout: _vm.timeout,
+                        top: true,
+                        color: _vm.color
+                      },
+                      model: {
+                        value: _vm.snackbar,
+                        callback: function($$v) {
+                          _vm.snackbar = $$v
+                        },
+                        expression: "snackbar"
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n          " + _vm._s(_vm.text) + "\n          "
+                      ),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { dark: "", flat: "" },
+                          on: {
+                            click: function($event) {
+                              _vm.snackbar = false
+                            }
+                          }
+                        },
+                        [_vm._v("Close")]
+                      )
+                    ],
+                    1
                   )
                 ],
                 1
