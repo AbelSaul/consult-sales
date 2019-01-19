@@ -1821,11 +1821,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -1994,7 +1993,12 @@ __webpack_require__.r(__webpack_exports__);
         fat: 0,
         carbs: 0,
         protein: 0
-      }
+      },
+      clientId: "",
+      sellerId: "",
+      observation: "",
+      condition: "",
+      total: 0
     };
   },
   mounted: function mounted() {
@@ -2032,12 +2036,19 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.dialog = false;
+      this.selected = this.selected.map(function (item) {
+        return _objectSpread({}, item, {
+          cantidad: 1
+        });
+      });
       setTimeout(function () {
         _this2.editedItem = Object.assign({}, _this2.defaultItem);
         _this2.editedIndex = -1;
       }, 300);
     },
     save: function save() {
+      console.log(this.orders[this.editedIndex]);
+
       if (this.editedIndex > -1) {
         Object.assign(this.orders[this.editedIndex], this.editedItem);
       } else {
@@ -2049,6 +2060,16 @@ __webpack_require__.r(__webpack_exports__);
     deleteItem: function deleteItem(item) {
       var index = this.selected.indexOf(item);
       confirm("Are you sure you want to delete this item?") && this.selected.splice(index, 1);
+    },
+    onSubmitOrder: function onSubmitOrder() {
+      var data = {
+        clientId: this.clientId,
+        sellerId: this.sellerId,
+        condition: this.condition,
+        observation: this.observation,
+        products: this.selected
+      };
+      console.log(data);
     }
   }
 });
@@ -2844,15 +2865,6 @@ var render = function() {
                     [
                       _c(
                         "v-form",
-                        {
-                          model: {
-                            value: _vm.valid,
-                            callback: function($$v) {
-                              _vm.valid = $$v
-                            },
-                            expression: "valid"
-                          }
-                        },
                         [
                           _c(
                             "v-layout",
@@ -2869,11 +2881,11 @@ var render = function() {
                                       "persistent-hint": ""
                                     },
                                     model: {
-                                      value: _vm.model,
+                                      value: _vm.clientId,
                                       callback: function($$v) {
-                                        _vm.model = $$v
+                                        _vm.clientId = $$v
                                       },
-                                      expression: "model"
+                                      expression: "clientId"
                                     }
                                   })
                                 ],
@@ -2891,11 +2903,11 @@ var render = function() {
                                       "persistent-hint": ""
                                     },
                                     model: {
-                                      value: _vm.model,
+                                      value: _vm.sellerId,
                                       callback: function($$v) {
-                                        _vm.model = $$v
+                                        _vm.sellerId = $$v
                                       },
-                                      expression: "model"
+                                      expression: "sellerId"
                                     }
                                   })
                                 ],
@@ -2908,16 +2920,15 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      rules: _vm.nameRules,
                                       label: "Condiciones de pago",
                                       required: ""
                                     },
                                     model: {
-                                      value: _vm.paymentConditions,
+                                      value: _vm.condition,
                                       callback: function($$v) {
-                                        _vm.paymentConditions = $$v
+                                        _vm.condition = $$v
                                       },
-                                      expression: "paymentConditions"
+                                      expression: "condition"
                                     }
                                   })
                                 ],
@@ -2930,16 +2941,15 @@ var render = function() {
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      rules: _vm.nameRules,
                                       label: "Observaciones",
                                       required: ""
                                     },
                                     model: {
-                                      value: _vm.observations,
+                                      value: _vm.observation,
                                       callback: function($$v) {
-                                        _vm.observations = $$v
+                                        _vm.observation = $$v
                                       },
-                                      expression: "observations"
+                                      expression: "observation"
                                     }
                                   })
                                 ],
@@ -3234,7 +3244,20 @@ var render = function() {
                           _c(
                             "template",
                             { slot: "no-data" },
-                            [_c("v-text", [_vm._v("No existe ordenes")])],
+                            [
+                              _c(
+                                "v-alert",
+                                {
+                                  staticStyle: { margin: "1.5em 0" },
+                                  attrs: {
+                                    value: true,
+                                    color: "info",
+                                    icon: "warning"
+                                  }
+                                },
+                                [_vm._v("Aún no se han agregado productos :(")]
+                              )
+                            ],
                             1
                           )
                         ],
@@ -3246,7 +3269,10 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "v-btn",
-                    { attrs: { color: "success darken-1", dark: "" } },
+                    {
+                      attrs: { color: "success darken-1", dark: "" },
+                      on: { click: _vm.onSubmitOrder }
+                    },
                     [_vm._v("Guardar Pedido")]
                   )
                 ],
@@ -41285,7 +41311,7 @@ var routes = [{
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\laragon\www\consult-sales\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/condef5/code/laravel/consult-sales/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })

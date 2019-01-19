@@ -5,11 +5,11 @@
         <v-card>
           <v-card-title class="headline font-weight-regular blue-grey white--text">NUEVO PEDIDO</v-card-title>
           <v-card-text>
-            <v-form v-model="valid">
+            <v-form>
               <v-layout wrap>
                 <v-flex xs12 sm6 md3>
                   <v-autocomplete
-                    v-model="model"
+                    v-model="clientId"
                     :items="clients"
                     :label="`Cliente`"
                     persistent-hint
@@ -17,27 +17,17 @@
                 </v-flex>
                 <v-flex xs12 sm6 md3>
                   <v-autocomplete
-                    v-model="model"
+                    v-model="sellerId"
                     :items="sellers"
                     :label="`Vendedor`"
                     persistent-hint
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
-                  <v-text-field
-                    v-model="paymentConditions"
-                    :rules="nameRules"
-                    label="Condiciones de pago"
-                    required
-                  ></v-text-field>
+                  <v-text-field v-model="condition" label="Condiciones de pago" required></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
-                  <v-text-field
-                    v-model="observations"
-                    :rules="nameRules"
-                    label="Observaciones"
-                    required
-                  ></v-text-field>
+                  <v-text-field v-model="observation" label="Observaciones" required></v-text-field>
                 </v-flex>
               </v-layout>
             </v-form>
@@ -93,11 +83,16 @@
                 </td>
               </template>
               <template slot="no-data">
-                <v-text>No existe ordenes</v-text>
+                <v-alert
+                  :value="true"
+                  color="info"
+                  icon="warning"
+                  style="margin: 1.5em 0"
+                >Aún no se han agregado productos :(</v-alert>
               </template>
             </v-data-table>
           </v-card-text>
-          <v-btn color="success darken-1" dark>Guardar Pedido</v-btn>
+          <v-btn color="success darken-1" dark @click="onSubmitOrder">Guardar Pedido</v-btn>
         </v-card>
       </v-flex>
     </v-layout>
@@ -146,7 +141,12 @@ export default {
       fat: 0,
       carbs: 0,
       protein: 0
-    }
+    },
+    clientId: "",
+    sellerId: "",
+    observation: "",
+    condition: "",
+    total: 0
   }),
   mounted() {
     axios.get("/api/clients").then(({ data }) => {
@@ -179,6 +179,7 @@ export default {
 
     close() {
       this.dialog = false;
+      this.selected = this.selected.map(item => ({ ...item, cantidad: 1 }));
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -186,6 +187,7 @@ export default {
     },
 
     save() {
+      console.log(this.orders[this.editedIndex]);
       if (this.editedIndex > -1) {
         Object.assign(this.orders[this.editedIndex], this.editedItem);
       } else {
@@ -193,10 +195,22 @@ export default {
       }
       this.close();
     },
+
     deleteItem(item) {
       const index = this.selected.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
         this.selected.splice(index, 1);
+    },
+
+    onSubmitOrder() {
+      const data = {
+        clientId: this.clientId,
+        sellerId: this.sellerId,
+        condition: this.condition,
+        observation: this.observation,
+        products: this.selected
+      };
+      console.log(data);
     }
   }
 };
