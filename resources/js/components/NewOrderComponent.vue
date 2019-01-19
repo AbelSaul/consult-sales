@@ -13,6 +13,8 @@
                     :items="clients"
                     :label="`Cliente`"
                     persistent-hint
+                    item-text="text"
+                    item-value="id"
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
@@ -21,6 +23,8 @@
                     :items="sellers"
                     :label="`Vendedor`"
                     persistent-hint
+                    item-text="text"
+                    item-value="id"
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
@@ -38,6 +42,14 @@
                 <v-card>
                   <v-card-title>
                     <span class="headline">Seleccionar Producto</span>
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                      v-model="search"
+                      append-icon="search"
+                      label="Search"
+                      single-line
+                      hide-details
+                    ></v-text-field>
                   </v-card-title>
                   <v-card-text>
                     <v-layout wrap>
@@ -46,6 +58,7 @@
                           v-model="selected"
                           :headers="headers_products"
                           :items="products"
+                          :search="search"
                           item-key="idproducto"
                           select-all
                           class="elevation-1"
@@ -108,6 +121,7 @@ export default {
     selected: [],
     dialog: false,
     model: null,
+    search: "",
     headers_orders: [
       {
         text: "Código",

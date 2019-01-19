@@ -1926,6 +1926,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1935,6 +1948,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       selected: [],
       dialog: false,
       model: null,
+      search: "",
       headers_orders: [{
         text: "Código",
         sortable: false,
@@ -2878,7 +2892,9 @@ var render = function() {
                                     attrs: {
                                       items: _vm.clients,
                                       label: "Cliente",
-                                      "persistent-hint": ""
+                                      "persistent-hint": "",
+                                      "item-text": "text",
+                                      "item-value": "id"
                                     },
                                     model: {
                                       value: _vm.clientId,
@@ -2900,7 +2916,9 @@ var render = function() {
                                     attrs: {
                                       items: _vm.sellers,
                                       label: "Vendedor",
-                                      "persistent-hint": ""
+                                      "persistent-hint": "",
+                                      "item-text": "text",
+                                      "item-value": "id"
                                     },
                                     model: {
                                       value: _vm.sellerId,
@@ -2998,11 +3016,33 @@ var render = function() {
                               _c(
                                 "v-card",
                                 [
-                                  _c("v-card-title", [
-                                    _c("span", { staticClass: "headline" }, [
-                                      _vm._v("Seleccionar Producto")
-                                    ])
-                                  ]),
+                                  _c(
+                                    "v-card-title",
+                                    [
+                                      _c("span", { staticClass: "headline" }, [
+                                        _vm._v("Seleccionar Producto")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("v-spacer"),
+                                      _vm._v(" "),
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          "append-icon": "search",
+                                          label: "Search",
+                                          "single-line": "",
+                                          "hide-details": ""
+                                        },
+                                        model: {
+                                          value: _vm.search,
+                                          callback: function($$v) {
+                                            _vm.search = $$v
+                                          },
+                                          expression: "search"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
                                   _vm._v(" "),
                                   _c(
                                     "v-card-text",
@@ -3026,6 +3066,7 @@ var render = function() {
                                                 attrs: {
                                                   headers: _vm.headers_products,
                                                   items: _vm.products,
+                                                  search: _vm.search,
                                                   "item-key": "idproducto",
                                                   "select-all": ""
                                                 },
@@ -41311,7 +41352,7 @@ var routes = [{
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/condef5/code/laravel/consult-sales/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\consult-sales\resources\js\app.js */"./resources/js/app.js");
 
 
 /***/ })
