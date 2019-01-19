@@ -11,12 +11,14 @@
     </head>
     <body>
         <div id="app">
-            <p>
-                <router-link :to="{ name: 'home' }">Home</router-link> |
-                <router-link :to="{ name: 'login' }">Login</router-link> |
-                <router-link :to="{ name: 'ruc' }">Consulta Ruc</router-link>
-            </p>
-            <router-view></router-view>
+            <v-app>
+                <p>
+                    <router-link :to="{ name: 'home' }">Home</router-link> |
+                    <router-link :to="{ name: 'login' }">Login</router-link> |
+                    <router-link :to="{ name: 'ruc' }">Consulta Ruc</router-link>
+                </p>
+                <router-view></router-view>
+             </v-app>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>
     </body>

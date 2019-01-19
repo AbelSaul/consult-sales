@@ -43,48 +43,54 @@
             </v-form>
             <v-toolbar flat color="white">
               <v-spacer></v-spacer>
-              <v-dialog v-model="dialog" max-width="500px">
+              <v-dialog v-model="dialog" max-width="800px">
                 <v-btn slot="activator" color="primary" dark class="mb-2">AGREGAR</v-btn>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">{{ formTitle }}</span>
+                    <span class="headline">Seleccionar Producto</span>
                   </v-card-title>
                   <v-card-text>
-                    <v-container grid-list-md>
-                      <v-layout wrap>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field v-model="editedItem.name" label="Código"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field v-model="editedItem.calories" label="Producto"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field v-model="editedItem.fat" label="Precio Unitario"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field v-model="editedItem.carbs" label="Cantidad"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm6 md4>
-                          <v-text-field v-model="editedItem.protein" label="Precio Total"></v-text-field>
-                        </v-flex>
-                      </v-layout>
-                    </v-container>
+                    <v-layout wrap>
+                      <v-flex xs12 sm12 md12>
+                        <v-data-table
+                          v-model="selected"
+                          :headers="headers_products"
+                          :items="products"
+                          item-key="idproducto"
+                          select-all
+                          class="elevation-1"
+                        >
+                          <template slot="items" slot-scope="props">
+                            <td>
+                              <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
+                            </td>
+                            <td class="text-xs-center">{{ props.item.codigo }}</td>
+                            <td class="text-xs-center">{{ props.item.descripcion }}</td>
+                            <td class="text-xs-center">{{ props.item.medida }}</td>
+                            <td class="text-xs-center">{{ props.item.precio }}</td>
+                          </template>
+                        </v-data-table>
+                      </v-flex>
+                    </v-layout>
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click="close">Cancelar</v-btn>
-                    <v-btn color="blue darken-1" flat @click="save">Guardar</v-btn>
+                    <v-btn color="blue darken-1" flat @click="close">Cerrar</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
             </v-toolbar>
-            <v-data-table :headers="headers" :items="orders" class="elevation-1">
+
+            <v-data-table :headers="headers_orders" :items="selected" class="elevation-1">
               <template slot="items" slot-scope="props">
-                <td>{{ props.item.code }}</td>
-                <td class="text-xs-right">{{ props.item.product }}</td>
-                <td class="text-xs-right">{{ props.item.unit_price }}</td>
-                <td class="text-xs-right">{{ props.item.amount }}</td>
-                <td class="text-xs-right">{{ props.item.total_price }}</td>
+                <td class="text-xs-center">{{ props.item.codigo }}</td>
+                <td class="text-xs-center">{{ props.item.descripcion }}</td>
+                <td class="text-xs-center">{{ props.item.precio }}</td>
+                <td class="text-xs-center">{{ props.item.cantidad }}</td>
+                <td class="text-xs-center">{{ props.item.precio * props.item.cantidad }}</td>
+                <td class="justify-center layout px-0">
+                  <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+                </td>
               </template>
               <template slot="no-data">
                 <v-text>No existe ordenes</v-text>
@@ -101,23 +107,31 @@
 <script>
 export default {
   data: () => ({
+    clients: [],
     sellers: [],
+    products: [],
+    selected: [],
     dialog: false,
     model: null,
-    states: ["Alabama", "Alaska", "American Samoa", "Arizona"],
-    headers: [
+    headers_orders: [
       {
         text: "Código",
         sortable: false,
         align: "left",
-        value: "code"
+        value: "codigo"
       },
-      { text: "Producto", sortable: false, value: "product" },
-      { text: "Precio Unitario", sortable: false, value: "unit_price" },
-      { text: "Cantidad", sortable: false, value: "amount" },
-      { text: "Precio Total", sortable: false, value: "total_price" }
+      { text: "Producto", sortable: false, value: "descripcion" },
+      { text: "Precio Unitario", sortable: false, value: "precio" },
+      { text: "Cantidad", sortable: false, value: "cantidad" },
+      { text: "Precio Total", sortable: false, value: "precio_total" },
+      { text: "Accion", sortable: false, value: "accion" }
     ],
-    orders: [],
+    headers_products: [
+      { text: "Código", sortable: true, align: "left", value: "codigo" },
+      { text: "Producto", sortable: true, value: "descripcion" },
+      { text: "Medida", sortable: true, value: "medida" },
+      { text: "Precio", sortable: true, value: "precio" }
+    ],
     editedIndex: -1,
     editedItem: {
       name: "",
@@ -138,8 +152,11 @@ export default {
     axios.get("/api/clients").then(({ data }) => {
       this.clients = data;
     });
-    axios.get("/api/selleres").then(({ data }) => {
+    axios.get("/api/sellers").then(({ data }) => {
       this.sellers = data;
+    });
+    axios.get("/api/products").then(({ data }) => {
+      this.products = data;
     });
   },
   computed: {
@@ -158,17 +175,7 @@ export default {
   },
 
   methods: {
-    initialize() {
-      this.orders = [
-        {
-          code: "Frozen Yogurt",
-          product: 159,
-          unit_price: 6.0,
-          amount: 24,
-          total_price: 4.0
-        }
-      ];
-    },
+    initialize() {},
 
     close() {
       this.dialog = false;
@@ -185,6 +192,11 @@ export default {
         this.orders.push(this.editedItem);
       }
       this.close();
+    },
+    deleteItem(item) {
+      const index = this.selected.indexOf(item);
+      confirm("Are you sure you want to delete this item?") &&
+        this.selected.splice(index, 1);
     }
   }
 };
