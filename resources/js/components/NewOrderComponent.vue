@@ -105,7 +105,7 @@
               </template>
             </v-data-table>
           </v-card-text>
-          <v-btn color="success darken-1" dark @click="snackbar = true;">Guardar Pedido</v-btn>
+          <v-btn color="success darken-1" dark @click="onSubmitOrder">Guardar Pedido</v-btn>
 
           <v-snackbar
             v-model="snackbar"
@@ -241,7 +241,8 @@ export default {
         sellerId: this.sellerId,
         condition: this.condition,
         observation: this.observation,
-        products: this.selected
+        products: this.selected,
+        total: 20
       };
       console.log(data);
 
@@ -251,7 +252,8 @@ export default {
           sellerId: this.sellerId,
           condition: this.condition,
           observation: this.observation,
-          products: this.selected
+          products: this.selected,
+          total: 20
         })
         .then(function(response) {
           console.log(response);

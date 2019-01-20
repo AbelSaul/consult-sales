@@ -32,10 +32,10 @@ class ProformaController extends Controller
             "total" => $request->total,
             "idvendedor" => $request->sellerId,
             "condicion" => strtoupper($request->condition),
-            "observac" => $request->osbervation,
+            "observac" => $request->observation,
             "estado" => "PE",
         ]);
-        
+
         // save products_items
         foreach ($productos as $producto) {
             DetailProduct::Create([
@@ -44,7 +44,7 @@ class ProformaController extends Controller
                 "idproducto" => Product::where("codigo", $producto["codigo"])->first()->idproducto,
                 "codigo" => $producto["codigo"],
                 "descripcion" => $producto["descripcion"],
-                "medida" => $producto["medida"],    
+                "medida" => $producto["medida"],
                 "cantidad" => $producto["cantidad"],
                 "num_um" => 1,
                 "moneda" => "S/",

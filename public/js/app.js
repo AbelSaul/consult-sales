@@ -2100,7 +2100,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         sellerId: this.sellerId,
         condition: this.condition,
         observation: this.observation,
-        products: this.selected
+        products: this.selected,
+        total: 20
       };
       console.log(data);
       axios.post("/api/proforma/create", {
@@ -2108,7 +2109,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         sellerId: this.sellerId,
         condition: this.condition,
         observation: this.observation,
-        products: this.selected
+        products: this.selected,
+        total: 20
       }).then(function (response) {
         console.log(response);
       }).catch(function (error) {
@@ -3342,11 +3344,7 @@ var render = function() {
                     "v-btn",
                     {
                       attrs: { color: "success darken-1", dark: "" },
-                      on: {
-                        click: function($event) {
-                          _vm.snackbar = true
-                        }
-                      }
+                      on: { click: _vm.onSubmitOrder }
                     },
                     [_vm._v("Guardar Pedido")]
                   ),
