@@ -14,7 +14,6 @@ class ProformaController extends Controller
         $productos = $request->products;
 
         $maxIdProforma = DB::select("(select max(`idproforma` * 1) as pro from proformas)")[0]->pro + 1;
-
         $proforma = Proforma::Create([
             "idproforma" => $maxIdProforma,
             "idlocal" => 1,
@@ -59,8 +58,7 @@ class ProformaController extends Controller
             ]);
         }
 
-        $data = ["data" => $proforma];
-        return $data;
+        return response()->json(['msg' => "Proforma creada"], 200);
     }
 
     public function createDocument($pro_max_num)   {

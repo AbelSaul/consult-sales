@@ -231,7 +231,7 @@ export default {
 
     deleteItem(item) {
       const index = this.selected.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+      confirm("Esta seguro de querer borrar este item?") &&
         this.selected.splice(index, 1);
     },
 
@@ -247,19 +247,16 @@ export default {
       console.log(data);
 
       axios
-        .post("/api/proforma/create", {
-          clientId: this.clientId,
-          sellerId: this.sellerId,
-          condition: this.condition,
-          observation: this.observation,
-          products: this.selected,
-          total: 20
+        .post("/api/proforma/create", data)
+        .then(({ data }) => {
+          notify.show({
+            text: data.msg,
+            color: ""
+          });
+          console.log(data);
         })
-        .then(function(response) {
-          console.log(response);
-        })
-        .catch(function(error) {
-          console.log(error);
+        .catch(error => {
+          notify.error("Ocurrio un error");
         });
     }
   }
