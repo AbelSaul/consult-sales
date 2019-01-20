@@ -250,14 +250,22 @@ export default {
         .post("/api/proforma/create", data)
         .then(({ data }) => {
           notify.show({
-            text: data.msg,
+            text: data.message,
             color: ""
           });
           console.log(data);
+          this.reset();
         })
-        .catch(error => {
+        .catch(response => {
           notify.error("Ocurrio un error");
         });
+    },
+    reset() {
+      this.clientId = "";
+      this.sellerId = "";
+      this.condition = "";
+      this.observation = "";
+      this.selected = [];
     }
   }
 };
