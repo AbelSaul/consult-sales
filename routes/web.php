@@ -11,18 +11,13 @@
 |
 */
 
-Route::view('/', 'home');
-Route::view('/login', 'login');
+Route::view('/', 'home')->middleware('verify');
 
-Route::get('/data', function () {
-    $user = [
-        'usuario' => 'ADMIN',
-        'contraseña' => '2531',
-        'database' => 'nbdata2018_1'
-    ];
-
-    session(['auth' => $user]);
-
-    return session('auth');
+Route::get('/login', function() {
+    return view('login', ['header' => 'none']);
 });
 
+Route::get('/logout', function() {
+    session()->forget('user');
+    return redirect('login');
+});

@@ -17,9 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('connections', 'ConnectionController@index');
-Route::get('products', 'ProductController@index')->middleware('changedb');
-Route::get('sellers', 'SellerController@index');
-Route::get('clients', 'ClientController@index');
-Route::post('proforma/create', 'ProformaController@create');
 Route::post('login', 'SessionController@login');
+Route::get('connections', 'ConnectionController@index');
+Route::get('products', 'ProductController@index')->middleware('verify');
+Route::get('sellers', 'SellerController@index')->middleware('verify');
+Route::get('clients', 'ClientController@index')->middleware('verify');
+Route::post('proforma/create', 'ProformaController@create')->middleware('verify');
