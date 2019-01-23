@@ -83,6 +83,7 @@ export default {
           .post("/api/login", data)
           .then(({ data }) => {
             notify.showCool(data.message);
+            window.location = "/";
           })
           .catch(error => {
             notify.error(error.response.data.message);

@@ -12,16 +12,16 @@
     </head>
     <body>
         <div id="app">
-            <v-toolbar>
-              <v-toolbar-side-icon></v-toolbar-side-icon>
-              <v-toolbar-title>Title</v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-toolbar-items class="hidden-sm-and-down">
-                <v-btn flat>Link One</v-btn>
-                <v-btn flat>Link Two</v-btn>
-                <v-btn flat>Link Three</v-btn>
-              </v-toolbar-items>
-            </v-toolbar>
+            @if(!isset($header))
+                <v-toolbar color="primary" dark>
+                    <v-toolbar-side-icon></v-toolbar-side-icon>
+                    <v-toolbar-title>Consultas</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items class="hidden-sm-and-down">
+                        <v-btn flat><a href="/logout">Cerrar sesion</a></v-btn>
+                    </v-toolbar-items>
+                </v-toolbar>
+            @endif
             <v-app>
               @yield('content')
             </v-app>
@@ -29,3 +29,11 @@
         <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>
+<style>
+    .container {
+        max-width: inherit;
+    }
+    .application--wrap {
+        min-height: inherit;
+    }
+</style>

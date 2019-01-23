@@ -1,9 +1,9 @@
 <template>
-  <v-container bg fill-height grid-list-md text-xs-center>
+  <v-container bg grid-list-md text-xs-center>
     <v-layout row wrap>
       <v-flex xs12 sm12 md12>
         <v-card>
-          <v-card-title class="headline font-weight-regular blue-grey white--text">NUEVO PEDIDO</v-card-title>
+          <v-card-title class="headline font-weight-regular border-gray">NUEVO PEDIDO</v-card-title>
           <v-card-text>
             <v-form>
               <v-layout wrap>
@@ -266,3 +266,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.border-gray {
+  border-bottom: 1px solid #949494;
+}
+</style>
