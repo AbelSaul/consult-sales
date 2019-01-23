@@ -1,15 +1,14 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
 import axios from 'axios';
 import Vuetify from 'vuetify';
 import vuetifyToast from 'vuetify-toast';
 
 window.Vue = Vue;
 
-Vue.use(VueRouter);
 Vue.use(Vuetify);
 
 window.notify = vuetifyToast;
+window.notify.showCool = (text) => notify.show({ text, color: '' });
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 

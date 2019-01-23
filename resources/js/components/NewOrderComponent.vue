@@ -249,11 +249,7 @@ export default {
       axios
         .post("/api/proforma/create", data)
         .then(({ data }) => {
-          notify.show({
-            text: data.message,
-            color: ""
-          });
-          console.log(data);
+          notify.showCool(data.message);
           this.reset();
         })
         .catch(response => {
