@@ -11,6 +11,18 @@
 |
 */
 
-Route::get('/{any}', function () {
-    return view('welcome');
-})->where('any', '.*');
+Route::view('/', 'home');
+Route::view('/login', 'login');
+
+Route::get('/data', function () {
+    $user = [
+        'usuario' => 'ADMIN',
+        'contraseña' => '2531',
+        'database' => 'nbdata2018_1'
+    ];
+
+    session(['auth' => $user]);
+
+    return session('auth');
+});
+

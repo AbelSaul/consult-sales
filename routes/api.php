@@ -22,3 +22,4 @@ Route::get('products', 'ProductController@index')->middleware('changedb');
 Route::get('sellers', 'SellerController@index');
 Route::get('clients', 'ClientController@index');
 Route::post('proforma/create', 'ProformaController@create');
+Route::post('login', 'SessionController@login');
