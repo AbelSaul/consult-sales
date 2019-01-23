@@ -14,12 +14,17 @@
         <div id="app">
             @if(!isset($header))
                 <v-toolbar color="primary" dark>
-                    <v-toolbar-side-icon></v-toolbar-side-icon>
                     <v-toolbar-title>Consultas</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items class="hidden-sm-and-down">
-                        <v-btn flat><a href="/logout">Cerrar sesion</a></v-btn>
+                        <v-btn flat><a class="white--text" href="/logout">Cerrar sesion</a></v-btn>
                     </v-toolbar-items>
+                    <v-menu class="hidden-md-and-up">
+                        <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
+                        <v-list >
+                            <v-btn flat><a href="/logout">Cerrar sesion</a></v-btn>
+                        </v-list>
+                    </v-menu>
                 </v-toolbar>
             @endif
             <v-app>
@@ -33,6 +38,10 @@
     .container {
         max-width: inherit;
     }
+    a {
+        text-decoration: none;
+    }
+
     .application--wrap {
         min-height: inherit;
     }

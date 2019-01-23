@@ -1,5 +1,5 @@
 <template>
-  <v-container bg grid-list-md text-xs-center fill-height>
+  <v-container bg grid-list-md text-xs-center fill-height class="full-heigth">
     <v-layout row wrap align-center>
       <v-flex xs12 sm8 offset-sm2 md6 offset-md3>
         <v-card v-if="page === 'ruc'">
@@ -100,5 +100,16 @@ export default {
 .head {
   border-bottom: 1px solid #ddd;
   padding-bottom: 8px;
+}
+@media (min-width: 1000px) {
+  .full-heigth {
+    height: 100vh;
+  }
+}
+
+@media (max-width: 800px) {
+  .full-heigth {
+    margin-top: 4em;
+  }
 }
 </style>
