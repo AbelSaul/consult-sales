@@ -70,7 +70,10 @@
                             <td class="text-xs-center">{{ props.item.codigo }}</td>
                             <td class="text-xs-center">{{ props.item.descripcion }}</td>
                             <td class="text-xs-center">{{ props.item.medida }}</td>
-                            <td class="text-xs-center">{{ props.item.precio }}</td>
+
+                            <td class="text-xs-center">
+                              <v-select :items=" props.item.prices" v-model="props.item.precio"></v-select>
+                            </td>
                           </template>
                         </v-data-table>
                       </v-flex>
@@ -88,7 +91,7 @@
               <template slot="items" slot-scope="props">
                 <td class="text-xs-center">{{ props.item.codigo }}</td>
                 <td class="text-xs-center">{{ props.item.descripcion }}</td>
-                <td class="text-xs-center">{{ props.item.precio }}</td>
+                <td class="text-xs-center">{{ props.item.precio1 }}</td>
                 <td class="text-xs-center">{{ props.item.cantidad }}</td>
                 <td class="text-xs-center">{{ props.item.precio * props.item.cantidad }}</td>
                 <td class="justify-center layout px-0">
