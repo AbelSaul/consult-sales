@@ -2,10 +2,12 @@ import Vue from 'vue';
 import axios from 'axios';
 import Vuetify from 'vuetify';
 import vuetifyToast from 'vuetify-toast';
+import vueInputNumber  from 'vue-input-number';
 
 window.Vue = Vue;
 
 Vue.use(Vuetify);
+Vue.use(vueInputNumber);
 
 window.notify = vuetifyToast;
 window.notify.showCool = (text) => notify.show({ text, color: '' });

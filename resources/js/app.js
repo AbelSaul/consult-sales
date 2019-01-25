@@ -10,6 +10,8 @@ Vue.component(
     require('./components/NewOrderComponent.vue').default
 );
 
+Vue.component('vue-input-number', require('vue-input-number').default);
+
 new Vue({
     el: '#app'
 });

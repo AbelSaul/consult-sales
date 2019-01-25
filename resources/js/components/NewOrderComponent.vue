@@ -91,8 +91,10 @@
               <template slot="items" slot-scope="props">
                 <td class="text-xs-center">{{ props.item.codigo }}</td>
                 <td class="text-xs-center">{{ props.item.descripcion }}</td>
-                <td class="text-xs-center">{{ props.item.precio1 }}</td>
-                <td class="text-xs-center">{{ props.item.cantidad }}</td>
+                <td class="text-xs-center">{{ props.item.precio }}</td>
+                <td class="text-xs-center" >
+                  <input type="number" min="1" v-model.number="props.item.cantidad">
+                </td>
                 <td class="text-xs-center">{{ props.item.precio * props.item.cantidad }}</td>
                 <td class="justify-center layout px-0">
                   <v-icon small @click="deleteItem(props.item)">delete</v-icon>
@@ -108,8 +110,9 @@
               </template>
             </v-data-table>
           </v-card-text>
+                {{sumaTotal}}
           <v-btn color="success darken-1" dark @click="onSubmitOrder">Guardar Pedido</v-btn>
-
+    
           <v-snackbar
             v-model="snackbar"
             :multi-line="true"
@@ -147,8 +150,8 @@ export default {
       { text: "Producto", sortable: false, value: "descripcion" },
       { text: "Precio Unitario", sortable: false, value: "precio" },
       { text: "Cantidad", sortable: false, value: "cantidad" },
-      { text: "Precio Total", sortable: false, value: "precio_total" },
-      { text: "Accion", sortable: false, value: "accion" }
+      { text: "Importe", sortable: false, value: "precio_total" },
+      { text: "Acción", sortable: false, value: "accion" }
     ],
     headers_products: [
       { text: "Código", sortable: true, align: "left", value: "codigo" },
@@ -175,14 +178,15 @@ export default {
     sellerId: "",
     observation: "",
     condition: "",
-    total: 0,
     snackbar: false,
     y: "top",
     x: null,
     mode: "",
     color: "error",
     timeout: 3000,
-    text: "Ocurrio un eror :("
+    text: "Ocurrio un eror :(",
+    total: 0
+    
   }),
   mounted() {
     axios.get("/api/clients").then(({ data }) => {
@@ -196,8 +200,12 @@ export default {
     });
   },
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+    sumaTotal() {
+      this.total = 0;
+      this.selected.forEach(element => {
+        this.total = this.total + element.precio * element.cantidad;
+      });
+      return this.total ;
     }
   },
   watch: {
@@ -215,11 +223,7 @@ export default {
 
     close() {
       this.dialog = false;
-      this.selected = this.selected.map(item => ({ ...item, cantidad: 1 }));
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      }, 300);
+
     },
 
     save() {
