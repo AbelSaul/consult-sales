@@ -87,15 +87,19 @@
               </v-dialog>
             </v-toolbar>
 
-            <v-data-table :headers="headers_orders" :items="selected" class="elevation-1">
+            <v-data-table
+              :headers="headers_orders"
+              :items="selected"
+              class="elevation-1 custom-table"
+            >
               <template slot="items" slot-scope="props">
-                <td class="text-xs-center">{{ props.item.codigo }}</td>
-                <td class="text-xs-center">{{ props.item.descripcion }}</td>
-                <td class="text-xs-center">{{ props.item.precio }}</td>
-                <td class="text-xs-center" >
+                <td class="text-xs-left">{{ props.item.codigo }}</td>
+                <td class="text-xs-right">{{ props.item.descripcion }}</td>
+                <td class="text-xs-right">{{ props.item.precio }}</td>
+                <td class="text-xs-right">
                   <input type="number" min="1" v-model.number="props.item.cantidad">
                 </td>
-                <td class="text-xs-center">{{ props.item.precio * props.item.cantidad }}</td>
+                <td class="text-xs-right">{{ props.item.precio * props.item.cantidad }}</td>
                 <td class="justify-center layout px-0">
                   <v-icon small @click="deleteItem(props.item)">delete</v-icon>
                 </td>
@@ -110,9 +114,9 @@
               </template>
             </v-data-table>
           </v-card-text>
-                {{sumaTotal}}
+          {{sumaTotal}}
           <v-btn color="success darken-1" dark @click="onSubmitOrder">Guardar Pedido</v-btn>
-    
+
           <v-snackbar
             v-model="snackbar"
             :multi-line="true"
@@ -138,7 +142,6 @@ export default {
     products: [],
     selected: [],
     dialog: false,
-    model: null,
     search: "",
     headers_orders: [
       {
@@ -160,20 +163,6 @@ export default {
       { text: "Precio", sortable: true, value: "precio" }
     ],
     editedIndex: -1,
-    editedItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
-    },
-    defaultItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
-    },
     clientId: "",
     sellerId: "",
     observation: "",
@@ -186,7 +175,6 @@ export default {
     timeout: 3000,
     text: "Ocurrio un eror :(",
     total: 0
-    
   }),
   mounted() {
     axios.get("/api/clients").then(({ data }) => {
@@ -205,7 +193,7 @@ export default {
       this.selected.forEach(element => {
         this.total = this.total + element.precio * element.cantidad;
       });
-      return this.total ;
+      return this.total;
     }
   },
   watch: {
@@ -223,17 +211,11 @@ export default {
 
     close() {
       this.dialog = false;
-
-    },
-
-    save() {
-      console.log(this.orders[this.editedIndex]);
-      if (this.editedIndex > -1) {
-        Object.assign(this.orders[this.editedIndex], this.editedItem);
-      } else {
-        this.orders.push(this.editedItem);
-      }
-      this.close();
+      // init cantidad en 1
+      this.selected = this.selected.map(item => {
+        if (item.cantidad) return item;
+        return { ...item, cantidad: 1 };
+      });
     },
 
     deleteItem(item) {
@@ -263,6 +245,7 @@ export default {
           notify.error("Ocurrio un error");
         });
     },
+
     reset() {
       this.clientId = "";
       this.sellerId = "";
@@ -275,7 +258,26 @@ export default {
 </script>
 
 <style>
+.custom-table th:not(:first-child) {
+  text-align: right !important;
+}
+.custom-table th:last-child {
+  text-align: center !important;
+}
 .border-gray {
   border-bottom: 1px solid #949494;
+}
+
+[type="number"] {
+  border: 2px solid #949494;
+  max-width: 60px;
+  text-align: center;
+  padding: 4px;
+  border-radius: 4px;
+  outline: none;
+}
+
+[type="number"]:focus {
+  border: 2px solid #1976d2;
 }
 </style>
