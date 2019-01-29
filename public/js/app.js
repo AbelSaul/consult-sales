@@ -2023,6 +2023,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2091,7 +2113,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       color: "error",
       timeout: 3000,
       text: "Ocurrio un eror :(",
-      total: 0
+      total: 0,
+      emailRules: [function (v) {
+        return /.+@.+/.test(v) || "El email debe ser válido";
+      }]
     };
   },
   mounted: function mounted() {
@@ -4138,6 +4163,65 @@ var render = function() {
                               _vm._v(" "),
                               _c(
                                 "v-flex",
+                                { attrs: { xs12: "", sm6: "", md3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Atención", required: "" },
+                                    model: {
+                                      value: _vm.attention,
+                                      callback: function($$v) {
+                                        _vm.attention = $$v
+                                      },
+                                      expression: "attention"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Telefono", required: "" },
+                                    model: {
+                                      value: _vm.phone,
+                                      callback: function($$v) {
+                                        _vm.phone = $$v
+                                      },
+                                      expression: "phone"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    directives: [
+                                      {
+                                        name: "mode",
+                                        rawName: "v-mode",
+                                        value: _vm.email,
+                                        expression: "email"
+                                      }
+                                    ],
+                                    attrs: {
+                                      label: "Correo",
+                                      rules: _vm.emailRules,
+                                      required: ""
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
                                 { attrs: { xs12: "", sm6: "", md2: "" } },
                                 [
                                   _c("v-autocomplete", {
@@ -4186,7 +4270,7 @@ var render = function() {
                               _vm._v(" "),
                               _c(
                                 "v-flex",
-                                { attrs: { xs12: "", sm6: "", md5: "" } },
+                                { attrs: { xs12: "", sm6: "", md8: "" } },
                                 [
                                   _c("v-text-field", {
                                     attrs: {

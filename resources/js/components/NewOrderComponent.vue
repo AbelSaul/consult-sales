@@ -17,6 +17,28 @@
                     item-value="id"
                   ></v-autocomplete>
                 </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-text-field
+                    v-model="attention"
+                    label="Atención"
+                    required
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-text-field
+                    v-model="phone"
+                    label="Telefono"
+                    required
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-text-field
+                    v-mode="email"
+                    label="Correo"
+                    :rules='emailRules'
+                    required
+                  ></v-text-field>
+                </v-flex>
                 <v-flex xs12 sm6 md2>
                   <v-autocomplete
                     v-model="sellerId"
@@ -37,7 +59,7 @@
                     item-value="text"
                   ></v-autocomplete>
                 </v-flex>
-                <v-flex xs12 sm6 md5>
+                <v-flex xs12 sm6 md8>
                   <v-text-field
                     v-model="observation"
                     label="Observacion | Fecha | Entrega | Lugar"
@@ -188,7 +210,10 @@ export default {
     color: "error",
     timeout: 3000,
     text: "Ocurrio un eror :(",
-    total: 0
+    total: 0,
+    emailRules: [
+        v => /.+@.+/.test(v) || "El email debe ser válido"
+      ],
   }),
   mounted() {
     axios.get("/api/clients").then(({ data }) => {
