@@ -17,21 +17,32 @@
                     item-value="id"
                   ></v-autocomplete>
                 </v-flex>
-                <v-flex xs12 sm6 md3>
+                <v-flex xs12 sm6 md2>
                   <v-autocomplete
                     v-model="sellerId"
-                    :items="sellers"
+                    :items="users"
                     :label="`Vendedor`"
                     persistent-hint
                     item-text="text"
                     item-value="id"
                   ></v-autocomplete>
                 </v-flex>
-                <v-flex xs12 sm6 md3>
-                  <v-text-field v-model="condition" label="Condiciones de pago" required></v-text-field>
+                <v-flex xs12 sm6 md2>
+                  <v-autocomplete
+                    v-model="condition"
+                    :items="conditions"
+                    :label="`Condiciones de pago`"
+                    persistent-hint
+                    item-text="text"
+                    item-value="text"
+                  ></v-autocomplete>
                 </v-flex>
-                <v-flex xs12 sm6 md3>
-                  <v-text-field v-model="observation" label="Observaciones" required></v-text-field>
+                <v-flex xs12 sm6 md5>
+                  <v-text-field
+                    v-model="observation"
+                    label="Observacion | Fecha | Entrega | Lugar"
+                    required
+                  ></v-text-field>
                 </v-flex>
               </v-layout>
             </v-form>
@@ -139,7 +150,9 @@ export default {
   data: () => ({
     clients: [],
     sellers: [],
+    users: [],
     products: [],
+    conditions: [],
     selected: [],
     dialog: false,
     search: "",
@@ -167,6 +180,7 @@ export default {
     sellerId: "",
     observation: "",
     condition: "",
+    localId: "",
     snackbar: false,
     y: "top",
     x: null,
@@ -183,8 +197,14 @@ export default {
     axios.get("/api/sellers").then(({ data }) => {
       this.sellers = data;
     });
+    axios.get("/api/users").then(({ data }) => {
+      this.users = data;
+    });
     axios.get("/api/products").then(({ data }) => {
       this.products = data;
+    });
+    axios.get("/api/conditions").then(({ data }) => {
+      this.conditions = data;
     });
   },
   computed: {
@@ -217,13 +237,11 @@ export default {
         return { ...item, cantidad: 1 };
       });
     },
-
     deleteItem(item) {
       const index = this.selected.indexOf(item);
       confirm("Esta seguro de querer borrar este item?") &&
         this.selected.splice(index, 1);
     },
-
     onSubmitOrder() {
       const data = {
         clientId: this.clientId,
@@ -231,7 +249,8 @@ export default {
         condition: this.condition,
         observation: this.observation,
         products: this.selected,
-        total: 20
+        total: this.total,
+        localId: this.localId
       };
       console.log(data);
 

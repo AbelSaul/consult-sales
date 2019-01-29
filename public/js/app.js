@@ -1872,6 +1872,25 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2009,10 +2028,11 @@ __webpack_require__.r(__webpack_exports__);
     return {
       clients: [],
       sellers: [],
+      users: [],
       products: [],
+      conditions: [],
       selected: [],
       dialog: false,
-      model: null,
       search: "",
       headers_orders: [{
         text: "Código",
@@ -2059,24 +2079,11 @@ __webpack_require__.r(__webpack_exports__);
         value: "precio"
       }],
       editedIndex: -1,
-      editedItem: {
-        name: "",
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0
-      },
-      defaultItem: {
-        name: "",
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0
-      },
       clientId: "",
       sellerId: "",
       observation: "",
       condition: "",
+      localId: "",
       snackbar: false,
       y: "top",
       x: null,
@@ -2098,9 +2105,17 @@ __webpack_require__.r(__webpack_exports__);
       var data = _ref2.data;
       _this.sellers = data;
     });
-    axios.get("/api/products").then(function (_ref3) {
+    axios.get("/api/users").then(function (_ref3) {
       var data = _ref3.data;
+      _this.users = data;
+    });
+    axios.get("/api/products").then(function (_ref4) {
+      var data = _ref4.data;
       _this.products = data;
+    });
+    axios.get("/api/conditions").then(function (_ref5) {
+      var data = _ref5.data;
+      _this.conditions = data;
     });
   },
   computed: {
@@ -2125,18 +2140,14 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     initialize: function initialize() {},
     close: function close() {
-      this.dialog = false;
-    },
-    save: function save() {
-      console.log(this.orders[this.editedIndex]);
+      this.dialog = false; // init cantidad en 1
 
-      if (this.editedIndex > -1) {
-        Object.assign(this.orders[this.editedIndex], this.editedItem);
-      } else {
-        this.orders.push(this.editedItem);
-      }
-
-      this.close();
+      this.selected = this.selected.map(function (item) {
+        if (item.cantidad) return item;
+        return _objectSpread({}, item, {
+          cantidad: 1
+        });
+      });
     },
     deleteItem: function deleteItem(item) {
       var index = this.selected.indexOf(item);
@@ -2151,11 +2162,12 @@ __webpack_require__.r(__webpack_exports__);
         condition: this.condition,
         observation: this.observation,
         products: this.selected,
-        total: 20
+        total: this.total,
+        localId: this.localId
       };
       console.log(data);
-      axios.post("/api/proforma/create", data).then(function (_ref4) {
-        var data = _ref4.data;
+      axios.post("/api/proforma/create", data).then(function (_ref6) {
+        var data = _ref6.data;
         notify.showCool(data.message);
 
         _this3.reset();
@@ -2206,7 +2218,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.border-gray {\r\n  border-bottom: 1px solid #949494;\n}\r\n", ""]);
+exports.push([module.i, "\n.custom-table th:not(:first-child) {\r\n  text-align: right !important;\n}\n.custom-table th:last-child {\r\n  text-align: center !important;\n}\n.border-gray {\r\n  border-bottom: 1px solid #949494;\n}\n[type=\"number\"] {\r\n  border: 2px solid #949494;\r\n  max-width: 60px;\r\n  text-align: center;\r\n  padding: 4px;\r\n  border-radius: 4px;\r\n  outline: none;\n}\n[type=\"number\"]:focus {\r\n  border: 2px solid #1976d2;\n}\r\n", ""]);
 
 // exports
 
@@ -4126,11 +4138,11 @@ var render = function() {
                               _vm._v(" "),
                               _c(
                                 "v-flex",
-                                { attrs: { xs12: "", sm6: "", md3: "" } },
+                                { attrs: { xs12: "", sm6: "", md2: "" } },
                                 [
                                   _c("v-autocomplete", {
                                     attrs: {
-                                      items: _vm.sellers,
+                                      items: _vm.users,
                                       label: "Vendedor",
                                       "persistent-hint": "",
                                       "item-text": "text",
@@ -4150,12 +4162,15 @@ var render = function() {
                               _vm._v(" "),
                               _c(
                                 "v-flex",
-                                { attrs: { xs12: "", sm6: "", md3: "" } },
+                                { attrs: { xs12: "", sm6: "", md2: "" } },
                                 [
-                                  _c("v-text-field", {
+                                  _c("v-autocomplete", {
                                     attrs: {
+                                      items: _vm.conditions,
                                       label: "Condiciones de pago",
-                                      required: ""
+                                      "persistent-hint": "",
+                                      "item-text": "text",
+                                      "item-value": "text"
                                     },
                                     model: {
                                       value: _vm.condition,
@@ -4171,11 +4186,12 @@ var render = function() {
                               _vm._v(" "),
                               _c(
                                 "v-flex",
-                                { attrs: { xs12: "", sm6: "", md3: "" } },
+                                { attrs: { xs12: "", sm6: "", md5: "" } },
                                 [
                                   _c("v-text-field", {
                                     attrs: {
-                                      label: "Observaciones",
+                                      label:
+                                        "Observacion | Fecha | Entrega | Lugar",
                                       required: ""
                                     },
                                     model: {
@@ -4455,7 +4471,7 @@ var render = function() {
                       _c(
                         "v-data-table",
                         {
-                          staticClass: "elevation-1",
+                          staticClass: "elevation-1 custom-table",
                           attrs: {
                             headers: _vm.headers_orders,
                             items: _vm.selected
@@ -4465,19 +4481,19 @@ var render = function() {
                               key: "items",
                               fn: function(props) {
                                 return [
-                                  _c("td", { staticClass: "text-xs-center" }, [
+                                  _c("td", { staticClass: "text-xs-left" }, [
                                     _vm._v(_vm._s(props.item.codigo))
                                   ]),
                                   _vm._v(" "),
-                                  _c("td", { staticClass: "text-xs-center" }, [
+                                  _c("td", { staticClass: "text-xs-right" }, [
                                     _vm._v(_vm._s(props.item.descripcion))
                                   ]),
                                   _vm._v(" "),
-                                  _c("td", { staticClass: "text-xs-center" }, [
+                                  _c("td", { staticClass: "text-xs-right" }, [
                                     _vm._v(_vm._s(props.item.precio))
                                   ]),
                                   _vm._v(" "),
-                                  _c("td", { staticClass: "text-xs-center" }, [
+                                  _c("td", { staticClass: "text-xs-right" }, [
                                     _c("input", {
                                       directives: [
                                         {
@@ -4508,7 +4524,7 @@ var render = function() {
                                     })
                                   ]),
                                   _vm._v(" "),
-                                  _c("td", { staticClass: "text-xs-center" }, [
+                                  _c("td", { staticClass: "text-xs-right" }, [
                                     _vm._v(
                                       _vm._s(
                                         props.item.precio * props.item.cantidad
@@ -4568,9 +4584,7 @@ var render = function() {
                     ],
                     1
                   ),
-                  _vm._v(
-                    "\n              " + _vm._s(_vm.sumaTotal) + "\n        "
-                  ),
+                  _vm._v("\n        " + _vm._s(_vm.sumaTotal) + "\n        "),
                   _c(
                     "v-btn",
                     {

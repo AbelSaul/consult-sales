@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Client;
+use DB;
+
+
 
 class ClientController extends Controller
 {
@@ -11,8 +14,9 @@ class ClientController extends Controller
         $search = $request->search;
         if($search) {
             return Client::where('cliente', 'like', "%$search%")
-            ->select(['idcliente as id', 'cliente as text'])->get();
+            ->orWhere('ruc', 'like', "%$search%")
+            ->select(['idcliente as id', DB::raw('CONCAT(cliente," - ",ruc) as text')])->get();
         }
-        return Client::limit(10)->select(['idcliente as id', 'cliente as text'])->get();
+        return Client::limit(10)->select(['idcliente as id',  DB::raw('CONCAT(cliente," - ",ruc) as text')])->get();
     }
 }

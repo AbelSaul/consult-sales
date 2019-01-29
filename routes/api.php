@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,5 +22,7 @@ Route::post('login', 'SessionController@login');
 Route::get('connections', 'ConnectionController@index');
 Route::get('products', 'ProductController@index')->middleware('verify');
 Route::get('sellers', 'SellerController@index')->middleware('verify');
+Route::get('users', 'SellerController@users')->middleware('verify');
 Route::get('clients', 'ClientController@index')->middleware('verify');
+Route::get('conditions', 'ProformaController@conditions')->middleware('verify');
 Route::post('proforma/create', 'ProformaController@create')->middleware('verify');

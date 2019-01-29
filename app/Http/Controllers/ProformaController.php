@@ -21,7 +21,7 @@ class ProformaController extends Controller
 
         $productos = $request->products;
 
-        
+
         $maxIdProforma = DB::select("(select max(`idproforma` * 1) as pro from proformas)")[0]->pro + 1;
         $proforma = Proforma::Create([
             "idproforma" => $maxIdProforma,
@@ -72,5 +72,10 @@ class ProformaController extends Controller
 
     public function createDocument($pro_max_num)   {
         return "0001-" . str_pad($pro_max_num, 9, "0", STR_PAD_LEFT);
+    }
+
+    public function conditions(){
+        $conditions = [['id' => 01 , 'text' => 'Al contado'],['id' => 02 , 'text' => 'Al crédito'],['id' => 03 , 'text' => 'Otros']];
+        return $conditions;
     }
 }
