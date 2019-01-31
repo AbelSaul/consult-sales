@@ -12,11 +12,13 @@ class ClientController extends Controller
 {
     public function index(Request $request) {
         $search = $request->search;
+        $fields = ['idcliente as id', DB::raw('CONCAT(cliente," - ",ruc) as text') , 'direccion', 'celular', 'correo'];
         if($search) {
             return Client::where('cliente', 'like', "%$search%")
-            ->orWhere('ruc', 'like', "%$search%")
-            ->select(['idcliente as id', DB::raw('CONCAT(cliente," - ",ruc) as text')])->get();
+                ->limit(10)
+                ->orWhere('ruc', 'like', "%$search%")
+                ->select($fields)->get();
         }
-        return Client::limit(10)->select(['idcliente as id',  DB::raw('CONCAT(cliente," - ",ruc) as text')])->get();
+        return Client::limit(10)->select($fields)->get();
     }
 }
