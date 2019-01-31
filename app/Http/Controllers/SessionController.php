@@ -13,11 +13,13 @@ class SessionController extends Controller
         $database = $request->database;
         config(['database.connections.mysql.database' => $database]);
         DB::reconnect('mysql');
-        $user = UserOther::where('usuario', $request->user)->where('contraseña', $request->password)->first(['usuario']);
+        $user = UserOther::where('usuario', $request->user)->where('contraseña', $request->password)->first();
         
         if($user) {
           session(['user' => [
-            'name' => $user->usario,
+            'name' => $user->usuario,
+            'idpersonal' => $user->idpersonal,
+            'idlocal' => $user->idlocal,
             'database' => $database,
           ]]);
           return response()->json(['message' => "Inicio de sesion exitoso"], 200);
