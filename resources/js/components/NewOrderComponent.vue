@@ -11,55 +11,52 @@
                   <v-autocomplete
                     v-model="clientId"
                     :items="clients"
+                    :loading="isLoadingClient"
+                    :search-input.sync="searchClient"
                     :label="`Cliente`"
-                    persistent-hint
+                    hide-no-data
+                    hide-selected
+                    no-data-text="No hay ningun vendedor"
                     item-text="text"
                     item-value="id"
+                    @change="onChangeClient"
+                    return-object
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
-                  <v-text-field
-                    v-model="attention"
-                    label="Atención"
-                    required
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md3>
-                  <v-text-field
-                    v-model="phone"
-                    label="Telefono"
-                    required
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md3>
-                  <v-text-field
-                    v-mode="email"
-                    label="Correo"
-                    :rules='emailRules'
-                    required
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md2>
                   <v-autocomplete
                     v-model="sellerId"
-                    :items="users"
+                    :items="sellers"
+                    :loading="isLoadingSeller"
+                    :search-input.sync="searchSeller"
                     :label="`Vendedor`"
+                    no-data-text="No hay ningun vendedor"
                     persistent-hint
-                    item-text="text"
-                    item-value="id"
+                    item-text="nombre"
+                    item-value="idpersonal"
+                    return-object
                   ></v-autocomplete>
                 </v-flex>
-                <v-flex xs12 sm6 md2>
-                  <v-autocomplete
+
+                <v-flex xs12 sm6 md3>
+                  <v-text-field v-model="attention" label="Atención" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-text-field v-model="phone" label="Telefono" required></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md3>
+                  <v-text-field v-model="email" label="Correo" :rules="emailRules" required></v-text-field>
+                </v-flex>
+
+                <v-flex xs12 sm6 md3>
+                  <v-combobox
+                    :label="`Condiciones de pago`"
                     v-model="condition"
                     :items="conditions"
-                    :label="`Condiciones de pago`"
-                    persistent-hint
-                    item-text="text"
-                    item-value="text"
-                  ></v-autocomplete>
+                    clearable
+                  ></v-combobox>
                 </v-flex>
-                <v-flex xs12 sm6 md8>
+                <v-flex xs12 sm6 md6>
                   <v-text-field
                     v-model="observation"
                     label="Observacion | Fecha | Entrega | Lugar"
@@ -68,6 +65,7 @@
                 </v-flex>
               </v-layout>
             </v-form>
+
             <v-toolbar flat color="white">
               <v-spacer></v-spacer>
               <v-dialog v-model="dialog" max-width="800px">
@@ -105,7 +103,7 @@
                             <td class="text-xs-center">{{ props.item.medida }}</td>
 
                             <td class="text-xs-center">
-                              <v-select :items=" props.item.prices" v-model="props.item.precio"></v-select>
+                              <v-select :items="props.item.prices" v-model="props.item.precio"></v-select>
                             </td>
                           </template>
                         </v-data-table>
@@ -123,6 +121,7 @@
             <v-data-table
               :headers="headers_orders"
               :items="selected"
+              :hide-actions="true"
               class="elevation-1 custom-table"
             >
               <template slot="items" slot-scope="props">
@@ -147,20 +146,8 @@
               </template>
             </v-data-table>
           </v-card-text>
-          {{sumaTotal}}
+          <div>{{sumaTotal}}</div>
           <v-btn color="success darken-1" dark @click="onSubmitOrder">Guardar Pedido</v-btn>
-
-          <v-snackbar
-            v-model="snackbar"
-            :multi-line="true"
-            :right="true"
-            :timeout="timeout"
-            :top="true"
-            :color="color"
-          >
-            {{ text }}
-            <v-btn dark flat @click="snackbar = false">Close</v-btn>
-          </v-snackbar>
         </v-card>
       </v-flex>
     </v-layout>
@@ -169,67 +156,62 @@
 
 <script>
 export default {
-  data: () => ({
-    clients: [],
-    sellers: [],
-    users: [],
-    products: [],
-    conditions: [],
-    selected: [],
-    dialog: false,
-    search: "",
-    headers_orders: [
-      {
-        text: "Código",
-        sortable: false,
-        align: "left",
-        value: "codigo"
-      },
-      { text: "Producto", sortable: false, value: "descripcion" },
-      { text: "Precio Unitario", sortable: false, value: "precio" },
-      { text: "Cantidad", sortable: false, value: "cantidad" },
-      { text: "Importe", sortable: false, value: "precio_total" },
-      { text: "Acción", sortable: false, value: "accion" }
-    ],
-    headers_products: [
-      { text: "Código", sortable: true, align: "left", value: "codigo" },
-      { text: "Producto", sortable: true, value: "descripcion" },
-      { text: "Medida", sortable: true, value: "medida" },
-      { text: "Precio", sortable: true, value: "precio" }
-    ],
-    editedIndex: -1,
-    clientId: "",
-    sellerId: "",
-    observation: "",
-    condition: "",
-    localId: "",
-    snackbar: false,
-    y: "top",
-    x: null,
-    mode: "",
-    color: "error",
-    timeout: 3000,
-    text: "Ocurrio un eror :(",
-    total: 0,
-    emailRules: [
-        v => /.+@.+/.test(v) || "El email debe ser válido"
+  data: function() {
+    return {
+      isLoadingClient: false,
+      clients: [],
+      searchClient: null,
+      isLoadingSeller: false,
+      sellers: [],
+      searchSeller: null,
+      conditions: ["contado", "credito"],
+      products: [],
+      selected: [],
+      dialog: false,
+      search: "",
+      sellerDefault: {},
+      headers_orders: [
+        {
+          text: "Código",
+          sortable: false,
+          align: "left",
+          value: "codigo"
+        },
+        { text: "Producto", sortable: false, value: "descripcion" },
+        { text: "Precio Unitario", sortable: false, value: "precio" },
+        { text: "Cantidad", sortable: false, value: "cantidad" },
+        { text: "Importe", sortable: false, value: "precio_total" },
+        { text: "Acción", sortable: false, value: "accion" }
       ],
-  }),
+      headers_products: [
+        { text: "Código", sortable: true, align: "left", value: "codigo" },
+        { text: "Producto", sortable: true, value: "descripcion" },
+        { text: "Medida", sortable: true, value: "medida" },
+        { text: "Precio", sortable: true, value: "precio" }
+      ],
+      editedIndex: -1,
+      clientId: "",
+      sellerId: "",
+      observation: "",
+      condition: "",
+      localId: "",
+      attention: "",
+      phone: "",
+      email: "",
+      text: "Ocurrio un eror :(",
+      total: 0,
+      emailRules: [v => /.+@.+/.test(v) || "El email debe ser válido"]
+    };
+  },
   mounted() {
-    axios.get("/api/clients").then(({ data }) => {
-      this.clients = data;
-    });
-    axios.get("/api/sellers").then(({ data }) => {
-      this.sellers = data;
-    });
-    axios.get("/api/users").then(({ data }) => {
-      this.users = data;
-    });
     axios.get("/api/products").then(({ data }) => {
       this.products = data;
     });
-    axios.get("/api/conditions").then(({ data }) => {
-      this.conditions = data;
+
+    axios.get("/api/seller_user").then(({ data }) => {
+      this.sellerDefault = data;
+      this.sellers = [data];
+      this.sellerId = data.idpersonal;
     });
   },
   computed: {
@@ -242,17 +224,35 @@ export default {
     }
   },
   watch: {
+    searchClient(val, old) {
+      if (val === this.clientId.text) return;
+      this.isLoadingClient = true;
+      axios.get(`/api/clients?search=${val}`).then(res => {
+        this.clients = res.data;
+        this.isLoadingClient = false;
+      });
+    },
+    searchSeller(val) {
+      if (this.sellerDefault.nombre === val) return;
+      this.isLoadingSeller = true;
+      axios.get(`/api/sellers?search=${val}`).then(({ data }) => {
+        this.isLoadingSeller = false;
+        this.sellers = data;
+      });
+    },
     dialog(val) {
       val || this.close();
     }
   },
 
-  created() {
-    this.initialize();
-  },
-
   methods: {
-    initialize() {},
+    onChangeClient(client) {
+      if (client) {
+        this.phone = client.celular;
+        this.email = client.correo;
+        this.attention = client.direccion;
+      }
+    },
 
     close() {
       this.dialog = false;
@@ -262,23 +262,29 @@ export default {
         return { ...item, cantidad: 1 };
       });
     },
+
     deleteItem(item) {
       const index = this.selected.indexOf(item);
       confirm("Esta seguro de querer borrar este item?") &&
         this.selected.splice(index, 1);
     },
+
     onSubmitOrder() {
       const data = {
-        clientId: this.clientId,
+        clientId: this.clientId.idlciente,
         sellerId: this.sellerId,
         condition: this.condition,
         observation: this.observation,
         products: this.selected,
         total: this.total,
-        localId: this.localId
+        localId: this.localId,
+        email: this.email,
+        attention: this.attention,
+        phone: this.phone
       };
       console.log(data);
-
+      // debugger;
+      return;
       axios
         .post("/api/proforma/create", data)
         .then(({ data }) => {
