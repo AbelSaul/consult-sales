@@ -1,0 +1,121 @@
+* {
+    box-sizing: border-box;
+}
+
+.clearfix:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+a {
+    color: #0087c3;
+    text-decoration: none;
+}
+
+body {
+    position: relative;
+    width: 18cm;
+    height: 29.7cm;
+    margin: 0 auto;
+    color: #555555;
+    background: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+header {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #aaaaaa;
+    width: 100%;
+}
+
+.column {
+    float: left;
+    width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+#logo img {
+    height: 65px;
+}
+
+#company {
+    text-align: right;
+}
+
+#details {
+    margin-bottom: 50px;
+}
+
+#client {
+    padding-left: 6px;
+    border-left: 6px solid #1abb9c;
+    width: 49%;
+}
+
+#client .to {
+    color: #777777;
+}
+
+h2.name {
+    font-size: 1.4em;
+    font-weight: normal;
+    margin: 0;
+}
+
+#invoice {
+    text-align: right;
+}
+
+#invoice h1 {
+    color: #595b5d;
+    font-size: 2em;
+    line-height: 1em;
+    font-weight: normal;
+    margin: 0 0 10px 0;
+}
+
+#invoice .date {
+    font-size: 1.1em;
+    color: #777777;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+.table td,
+.table th {
+    padding: 0.75rem;
+    vertical-align: top;
+    text-align: left;
+    border: 1px solid #dee2e6;
+}
+
+thead th {
+    color: #495057;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.table tr > td:last-child,
+.table tr > th:last-child {
+    text-align: right;
+    width: 100px;
+}
+
+.table .total {
+    text-align: right;
+    font-weight: bold;
+}

@@ -21,3 +21,5 @@ Route::get('/logout', function() {
     session()->forget('user');
     return redirect('login');
 });
+
+Route::get('/proforma/{hash}', 'PdfController@ticket');
