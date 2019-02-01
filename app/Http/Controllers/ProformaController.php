@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Proforma;
 use App\Product;
 use App\DetailProduct;
+use App\Mail\SendProforma;
 
 class ProformaController extends Controller
 {
@@ -16,7 +17,8 @@ class ProformaController extends Controller
             'clientId' => 'required',
             'sellerId' => 'required',
             'condition' => 'required',
-            'observation' => 'required'
+            'observation' => 'required',
+            'email' => 'required'
         ]);
 
         $productos = $request->products;
@@ -66,6 +68,8 @@ class ProformaController extends Controller
                 "canjeado" => 0.00,
             ]);
         }
+        $user = (object) ["email" => request('email') ];
+        \Mail::to($user)->send(new SendProforma($user));
 
         return response()->json(['message' => "Proforma creada"], 200);
     }

@@ -146,7 +146,12 @@
               </template>
             </v-data-table>
           </v-card-text>
-          <div>{{sumaTotal}}</div>
+          <div class="total-flex">
+            <div class="total-header elevation-1">
+              <div>Total:</div>
+              <div>{{sumaTotal}}</div>
+            </div>
+          </div>
           <v-btn color="success darken-1" dark @click="onSubmitOrder">Guardar Pedido</v-btn>
         </v-card>
       </v-flex>
@@ -211,7 +216,7 @@ export default {
     axios.get("/api/seller_user").then(({ data }) => {
       this.sellerDefault = data;
       this.sellers = [data];
-      this.sellerId = data.idpersonal;
+      this.sellerId = data;
     });
   },
   computed: {
@@ -271,8 +276,8 @@ export default {
 
     onSubmitOrder() {
       const data = {
-        clientId: this.clientId.idlciente,
-        sellerId: this.sellerId,
+        clientId: this.clientId.id,
+        sellerId: this.sellerId.idpersonal,
         condition: this.condition,
         observation: this.observation,
         products: this.selected,
@@ -283,8 +288,11 @@ export default {
         phone: this.phone
       };
       console.log(data);
-      // debugger;
-      return;
+      // let validate = Object.keys(data).some(item => {
+      //   notify.showCool(`Completa el campo ${item}`);
+      //   return data[item] === "";
+      // });
+
       axios
         .post("/api/proforma/create", data)
         .then(({ data }) => {
@@ -329,5 +337,27 @@ export default {
 
 [type="number"]:focus {
   border: 2px solid #1976d2;
+}
+
+.total-flex {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 16px;
+}
+
+.total-header {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  min-width: 200px;
+}
+
+.total-header div:first-child {
+  padding-right: 20px;
+  text-transform: uppercase;
+}
+
+.total-header div:last-child {
+  min-width: 10%;
 }
 </style>
