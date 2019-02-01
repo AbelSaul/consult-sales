@@ -3,20 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
 use Barryvdh\DomPDF\Facade as PDF;
+use App\Proforma;
 
 class PdfController extends Controller
 {
     public function ticket()
     {
-        try {
-            $pdf = PDF::loadView('reports.ticket');
-            return $pdf->stream();
-        } catch (DecryptException $e) {
-            abort(404);
-        }
+        $doc = request('doc');
+        $proforma = Proforma::where('documento', $doc)->first();
+        // dd($proforma->client);
+        $pdf = PDF::loadView('reports.ticket', compact('proforma'));
+        return $pdf->stream();
+        // return view('reports.ticket', compact('proforma'));
 
     }
 }

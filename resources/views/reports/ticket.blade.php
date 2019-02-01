@@ -1,70 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="utf-8">
-        <title>Ticket</title>
-        <link rel="stylesheet" href="css/pdf.css" media="all" />
-    </head>
+	<head>
+		<meta charset="utf-8">
+		<title>Ticket</title>
+		<link rel="stylesheet" href="css/pdf.css" media="all" />
+	</head>
 <body>
-    <header class="row">
-		<div id="logo" class="column">
+	<header>
+		<div id="logo">
 			<img src="img/logo.png" />
 		</div>
-    	<div id="company" class="column">
-			<h2 class="name">NAME EMPRESA</h2>
-			<div>Sistema de proformas</div>
-			<div><a href="mailto:proformas@gmail.com">proformas@gmail.com</a></div>
-      	</div>
-      </div>
-    </header>
-    <main>
-      	<div id="details" class="row">
+		<div>
+			<h2 class="name text-center">COTIZACION N0 {{$proforma->documento}}</h2>
+		<div class="text-right">{{ $proforma->fecha}} {{$proforma->hora}}</div>
+		</div>
+		</header>
+	<main>
+		<div id="details" class="row">
 			<div id="client" class="column">
 				<div>
-					<div class="name">Nombre completo</div>
-					<div class="to">Dni: dni</div>
-					<div class="to">Código: akgu</div>
-					<div class="to">Tipo: tupe</div>
-					<div class="to">Email: <a href="mailto:davis.con.fab@gmail.com">davis.con.fab@gmail.com</a></div>
+					<div class="to"><strong>F.Emision:</strong> {{ $proforma->fecha}}</div>
+					<div class="to"><strong>Cliente:</strong> {{ $proforma->client->dni.' '.$proforma->client->cliente }}</div>
+					<div class="to"><strong>Direccion:</strong> {{ $proforma->observac}}</div>
+					<div class="to"><strong>Telefono:</strong> {{ $proforma->client->celular }}</div>
+					<div class="to"><strong>Atencion:</strong> {{ $proforma->condicion}}</div>
 				</div>
-        	</div>
-			<div id="invoice" class="column">
-				<h1>Proforma #123123</h1>
-				<div class="date">Fecha de pago: fecha</div>
 			</div>
-      	</div>
-      	<table class="table">
+		</div>
+		<table class="table">
 			<thead>
 				<tr>
-					<th class="no" width="50px">#</th>
-					<th class="desc">SERVICIO</th>
-					<th>COSTO</th>
+					<th style="width: 30px">Item</th>
+					<th style="width: 40px">Codigo</th>
+					<th style="width: 30px">Cant.</th>
+					<th class="desc">Descripcion</th>
+					<th style="width: 60px">Uni. Med</th>
+					<th style="width: 5pc">Marca</th>
+					<th class="desc">Precio Unit</th>
+					<th class="desc">Desc. %</th>
+					<th>Importe</th>
 				</tr>
 			</thead>
 			<tbody>
-				{{-- @foreach ($sale->services()->get() as $service)
-					@if(!$service->selected_concept)
-						<tr>
+			
+				@foreach ($proforma->details as $detail)
+					<tr>
 							<td class="no"> {{ $loop->iteration < 9 ? '0':'' }}{{ $loop->iteration }}</td>
-							<td class="desc">{{ $service->title }}</td>
-							<td class="total">S/ {{ Field::format($service->cost) }}</td>
+							<td class="no">{{ $detail->codigo }}</td>
+							<td class="no">{{ number_format($detail->cantidad, 0) }}</td>
+							<td class="no">{{ $detail->descripcion }}</td>
+							<td class="text-center">{{ $detail->medida }}</td>
+							<td class="no">{{ $detail->marca }}</td>
+							<td class="text-right">{{ number_format($detail->precio, 2) }}</td>
+							<td class="text-center">{{ $detail->descuento }}</td>
+							<td>{{ number_format($detail->precio * $detail->cantidad, 2) }}</td>
 						</tr>
-					@else
-						<tr>
-							<td class="no"> {{ $loop->iteration < 9 ? '0':'' }}{{ $loop->iteration }}</td>
-							<td class="desc">{{ $service->title .' / costo de '.$service->pivot->quantity. " " .Field::conceptName($service->selected_concept) }}</td>
-							<td class="total">S/ {{Field::cost_extra($service->id, $service->pivot->quantity) }}</td>
-						</tr>
-					@endif
-				@endforeach --}}
+				@endforeach
 			</tbody>
-			<tfoot>
+	<tfoot>
 				<tr>
-					<td colspan="2">TOTAL:</td>
-					<td class="total">S/ 123 </td>
+					<td colspan="6" class="text-uppercase">Dos mil Treinta y nueve con 00/100 Soles</td>
+					<td colspan="2" class="text-right">Neto:</td>
+					<td class="total">{{ number_format($proforma->total, 2) }}</td>
+				</tr>
+				<tr class="back">
+					<td colspan="6">
+						<div class="conditions">Condiciones generales</div>
+					</td>
+					<td colspan="2" class="text-right data">
+						<div>SUBTOTAL:</div>
+					</td>
+					<td>
+						<div>{{ number_format($proforma->subtotal, 2) }}</div>
+					</td>
+				</tr>
+				<tr class="back">
+					<td colspan="6">
+						<div class="to">
+							<span class="bolder">Condicion de pago:</span> 
+							<span class="text-uppercase">{{ $proforma->condicion}}</span>
+						</div>
+					</td>
+					<td colspan="2" class="text-right data">
+						<div>IGV:</div>
+					</td>
+					<td>
+						<div>{{  number_format($proforma->igv, 2) }}</div>
+					</td>
+				</tr>
+				<tr class="back">
+					<td colspan="6">
+						<div class="to">
+							<span class="bolder">Observaciones:</span>
+							<span class="text-uppercase">{{ $proforma->observac}}</span></div>
+					</td>
+					<td colspan="2" class="text-right data">
+						<div>TOTAL: S/</div>
+					</td>
+					<td>
+						<div>{{ number_format($proforma->total, 2) }}</div>
+					</td>
 				</tr>
 			</tfoot>
-      	</table>
-    </main>
+		</table>
+	</main>
 </body>
 </html>

@@ -15,7 +15,7 @@ a {
 
 body {
     position: relative;
-    width: 18cm;
+    width: 19cm;
     height: 29.7cm;
     margin: 0 auto;
     color: #555555;
@@ -27,7 +27,6 @@ body {
 header {
     padding: 10px 0;
     margin-bottom: 20px;
-    border-bottom: 1px solid #aaaaaa;
     width: 100%;
 }
 
@@ -43,6 +42,12 @@ header {
     clear: both;
 }
 
+.to strong {
+    display: inline-block;
+    width: 140px;
+    margin-top: 5px;
+}
+
 #logo img {
     height: 65px;
 }
@@ -52,13 +57,12 @@ header {
 }
 
 #details {
-    margin-bottom: 50px;
+    margin-bottom: 15px;
 }
 
 #client {
     padding-left: 6px;
-    border-left: 6px solid #1abb9c;
-    width: 49%;
+    /* border-left: 6px solid #1abb9c; */
 }
 
 #client .to {
@@ -93,29 +97,61 @@ h2.name {
     border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: 20px;
-    font-size: 15px;
-}
-.table td,
-.table th {
-    padding: 0.75rem;
-    vertical-align: top;
-    text-align: left;
-    border: 1px solid #dee2e6;
+    font-size: 11px;
 }
 
-thead th {
+.table th {
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
     color: #495057;
-    background-color: #e9ecef;
-    border-color: #dee2e6;
+    padding: 1rem 0.15rem;
+    text-align: center;
+}
+
+.table td {
+    padding: 1rem 0.75rem;
 }
 
 .table tr > td:last-child,
 .table tr > th:last-child {
     text-align: right;
-    width: 100px;
+    width: 70px;
+    padding-right: 0.15rem;
 }
 
 .table .total {
     text-align: right;
+    font-weight: bold;
+}
+
+tfoot tr:first-child td {
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+}
+
+tfoot .back td {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.conditions {
+    text-transform: uppercase;
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+.bolder {
     font-weight: bold;
 }

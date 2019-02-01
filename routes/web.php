@@ -22,4 +22,4 @@ Route::get('/logout', function() {
     return redirect('login');
 });
 
-Route::get('/proforma/{hash}', 'PdfController@ticket');
+Route::get('/proforma/{doc}', 'PdfController@ticket')->middleware('verify');
