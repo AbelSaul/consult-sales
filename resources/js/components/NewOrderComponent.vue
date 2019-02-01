@@ -306,7 +306,7 @@ export default {
 
     reset() {
       this.clientId = "";
-      this.sellerId = "";
+      // this.sellerId = "";
       this.condition = "";
       this.observation = "";
       this.selected = [];

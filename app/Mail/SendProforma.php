@@ -6,20 +6,23 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Proforma;
 
 class SendProforma extends Mailable
 {
     use Queueable, SerializesModels;
     public $user;
+    public $proforma;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, Proforma $proforma)
     {
         $this->user = $user;
+        $this->proforma = $proforma;
     }
 
     /**

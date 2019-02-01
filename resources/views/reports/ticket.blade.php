@@ -23,7 +23,7 @@
 					<div class="to"><strong>Cliente:</strong> {{ $proforma->client->dni.' '.$proforma->client->cliente }}</div>
 					<div class="to"><strong>Direccion:</strong> {{ $proforma->observac}}</div>
 					<div class="to"><strong>Telefono:</strong> {{ $proforma->client->celular }}</div>
-					<div class="to"><strong>Atencion:</strong> {{ $proforma->condicion}}</div>
+					<div class="to"><strong>Atencion:</strong> {{ $proforma->atencion}}</div>
 				</div>
 			</div>
 		</div>

@@ -33,7 +33,7 @@ class ProformaController extends Controller
             "fecha" => date("Y-m-d"),
             "hora" => date("h:i:s A"),
             "lista_prec" => 0,
-            "moneda" => "S/",
+            "moneda" => "S/",
             "cambio" => 3,
             "bruto" => $request->total,
             "descuento" => 0.00,
@@ -43,6 +43,7 @@ class ProformaController extends Controller
             "idvendedor" => $request->sellerId,
             "condicion" => strtoupper($request->condition),
             "observac" => $request->observation,
+            "atencion" => $request->attention,
             "estado" => "PE",
         ]);
 
@@ -69,7 +70,7 @@ class ProformaController extends Controller
             ]);
         }
         $user = (object) ["email" => request('email') ];
-        \Mail::to($user)->send(new SendProforma($user));
+        \Mail::to($user)->send(new SendProforma($user, $proforma));
 
         return response()->json(['message' => "Proforma creada"], 200);
     }
