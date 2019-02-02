@@ -103,7 +103,7 @@
                             <td class="text-xs-center">{{ props.item.medida }}</td>
 
                             <td class="text-xs-center">
-                              <v-select :items="props.item.prices" v-model="props.item.precio"></v-select>
+                              <v-select :items="props.item.prices" v-model="props.item.precio" ></v-select>
                             </td>
                           </template>
                         </v-data-table>
@@ -241,13 +241,14 @@ export default {
       if (this.sellerDefault.nombre === val) return;
       this.isLoadingSeller = true;
       axios.get(`/api/sellers?search=${val}`).then(({ data }) => {
-        this.isLoadingSeller = false;
+          this.isLoadingSeller = false;
         this.sellers = data;
       });
     },
     dialog(val) {
       val || this.close();
     }
+
   },
 
   methods: {
@@ -262,10 +263,10 @@ export default {
     close() {
       this.dialog = false;
       // init cantidad en 1
-      this.selected = this.selected.map(item => {
-        if (item.cantidad) return item;
-        return { ...item, cantidad: 1 };
-      });
+      // this.selected = this.selected.map(item => {
+      //   if (item.cantidad) return item;
+      //   return { ...item, cantidad: 1 };
+      // });
     },
 
     deleteItem(item) {

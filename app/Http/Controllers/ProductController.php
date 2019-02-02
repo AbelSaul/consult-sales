@@ -20,6 +20,7 @@ class ProductController extends Controller
                 }
             }
             $product->prices = $prices;
+            $product->cantidad = 1;
         }
 
         return $products;

@@ -1872,18 +1872,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2048,14 +2036,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      isLoadingClient: false,
       clients: [],
+      searchClient: null,
+      isLoadingSeller: false,
       sellers: [],
-      users: [],
+      searchSeller: null,
+      conditions: ["contado", "credito"],
       products: [],
-      conditions: [],
       selected: [],
       dialog: false,
       search: "",
+      sellerDefault: {},
       headers_orders: [{
         text: "Código",
         sortable: false,
@@ -2106,12 +2098,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       observation: "",
       condition: "",
       localId: "",
-      snackbar: false,
-      y: "top",
-      x: null,
-      mode: "",
-      color: "error",
-      timeout: 3000,
+      attention: "",
+      phone: "",
+      email: "",
       text: "Ocurrio un eror :(",
       total: 0,
       emailRules: [function (v) {
@@ -2122,25 +2111,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mounted: function mounted() {
     var _this = this;
 
-    axios.get("/api/clients").then(function (_ref) {
+    axios.get("/api/products").then(function (_ref) {
       var data = _ref.data;
-      _this.clients = data;
-    });
-    axios.get("/api/sellers").then(function (_ref2) {
-      var data = _ref2.data;
-      _this.sellers = data;
-    });
-    axios.get("/api/users").then(function (_ref3) {
-      var data = _ref3.data;
-      _this.users = data;
-    });
-    axios.get("/api/products").then(function (_ref4) {
-      var data = _ref4.data;
       _this.products = data;
     });
-    axios.get("/api/conditions").then(function (_ref5) {
-      var data = _ref5.data;
-      _this.conditions = data;
+    axios.get("/api/seller_user").then(function (_ref2) {
+      var data = _ref2.data;
+      _this.sellerDefault = data;
+      _this.sellers = [data];
+      _this.sellerId = data;
     });
   },
   computed: {
@@ -2155,54 +2134,82 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   watch: {
+    searchClient: function searchClient(val, old) {
+      var _this3 = this;
+
+      if (val === this.clientId.text) return;
+      this.isLoadingClient = true;
+      axios.get("/api/clients?search=".concat(val)).then(function (res) {
+        _this3.clients = res.data;
+        _this3.isLoadingClient = false;
+      });
+    },
+    searchSeller: function searchSeller(val) {
+      var _this4 = this;
+
+      if (this.sellerDefault.nombre === val) return;
+      this.isLoadingSeller = true;
+      axios.get("/api/sellers?search=".concat(val)).then(function (_ref3) {
+        var data = _ref3.data;
+        _this4.isLoadingSeller = false;
+        _this4.sellers = data;
+      });
+    },
     dialog: function dialog(val) {
       val || this.close();
     }
   },
-  created: function created() {
-    this.initialize();
-  },
   methods: {
-    initialize: function initialize() {},
+    onChangeClient: function onChangeClient(client) {
+      if (client) {
+        this.phone = client.celular;
+        this.email = client.correo;
+        this.attention = client.direccion;
+      }
+    },
     close: function close() {
       this.dialog = false; // init cantidad en 1
-
-      this.selected = this.selected.map(function (item) {
-        if (item.cantidad) return item;
-        return _objectSpread({}, item, {
-          cantidad: 1
-        });
-      });
+      // this.selected = this.selected.map(item => {
+      //   if (item.cantidad) return item;
+      //   return { ...item, cantidad: 1 };
+      // });
     },
     deleteItem: function deleteItem(item) {
       var index = this.selected.indexOf(item);
       confirm("Esta seguro de querer borrar este item?") && this.selected.splice(index, 1);
     },
     onSubmitOrder: function onSubmitOrder() {
-      var _this3 = this;
+      var _this5 = this;
 
       var data = {
-        clientId: this.clientId,
-        sellerId: this.sellerId,
+        clientId: this.clientId.id,
+        sellerId: this.sellerId.idpersonal,
         condition: this.condition,
         observation: this.observation,
         products: this.selected,
         total: this.total,
-        localId: this.localId
+        localId: this.localId,
+        email: this.email,
+        attention: this.attention,
+        phone: this.phone
       };
-      console.log(data);
-      axios.post("/api/proforma/create", data).then(function (_ref6) {
-        var data = _ref6.data;
+      console.log(data); // let validate = Object.keys(data).some(item => {
+      //   notify.showCool(`Completa el campo ${item}`);
+      //   return data[item] === "";
+      // });
+
+      axios.post("/api/proforma/create", data).then(function (_ref4) {
+        var data = _ref4.data;
         notify.showCool(data.message);
 
-        _this3.reset();
+        _this5.reset();
       }).catch(function (response) {
         notify.error("Ocurrio un error");
       });
     },
     reset: function reset() {
-      this.clientId = "";
-      this.sellerId = "";
+      this.clientId = ""; // this.sellerId = "";
+
       this.condition = "";
       this.observation = "";
       this.selected = [];
@@ -2243,7 +2250,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.custom-table th:not(:first-child) {\r\n  text-align: right !important;\n}\n.custom-table th:last-child {\r\n  text-align: center !important;\n}\n.border-gray {\r\n  border-bottom: 1px solid #949494;\n}\n[type=\"number\"] {\r\n  border: 2px solid #949494;\r\n  max-width: 60px;\r\n  text-align: center;\r\n  padding: 4px;\r\n  border-radius: 4px;\r\n  outline: none;\n}\n[type=\"number\"]:focus {\r\n  border: 2px solid #1976d2;\n}\r\n", ""]);
+exports.push([module.i, "\n.custom-table th:not(:first-child) {\r\n  text-align: right !important;\n}\n.custom-table th:last-child {\r\n  text-align: center !important;\n}\n.border-gray {\r\n  border-bottom: 1px solid #949494;\n}\n[type=\"number\"] {\r\n  border: 2px solid #949494;\r\n  max-width: 60px;\r\n  text-align: center;\r\n  padding: 4px;\r\n  border-radius: 4px;\r\n  outline: none;\n}\n[type=\"number\"]:focus {\r\n  border: 2px solid #1976d2;\n}\n.total-flex {\r\n  display: flex;\r\n  justify-content: flex-end;\r\n  margin: 0 16px;\n}\n.total-header {\r\n  padding: 10px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  min-width: 200px;\n}\n.total-header div:first-child {\r\n  padding-right: 20px;\r\n  text-transform: uppercase;\n}\n.total-header div:last-child {\r\n  min-width: 10%;\n}\r\n", ""]);
 
 // exports
 
@@ -4144,10 +4151,21 @@ var render = function() {
                                   _c("v-autocomplete", {
                                     attrs: {
                                       items: _vm.clients,
+                                      loading: _vm.isLoadingClient,
+                                      "search-input": _vm.searchClient,
                                       label: "Cliente",
-                                      "persistent-hint": "",
+                                      "hide-no-data": "",
+                                      "hide-selected": "",
+                                      "no-data-text": "No hay ningun vendedor",
                                       "item-text": "text",
-                                      "item-value": "id"
+                                      "item-value": "id",
+                                      "return-object": ""
+                                    },
+                                    on: {
+                                      "update:searchInput": function($event) {
+                                        _vm.searchClient = $event
+                                      },
+                                      change: _vm.onChangeClient
                                     },
                                     model: {
                                       value: _vm.clientId,
@@ -4155,6 +4173,39 @@ var render = function() {
                                         _vm.clientId = $$v
                                       },
                                       expression: "clientId"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md3: "" } },
+                                [
+                                  _c("v-autocomplete", {
+                                    attrs: {
+                                      items: _vm.sellers,
+                                      loading: _vm.isLoadingSeller,
+                                      "search-input": _vm.searchSeller,
+                                      label: "Vendedor",
+                                      "no-data-text": "No hay ningun vendedor",
+                                      "persistent-hint": "",
+                                      "item-text": "nombre",
+                                      "item-value": "idpersonal",
+                                      "return-object": ""
+                                    },
+                                    on: {
+                                      "update:searchInput": function($event) {
+                                        _vm.searchSeller = $event
+                                      }
+                                    },
+                                    model: {
+                                      value: _vm.sellerId,
+                                      callback: function($$v) {
+                                        _vm.sellerId = $$v
+                                      },
+                                      expression: "sellerId"
                                     }
                                   })
                                 ],
@@ -4202,42 +4253,17 @@ var render = function() {
                                 { attrs: { xs12: "", sm6: "", md3: "" } },
                                 [
                                   _c("v-text-field", {
-                                    directives: [
-                                      {
-                                        name: "mode",
-                                        rawName: "v-mode",
-                                        value: _vm.email,
-                                        expression: "email"
-                                      }
-                                    ],
                                     attrs: {
                                       label: "Correo",
                                       rules: _vm.emailRules,
                                       required: ""
-                                    }
-                                  })
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-flex",
-                                { attrs: { xs12: "", sm6: "", md2: "" } },
-                                [
-                                  _c("v-autocomplete", {
-                                    attrs: {
-                                      items: _vm.users,
-                                      label: "Vendedor",
-                                      "persistent-hint": "",
-                                      "item-text": "text",
-                                      "item-value": "id"
                                     },
                                     model: {
-                                      value: _vm.sellerId,
+                                      value: _vm.email,
                                       callback: function($$v) {
-                                        _vm.sellerId = $$v
+                                        _vm.email = $$v
                                       },
-                                      expression: "sellerId"
+                                      expression: "email"
                                     }
                                   })
                                 ],
@@ -4246,15 +4272,13 @@ var render = function() {
                               _vm._v(" "),
                               _c(
                                 "v-flex",
-                                { attrs: { xs12: "", sm6: "", md2: "" } },
+                                { attrs: { xs12: "", sm6: "", md3: "" } },
                                 [
-                                  _c("v-autocomplete", {
+                                  _c("v-combobox", {
                                     attrs: {
-                                      items: _vm.conditions,
                                       label: "Condiciones de pago",
-                                      "persistent-hint": "",
-                                      "item-text": "text",
-                                      "item-value": "text"
+                                      items: _vm.conditions,
+                                      clearable: ""
                                     },
                                     model: {
                                       value: _vm.condition,
@@ -4270,7 +4294,7 @@ var render = function() {
                               _vm._v(" "),
                               _c(
                                 "v-flex",
-                                { attrs: { xs12: "", sm6: "", md8: "" } },
+                                { attrs: { xs12: "", sm6: "", md6: "" } },
                                 [
                                   _c("v-text-field", {
                                     attrs: {
@@ -4558,7 +4582,8 @@ var render = function() {
                           staticClass: "elevation-1 custom-table",
                           attrs: {
                             headers: _vm.headers_orders,
-                            items: _vm.selected
+                            items: _vm.selected,
+                            "hide-actions": true
                           },
                           scopedSlots: _vm._u([
                             {
@@ -4668,7 +4693,15 @@ var render = function() {
                     ],
                     1
                   ),
-                  _vm._v("\n        " + _vm._s(_vm.sumaTotal) + "\n        "),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "total-flex" }, [
+                    _c("div", { staticClass: "total-header elevation-1" }, [
+                      _c("div", [_vm._v("Total:")]),
+                      _vm._v(" "),
+                      _c("div", [_vm._v(_vm._s(_vm.sumaTotal))])
+                    ])
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "v-btn",
                     {
@@ -4676,44 +4709,6 @@ var render = function() {
                       on: { click: _vm.onSubmitOrder }
                     },
                     [_vm._v("Guardar Pedido")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-snackbar",
-                    {
-                      attrs: {
-                        "multi-line": true,
-                        right: true,
-                        timeout: _vm.timeout,
-                        top: true,
-                        color: _vm.color
-                      },
-                      model: {
-                        value: _vm.snackbar,
-                        callback: function($$v) {
-                          _vm.snackbar = $$v
-                        },
-                        expression: "snackbar"
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n          " + _vm._s(_vm.text) + "\n          "
-                      ),
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { dark: "", flat: "" },
-                          on: {
-                            click: function($event) {
-                              _vm.snackbar = false
-                            }
-                          }
-                        },
-                        [_vm._v("Close")]
-                      )
-                    ],
-                    1
                   )
                 ],
                 1
