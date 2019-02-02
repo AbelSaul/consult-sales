@@ -92,7 +92,7 @@
                           :search="search"
                           item-key="idproducto"
                           select-all
-                          class="elevation-1"
+                          class="elevation-1 table-modal"
                         >
                           <template slot="items" slot-scope="props">
                             <td>
@@ -103,7 +103,7 @@
                             <td class="text-xs-center">{{ props.item.medida }}</td>
 
                             <td class="text-xs-center">
-                              <v-select :items="props.item.prices" v-model="props.item.precio" ></v-select>
+                              <v-select :items="props.item.prices" v-model="props.item.precio"></v-select>
                             </td>
                           </template>
                         </v-data-table>
@@ -127,7 +127,10 @@
               <template slot="items" slot-scope="props">
                 <td class="text-xs-left">{{ props.item.codigo }}</td>
                 <td class="text-xs-right">{{ props.item.descripcion }}</td>
-                <td class="text-xs-right">{{ props.item.precio }}</td>
+                <td class="text-xs-right">
+                  <v-select :items="props.item.prices" v-model="props.item.precio"></v-select>
+                  <!-- {{ props.item.precio }} -->
+                </td>
                 <td class="text-xs-right">
                   <input type="number" min="1" v-model.number="props.item.cantidad">
                 </td>
@@ -241,14 +244,13 @@ export default {
       if (this.sellerDefault.nombre === val) return;
       this.isLoadingSeller = true;
       axios.get(`/api/sellers?search=${val}`).then(({ data }) => {
-          this.isLoadingSeller = false;
+        this.isLoadingSeller = false;
         this.sellers = data;
       });
     },
     dialog(val) {
       val || this.close();
     }
-
   },
 
   methods: {
@@ -360,5 +362,10 @@ export default {
 
 .total-header div:last-child {
   min-width: 10%;
+}
+
+.custom-table thead tr > th:nth-of-type(3),
+.table-modal thead tr > th:last-child {
+  width: 200px;
 }
 </style>
