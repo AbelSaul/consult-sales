@@ -23,11 +23,11 @@ class ProformaController extends Controller
 
         $productos = $request->products;
 
-
+        $user = session('user');
         $maxIdProforma = DB::select("(select max(`idproforma` * 1) as pro from proformas)")[0]->pro + 1;
         $proforma = Proforma::Create([
             "idproforma" => $maxIdProforma,
-            "idlocal" => 1,
+            "idlocal" => $user["idlocal"],
             "idcliente" => $request->clientId,
             "documento" => $this->createDocument($maxIdProforma),
             "fecha" => date("Y-m-d"),
