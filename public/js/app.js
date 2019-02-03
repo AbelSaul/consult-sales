@@ -2033,6 +2033,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2231,7 +2234,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.head {\r\n  border-bottom: 1px solid #ddd;\r\n  padding-bottom: 8px;\n}\n@media (min-width: 1000px) {\n.full-heigth {\r\n    height: 100vh;\n}\n}\n@media (max-width: 800px) {\n.full-heigth {\r\n    margin-top: 4em;\n}\n}\r\n", ""]);
+exports.push([module.i, "\n.head {\n  border-bottom: 1px solid #ddd;\n  padding-bottom: 8px;\n}\n@media (min-width: 1000px) {\n.full-heigth {\n    height: 100vh;\n}\n}\n@media (max-width: 800px) {\n.full-heigth {\n    margin-top: 4em;\n}\n}\n", ""]);
 
 // exports
 
@@ -2250,7 +2253,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.custom-table th:not(:first-child) {\r\n  text-align: right !important;\n}\n.custom-table th:last-child {\r\n  text-align: center !important;\n}\n.border-gray {\r\n  border-bottom: 1px solid #949494;\n}\n[type=\"number\"] {\r\n  border: 2px solid #949494;\r\n  max-width: 60px;\r\n  text-align: center;\r\n  padding: 4px;\r\n  border-radius: 4px;\r\n  outline: none;\n}\n[type=\"number\"]:focus {\r\n  border: 2px solid #1976d2;\n}\n.total-flex {\r\n  display: flex;\r\n  justify-content: flex-end;\r\n  margin: 0 16px;\n}\n.total-header {\r\n  padding: 10px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  min-width: 200px;\n}\n.total-header div:first-child {\r\n  padding-right: 20px;\r\n  text-transform: uppercase;\n}\n.total-header div:last-child {\r\n  min-width: 10%;\n}\r\n", ""]);
+exports.push([module.i, "\n.custom-table th:not(:first-child) {\n  text-align: right !important;\n}\n.custom-table th:last-child {\n  text-align: center !important;\n}\n.border-gray {\n  border-bottom: 1px solid #949494;\n}\n[type=\"number\"] {\n  border: 2px solid #949494;\n  max-width: 60px;\n  text-align: center;\n  padding: 4px;\n  border-radius: 4px;\n  outline: none;\n}\n[type=\"number\"]:focus {\n  border: 2px solid #1976d2;\n}\n.total-flex {\n  display: flex;\n  justify-content: flex-end;\n  margin: 0 16px;\n}\n.total-header {\n  padding: 10px;\n  display: flex;\n  justify-content: space-between;\n  min-width: 200px;\n}\n.total-header div:first-child {\n  padding-right: 20px;\n  text-transform: uppercase;\n}\n.total-header div:last-child {\n  min-width: 10%;\n}\n.custom-table thead tr > th:nth-of-type(3),\n.table-modal thead tr > th:last-child {\n  width: 200px;\n}\n", ""]);
 
 // exports
 
@@ -4402,7 +4405,8 @@ var render = function() {
                                             },
                                             [
                                               _c("v-data-table", {
-                                                staticClass: "elevation-1",
+                                                staticClass:
+                                                  "elevation-1 table-modal",
                                                 attrs: {
                                                   headers: _vm.headers_products,
                                                   items: _vm.products,
@@ -4598,9 +4602,23 @@ var render = function() {
                                     _vm._v(_vm._s(props.item.descripcion))
                                   ]),
                                   _vm._v(" "),
-                                  _c("td", { staticClass: "text-xs-right" }, [
-                                    _vm._v(_vm._s(props.item.precio))
-                                  ]),
+                                  _c(
+                                    "td",
+                                    { staticClass: "text-xs-right" },
+                                    [
+                                      _c("v-select", {
+                                        attrs: { items: props.item.prices },
+                                        model: {
+                                          value: props.item.precio,
+                                          callback: function($$v) {
+                                            _vm.$set(props.item, "precio", $$v)
+                                          },
+                                          expression: "props.item.precio"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
                                   _vm._v(" "),
                                   _c("td", { staticClass: "text-xs-right" }, [
                                     _c("input", {
@@ -20855,9 +20873,6 @@ var __assign = undefined && undefined.__assign || function () {
                 'v-dialog__content': true,
                 'v-dialog__content--active': this.isActive
             };
-        },
-        hasActivator: function hasActivator() {
-            return Boolean(!!this.$slots.activator || !!this.$scopedSlots.activator);
         }
     },
     watch: {
@@ -20944,7 +20959,7 @@ var __assign = undefined && undefined.__assign || function () {
         },
         genActivator: function genActivator() {
             var _this = this;
-            if (!this.hasActivator) return null;
+            if (!this.$slots.activator && !this.$scopedSlots.activator) return null;
             var listeners = this.disabled ? {} : {
                 click: function click(e) {
                     e.stopPropagation();
@@ -21018,7 +21033,7 @@ var __assign = undefined && undefined.__assign || function () {
         return h('div', {
             staticClass: 'v-dialog__container',
             style: {
-                display: !this.hasActivator || this.fullWidth ? 'block' : 'inline-block'
+                display: !this.$slots.activator || this.fullWidth ? 'block' : 'inline-block'
             }
         }, children);
     }
@@ -23725,12 +23740,12 @@ __webpack_require__.r(__webpack_exports__);
         disabled: Boolean,
         fullWidth: Boolean,
         maxHeight: { default: 'auto' },
+        offsetX: Boolean,
+        offsetY: Boolean,
         openOnClick: {
             type: Boolean,
             default: true
         },
-        offsetX: Boolean,
-        offsetY: Boolean,
         openOnHover: Boolean,
         origin: {
             type: String,
@@ -23799,9 +23814,6 @@ __webpack_require__.r(__webpack_exports__);
         isContentActive: function isContentActive(val) {
             this.hasJustFocused = val;
         }
-    },
-    mounted: function mounted() {
-        this.isActive && this.activate();
     },
     methods: {
         activate: function activate() {
@@ -32189,13 +32201,16 @@ var __values = undefined && undefined.__values || function (o) {
                     return Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["getObjectValueByPath"])(_this.nodes[k].item, _this.itemKey);
                 });
                 var newKeys = this.getKeys(this.items);
-                var diff = Object(_util_helpers__WEBPACK_IMPORTED_MODULE_4__["arrayDiff"])(newKeys, oldKeys);
-                // We only want to do stuff if items have changed
-                if (!diff.length && newKeys.length < oldKeys.length) return;
+                // We only care if nodes are removed or added
+                if (oldKeys.length === newKeys.length) return;
                 // If nodes are removed we need to clear them from this.nodes
-                diff.forEach(function (k) {
-                    return delete _this.nodes[k];
-                });
+                if (oldKeys.length > newKeys.length) {
+                    oldKeys.filter(function (k) {
+                        return !newKeys.includes(k);
+                    }).forEach(function (k) {
+                        return delete _this.nodes[k];
+                    });
+                }
                 var oldSelectedCache = __spread(this.selectedCache);
                 this.selectedCache = new Set();
                 this.activeCache = new Set();
@@ -33151,7 +33166,7 @@ var Vuetify = {
             return false;
         })(opts.components);
     },
-    version: '1.4.3'
+    version: '1.4.2'
 };
 function checkVueVersion(Vue, requiredVue) {
     var vueDep = requiredVue || '^2.5.18';
@@ -34864,7 +34879,7 @@ var Vuetify = {
         Vue.use(_components_Vuetify__WEBPACK_IMPORTED_MODULE_1__["default"], __assign({ components: _components__WEBPACK_IMPORTED_MODULE_2__,
             directives: _directives__WEBPACK_IMPORTED_MODULE_3__["default"] }, args));
     },
-    version: '1.4.3'
+    version: '1.4.2'
 };
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(Vuetify);
@@ -36391,14 +36406,11 @@ var dimensions = {
         computedLeft: function computedLeft() {
             var a = this.dimensions.activator;
             var c = this.dimensions.content;
-            var activatorLeft = (this.isAttached ? a.offsetLeft : a.left) || 0;
+            var activatorLeft = this.isAttached ? a.offsetLeft : a.left;
             var minWidth = Math.max(a.width, c.width);
             var left = 0;
             left += this.left ? activatorLeft - (minWidth - a.width) : activatorLeft;
-            if (this.offsetX) {
-                var maxWidth = isNaN(this.maxWidth) ? a.width : Math.min(a.width, this.maxWidth);
-                left += this.left ? -maxWidth : a.width;
-            }
+            if (this.offsetX) left += this.left ? -a.width : a.width;
             if (this.nudgeLeft) left -= parseInt(this.nudgeLeft);
             if (this.nudgeRight) left += parseInt(this.nudgeRight);
             return left;
@@ -36458,7 +36470,7 @@ var dimensions = {
             var parsedMaxWidth = isNaN(parseInt(this.maxWidth)) ? 0 : parseInt(this.maxWidth);
             var innerWidth = this.getInnerWidth();
             var maxWidth = Math.max(this.dimensions.content.width, parsedMaxWidth);
-            var totalWidth = left + this.dimensions.activator.width;
+            var totalWidth = left + maxWidth;
             var availableWidth = totalWidth - innerWidth;
             if ((!this.left || this.right) && availableWidth > 0) {
                 left = innerWidth - maxWidth - (innerWidth > 600 ? 30 : 12) // Account for scrollbar
@@ -39231,7 +39243,7 @@ var easeInOutQuint = function easeInOutQuint(t) {
 /*!*****************************!*\
   !*** ./src/util/helpers.ts ***!
   \*****************************/
-/*! exports provided: createSimpleFunctional, createSimpleTransition, createJavaScriptTransition, directiveConfig, addOnceEventListener, getNestedValue, deepEqual, getObjectValueByPath, getPropertyFromItem, createRange, getZIndex, escapeHTML, filterObjectOnKeys, filterChildren, convertToUnit, kebabCase, isObject, keyCodes, remapInternalIcon, keys, camelize, arrayDiff */
+/*! exports provided: createSimpleFunctional, createSimpleTransition, createJavaScriptTransition, directiveConfig, addOnceEventListener, getNestedValue, deepEqual, getObjectValueByPath, getPropertyFromItem, createRange, getZIndex, escapeHTML, filterObjectOnKeys, filterChildren, convertToUnit, kebabCase, isObject, keyCodes, remapInternalIcon, keys, camelize */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -39257,7 +39269,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "remapInternalIcon", function() { return remapInternalIcon; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "keys", function() { return keys; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "camelize", function() { return camelize; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "arrayDiff", function() { return arrayDiff; });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "vue");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -39543,16 +39554,6 @@ var camelize = function camelize(str) {
         return c ? c.toUpperCase() : '';
     });
 };
-/**
- * Returns the set difference of B and A, i.e. the set of elements in B but not in A
- */
-function arrayDiff(a, b) {
-    var diff = [];
-    for (var i = 0; i < b.length; i++) {
-        if (a.indexOf(b[i]) < 0) diff.push(b[i]);
-    }
-    return diff;
-}
 
 /***/ }),
 
@@ -40213,7 +40214,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\laragon\www\consult-sales\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/condef5/code/laravel/angel-shop/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })
