@@ -103,7 +103,20 @@
                             <td class="text-xs-center">{{ props.item.medida }}</td>
 
                             <td class="text-xs-center">
-                              <v-select :items="props.item.prices" v-model="props.item.precio"></v-select>
+                              <v-select
+                                :items="props.item.prices"
+                                v-model="props.item.precio"
+                                item-value="price"
+                              >
+                                <template
+                                  slot="selection"
+                                  slot-scope="data"
+                                >{{ Number(data.item.price).toFixed(2) }} {{ data.item.label }}</template>
+                                <template
+                                  slot="item"
+                                  slot-scope="data"
+                                >{{ Number(data.item.price).toFixed(2) }} {{ data.item.label }}</template>
+                              </v-select>
                             </td>
                           </template>
                         </v-data-table>
@@ -128,13 +141,28 @@
                 <td class="text-xs-left">{{ props.item.codigo }}</td>
                 <td class="text-xs-right">{{ props.item.descripcion }}</td>
                 <td class="text-xs-right">
-                  <v-select :items="props.item.prices" v-model="props.item.precio"></v-select>
+                  <v-select
+                    :items="props.item.prices"
+                    v-model="props.item.precio"
+                    item-value="price"
+                  >
+                    <template
+                      slot="selection"
+                      slot-scope="data"
+                    >{{ Number(data.item.price).toFixed(2) }} {{ data.item.label }}</template>
+                    <template
+                      slot="item"
+                      slot-scope="data"
+                    >{{ Number(data.item.price).toFixed(2) }} {{ data.item.label }}</template>
+                  </v-select>
                   <!-- {{ props.item.precio }} -->
                 </td>
                 <td class="text-xs-right">
                   <input type="number" min="1" v-model.number="props.item.cantidad">
                 </td>
-                <td class="text-xs-right">{{ props.item.precio * props.item.cantidad }}</td>
+                <td
+                  class="text-xs-right"
+                >{{ Number(props.item.precio * props.item.cantidad ).toFixed(2)}}</td>
                 <td class="justify-center layout px-0">
                   <v-icon small @click="deleteItem(props.item)">delete</v-icon>
                 </td>
@@ -152,7 +180,7 @@
           <div class="total-flex">
             <div class="total-header elevation-1">
               <div>Total:</div>
-              <div>{{sumaTotal}}</div>
+              <div>{{Number(sumaTotal).toFixed(2)}}</div>
             </div>
           </div>
           <v-btn color="success darken-1" dark @click="onSubmitOrder">Guardar Pedido</v-btn>
@@ -367,5 +395,11 @@ export default {
 .custom-table thead tr > th:nth-of-type(3),
 .table-modal thead tr > th:last-child {
   width: 200px;
+}
+
+@media (max-width: 500px) {
+  .v-text-field {
+    padding-top: 0;
+  }
 }
 </style>

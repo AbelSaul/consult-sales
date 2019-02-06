@@ -15,8 +15,12 @@ class ProductController extends Controller
             $prices = array();
             foreach ($name_prices as $name_price) {
                 $price = $product[$name_price];
-                if($price != null ){
-                    array_push($prices, $price);
+                if($price != null ) {
+                    $label = $name_price != 'precio' ? str_replace('precio', 'P', $name_price) : ''; 
+                    array_push($prices, [
+                        'label' => $label,
+                        'price' => $price,
+                    ]);
                 }
             }
             $product->prices = $prices;
