@@ -83,7 +83,9 @@ export default {
           .post("/api/login", data)
           .then(({ data }) => {
             notify.showCool(data.message);
-            window.location.reload();
+            window.location = document.head.querySelector(
+              'meta[name="api-base-url"]'
+            ).content;
           })
           .catch(error => {
             notify.error(error.response.data.message);
