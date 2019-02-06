@@ -23,7 +23,7 @@
                     <v-menu class="hidden-md-and-up">
                         <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
                         <v-list >
-                            <v-btn flat><a href="/logout">Cerrar sesion</a></v-btn>
+                        <v-btn flat><a href="{{ route('logout') }}">Cerrar sesion</a></v-btn>
                         </v-list>
                     </v-menu>
                 </v-toolbar>

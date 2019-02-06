@@ -20,6 +20,6 @@ Route::get('/login', function() {
 Route::get('/logout', function() {
     session()->forget('user');
     return redirect('login');
-});
+})->name('logout');;
 
 Route::get('/proforma/{doc}', 'PdfController@ticket')->middleware('verify');
