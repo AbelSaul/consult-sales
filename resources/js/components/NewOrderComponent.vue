@@ -185,6 +185,7 @@
             </div>
           </div>
           <v-btn color="success darken-1" dark @click="onSubmitOrder">Guardar Pedido</v-btn>
+          <loader v-if="isLoadingProforma"></loader>
         </v-card>
       </v-flex>
     </v-layout>
@@ -195,6 +196,7 @@
 export default {
   data: function() {
     return {
+      isLoadingProforma: false,
       isLoadingClient: false,
       clients: [],
       searchClient: null,
@@ -315,15 +317,18 @@ export default {
         phone: this.phone
       };
       console.log(data);
+      this.isLoadingProforma = true;
 
       axios
         .post("/api/proforma/create", data)
         .then(({ data }) => {
           notify.showCool(data.message);
           this.reset();
+          this.isLoadingProforma = false;
         })
         .catch(response => {
           notify.error("Ocurrio un error");
+          this.isLoadingProforma = false;
         });
     },
 
@@ -424,4 +429,6 @@ export default {
 .theme--light.v-table tbody tr[active]:hover {
   background: rgba(97, 180, 247, 0.3);
 }
+
+
 </style>
