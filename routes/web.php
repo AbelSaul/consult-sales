@@ -15,7 +15,7 @@ Route::view('/', 'home')->middleware('verify');
 
 Route::get('/login', function() {
     return view('login', ['header' => 'none']);
-});
+})->middleware('redirect');
 
 Route::get('/logout', function() {
     session()->forget('user');
