@@ -12,7 +12,7 @@ class ClientController extends Controller
 {
     public function index(Request $request) {
         $search = $request->search;
-        $fields = ['idcliente as id', DB::raw('CONCAT(cliente," - ",ruc) as text') , 'direccion', 'celular', 'correo'];
+        $fields = ['idcliente as id', DB::raw('CONCAT(cliente," - ",ruc) as text') , 'contacto', 'telefono', 'correo'];
         if($search) {
             return Client::where('cliente', 'like', "%$search%")
                 ->limit(10)

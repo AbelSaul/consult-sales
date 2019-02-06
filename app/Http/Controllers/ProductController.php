@@ -19,7 +19,7 @@ class ProductController extends Controller
                     $label = $name_price != 'precio' ? str_replace('precio', 'P', $name_price) : ''; 
                     array_push($prices, [
                         'label' => $label,
-                        'price' => $price,
+                        'price' => $product['tipo'] == 'G' ? $price * 1.18 : $price,
                     ]);
                 }
             }

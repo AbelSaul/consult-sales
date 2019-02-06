@@ -98,8 +98,9 @@
                             <td>
                               <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
                             </td>
-                            <td class="text-xs-center">{{ props.item.codigo }}</td>
-                            <td class="text-xs-center">{{ props.item.descripcion }}</td>
+                            <td
+                              class="text-right product-td"
+                            >{{ props.item.descripcion + ' - ' + props.item.codigo }}</td>
                             <td class="text-xs-center">{{ props.item.medida }}</td>
 
                             <td class="text-xs-center">
@@ -138,8 +139,9 @@
               class="elevation-1 custom-table"
             >
               <template slot="items" slot-scope="props">
-                <td class="text-xs-left">{{ props.item.codigo }}</td>
-                <td class="text-xs-right">{{ props.item.descripcion }}</td>
+                <td
+                  class="text-left product-td"
+                >{{ props.item.descripcion + ' - ' + props.item.codigo }}</td>
                 <td class="text-xs-right">
                   <v-select
                     :items="props.item.prices"
@@ -155,7 +157,6 @@
                       slot-scope="data"
                     >{{ Number(data.item.price).toFixed(2) }} {{ data.item.label }}</template>
                   </v-select>
-                  <!-- {{ props.item.precio }} -->
                 </td>
                 <td class="text-xs-right">
                   <input type="number" min="1" v-model.number="props.item.cantidad">
@@ -207,12 +208,12 @@ export default {
       search: "",
       sellerDefault: {},
       headers_orders: [
-        {
-          text: "Código",
-          sortable: false,
-          align: "left",
-          value: "codigo"
-        },
+        // {
+        //   text: "Código",
+        //   sortable: false,
+        //   align: "left",
+        //   value: "codigo"
+        // },
         { text: "Producto", sortable: false, value: "descripcion" },
         { text: "Precio Unitario", sortable: false, value: "precio" },
         { text: "Cantidad", sortable: false, value: "cantidad" },
@@ -220,7 +221,7 @@ export default {
         { text: "Acción", sortable: false, value: "accion" }
       ],
       headers_products: [
-        { text: "Código", sortable: true, align: "left", value: "codigo" },
+        // { text: "Código", sortable: true, align: "left", value: "codigo" },
         { text: "Producto", sortable: true, value: "descripcion" },
         { text: "Medida", sortable: true, value: "medida" },
         { text: "Precio", sortable: true, value: "precio" }
@@ -284,19 +285,14 @@ export default {
   methods: {
     onChangeClient(client) {
       if (client) {
-        this.phone = client.celular;
+        this.phone = client.telefono;
         this.email = client.correo;
-        this.attention = client.direccion;
+        this.attention = client.contacto;
       }
     },
 
     close() {
       this.dialog = false;
-      // init cantidad en 1
-      // this.selected = this.selected.map(item => {
-      //   if (item.cantidad) return item;
-      //   return { ...item, cantidad: 1 };
-      // });
     },
 
     deleteItem(item) {
@@ -319,10 +315,6 @@ export default {
         phone: this.phone
       };
       console.log(data);
-      // let validate = Object.keys(data).some(item => {
-      //   notify.showCool(`Completa el campo ${item}`);
-      //   return data[item] === "";
-      // });
 
       axios
         .post("/api/proforma/create", data)
@@ -337,9 +329,12 @@ export default {
 
     reset() {
       this.clientId = "";
-      // this.sellerId = "";
+      this.sellerId = "";
       this.condition = "";
       this.observation = "";
+      this.phone = "";
+      this.attention = "";
+      this.email = "";
       this.selected = [];
     }
   }
@@ -347,7 +342,8 @@ export default {
 </script>
 
 <style>
-.custom-table th:not(:first-child) {
+.custom-table th:not(:first-child),
+.table-modal th:not(:first-child) {
   text-align: right !important;
 }
 .custom-table th:last-child {
@@ -397,9 +393,35 @@ export default {
   width: 200px;
 }
 
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.product-td {
+  min-width: 200px !important;
+}
+
 @media (max-width: 500px) {
   .v-text-field {
     padding-top: 0;
   }
+  .custom-table td,
+  .custom-table th,
+  .table-modal td,
+  .table-modal th {
+    padding: 0 12px !important;
+  }
+}
+
+.theme--light.v-table tbody tr[active] {
+  background: rgba(97, 180, 247, 0.15);
+}
+
+.theme--light.v-table tbody tr[active]:hover {
+  background: rgba(97, 180, 247, 0.3);
 }
 </style>
