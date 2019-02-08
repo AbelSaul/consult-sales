@@ -101,7 +101,20 @@
                             <td
                               class="text-right product-td"
                             >{{ props.item.descripcion + ' - ' + props.item.codigo }}</td>
-                            <td class="text-xs-center">{{ props.item.medida }}</td>
+                            <td class="text-xs-rigth">
+                              <template v-if="props.item.fraccion == 1">{{ props.item.medida }}</template>
+                              <template v-else>
+                                <v-select
+                                  v-model="props.item.num_um"
+                                  :items="[
+                                    { id:1, text: props.item.medida }, 
+                                    { id: 2, text: props.item.medida_fra } 
+                                  ]"
+                                  item-value="id"
+                                  item-text="text"
+                                ></v-select>
+                              </template>
+                            </td>
 
                             <td class="text-xs-center">
                               <v-select
@@ -112,11 +125,15 @@
                                 <template
                                   slot="selection"
                                   slot-scope="data"
-                                >{{ Number(data.item.price).toFixed(2) }} {{ data.item.label }}</template>
-                                <template
-                                  slot="item"
-                                  slot-scope="data"
-                                >{{ Number(data.item.price).toFixed(2) }} {{ data.item.label }}</template>
+                                  v-bind:class="data.item.label"
+                                >
+                                  <span>{{ Number(data.item.price).toFixed(2) }}</span>
+                                </template>
+                                <template slot="item" slot-scope="data">
+                                  <span
+                                    v-bind:class="data.item.label"
+                                  >{{ Number(data.item.price).toFixed(2) }}</span>
+                                </template>
                               </v-select>
                             </td>
                           </template>
@@ -142,21 +159,33 @@
                 <td
                   class="text-left product-td"
                 >{{ props.item.descripcion + ' - ' + props.item.codigo }}</td>
-                <td class="text-xs-right">
+                <td class="text-xs-center">
                   <v-select
                     :items="props.item.prices"
                     v-model="props.item.precio"
                     item-value="price"
                   >
-                    <template
-                      slot="selection"
-                      slot-scope="data"
-                    >{{ Number(data.item.price).toFixed(2) }} {{ data.item.label }}</template>
-                    <template
-                      slot="item"
-                      slot-scope="data"
-                    >{{ Number(data.item.price).toFixed(2) }} {{ data.item.label }}</template>
+                    <template slot="selection" slot-scope="data" v-bind:class="data.item.label">
+                      <span>{{ Number(data.item.price).toFixed(2) }}</span>
+                    </template>
+                    <template slot="item" slot-scope="data">
+                      <span v-bind:class="data.item.label">{{ Number(data.item.price).toFixed(2) }}</span>
+                    </template>
                   </v-select>
+                </td>
+                <td class="text-xs-rigth">
+                  <template v-if="props.item.fraccion == 1">{{ props.item.medida }}</template>
+                  <template v-else>
+                    <v-select
+                      v-model="props.item.num_um"
+                      :items="[
+                        { id:1, text: props.item.medida }, 
+                        { id: 2, text: props.item.medida_fra } 
+                      ]"
+                      item-value="id"
+                      item-text="text"
+                    ></v-select>
+                  </template>
                 </td>
                 <td class="text-xs-right">
                   <input type="number" min="1" v-model.number="props.item.cantidad">
@@ -218,6 +247,7 @@ export default {
         // },
         { text: "Producto", sortable: false, value: "descripcion" },
         { text: "Precio Unitario", sortable: false, value: "precio" },
+        { text: "Medida", sortable: false, value: "num_un" },
         { text: "Cantidad", sortable: false, value: "cantidad" },
         { text: "Importe", sortable: false, value: "precio_total" },
         { text: "Acción", sortable: false, value: "accion" }
@@ -430,5 +460,23 @@ export default {
   background: rgba(97, 180, 247, 0.3);
 }
 
+.P0 {
+  color: #00e676;
+}
 
+.P1 {
+  color: #ff5722;
+}
+
+.P2 {
+  color: #ff9800;
+}
+
+.P3 {
+  color: #9c27b0;
+}
+
+.P4 {
+  color: #ffc107;
+}
 </style>
