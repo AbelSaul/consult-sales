@@ -74,7 +74,7 @@ export default {
       e.preventDefault();
       if (this.user && this.password) {
         const data = {
-          database: this.userInfo.database,
+          basedata: this.userInfo.basedata,
           user: this.user,
           password: this.password
         };

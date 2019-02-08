@@ -15,12 +15,12 @@ class DatabaseSeeder extends Seeder
         if (env('DB_DATABASE') == 'connection') {
             Connection::create([
                 "ruc" => "12312312312",
-                "database" => "nbdata2018_1",
+                "basedata" => "nbdata2018_1",
             ]);
             
             Connection::create([
                 "ruc" => "12312312315",
-                "database" => "nbdata2018_2",
+                "basedata" => "nbdata2018_2",
             ]);
             
             $this->call(ConnectionTableSeeder::class);

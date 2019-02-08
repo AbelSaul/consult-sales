@@ -18,7 +18,7 @@ class VerifySession
     {
         $user = session('user');
         if ($user) {
-            config(['database.connections.mysql.database' => $user['database']]);
+            config(['database.connections.mysql.database' => $user['basedata']]);
             DB::reconnect('mysql');
             return $next($request);
         }

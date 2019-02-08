@@ -16,6 +16,6 @@ use Faker\Generator as Faker;
 $factory->define(App\Connection::class, function (Faker $faker) {
     return [
         'ruc' => $faker->numberBetween(10000000000,99999999999),
-        'database' => $faker->domainWord,
+        'basedata' => $faker->domainWord,
     ];
 });

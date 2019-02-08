@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Connection extends Model
 {
     protected $fillable = [
-        'ruc', 'database' 
+        'ruc', 'basedata'
     ];
 }
