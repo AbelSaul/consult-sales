@@ -6,16 +6,8 @@
           <v-card-title class="headline font-weight-regular blue-grey white--text">Iniciar sesión</v-card-title>
           <v-card-text>
             <v-subheader class="pa-0">INGRESA TÚ RUC</v-subheader>
-            <v-autocomplete
-              v-model="userInfo"
-              :items="rucs"
-              :label="`RUC`"
-              persistent-hint
-              item-text="ruc"
-              no-data-text="No se encontro este RUC"
-              return-object
-            ></v-autocomplete>
-            <v-btn color="success darken-1" outline @click="onNext" :disabled="!userInfo">SIGUIENTE</v-btn>
+            <v-text-field v-model="ruc" label="RUC" required></v-text-field>
+            <v-btn color="success darken-1" outline @click="onNext" :disabled="!ruc">SIGUIENTE</v-btn>
           </v-card-text>
         </v-card>
         <v-card v-else>
@@ -54,18 +46,23 @@ export default {
       userInfo: null,
       user: null,
       password: null,
-      rucs: [],
+      ruc: null,
       page: "ruc"
     };
   },
-  mounted() {
-    axios.get("/api/connections").then(({ data }) => {
-      this.rucs = data;
-    });
-  },
+  mounted() {},
   methods: {
     onNext: function() {
-      this.page = "login";
+      axios
+        .get(`/api/validate_ruc?ruc=${this.ruc}`)
+        .then(({ data }) => {
+          this.userInfo = data;
+          this.page = "login";
+          notify.showCool("RUC encontrado");
+        })
+        .catch(error => {
+          notify.error(error.response.data.message);
+        });
     },
     onBack: function() {
       this.page = "ruc";

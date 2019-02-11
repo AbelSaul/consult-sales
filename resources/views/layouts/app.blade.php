@@ -18,7 +18,7 @@
                     <v-toolbar-title>Consultas</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items class="hidden-sm-and-down">
-                        <v-btn flat><a class="white--text" href="/logout">Cerrar sesion</a></v-btn>
+                        <v-btn flat><a class="white--text" href="{{ route('logout') }}">Cerrar sesion</a></v-btn>
                     </v-toolbar-items>
                     <v-menu class="hidden-md-and-up">
                         <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>

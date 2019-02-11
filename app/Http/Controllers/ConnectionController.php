@@ -19,6 +19,22 @@ class ConnectionController extends Controller
     }
 
     /**
+     * Find a connection.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function validateRuc(Request $request)
+    {
+        $connection = Connection::where('ruc', $request->ruc)->first(); 
+
+        if ($connection) {
+            return $connection;
+        }
+
+        return response()->json(['message' => "RUC no encontrado"], 404);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

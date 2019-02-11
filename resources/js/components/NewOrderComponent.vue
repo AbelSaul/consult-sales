@@ -45,7 +45,7 @@
                   <v-text-field v-model="phone" label="Telefono" required></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
-                  <v-text-field v-model="email" label="Correo" :rules="emailRules" required></v-text-field>
+                  <v-text-field v-model="email" label="Correo" required></v-text-field>
                 </v-flex>
 
                 <v-flex xs12 sm6 md3>
@@ -449,6 +449,10 @@ export default {
   .table-modal td,
   .table-modal th {
     padding: 0 12px !important;
+  }
+
+  table .v-input {
+    font-size: 13px !important;
   }
 }
 
