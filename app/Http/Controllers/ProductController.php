@@ -9,7 +9,7 @@ class ProductController extends Controller
 {
     public function index() {
 
-        $products = Product::all();
+        $products = Product::where('estado', 'A')->get();
         $name_prices = ['precio','precio1','precio2','precio3','precio4'];
         foreach ($products as $product) {
             $prices = array();
@@ -19,12 +19,12 @@ class ProductController extends Controller
                     $label = $name_price != 'precio' ? str_replace('precio', 'P', $name_price) : 'P0'; 
                     array_push($prices, [
                         'label' => $label,
-                        'price' => $this->calcIgv($product['tipo'], $price, $product['igv']),
+                        'price' => $this->calcIgv($product['tipo_imp'], $price, $product['igv']),
                     ]);
                 }
             }
             $product->prices = $prices;
-            $product->precio = $this->calcIgv($product['tipo'], $product['precio'], $product['igv']);
+            $product->precio = $this->calcIgv($product['tipo_imp'], $product['precio'], $product['igv']);
             $product->cantidad = 1;
             $product->num_um = 1;
         }

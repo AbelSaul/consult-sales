@@ -11,6 +11,11 @@ use App\Mail\SendProforma;
 
 class ProformaController extends Controller
 {
+    public function index() {
+        $proformas = Proforma::all();
+        return view('proformas.index', compact('proformas'));
+    }
+
     public function create(Request $request) {
 
         $this->validate($request, [
@@ -18,13 +23,18 @@ class ProformaController extends Controller
             'sellerId' => 'required',
             'condition' => 'required',
             'observation' => 'required',
-            'email' => 'required'
         ]);
 
         $productos = $request->products;
-
+        
+        
         $user = session('user');
         $maxIdProforma = DB::select("(select max(`idproforma` * 1) as pro from proformas)")[0]->pro + 1;
+        
+        // cond_impuesto
+        $params = DB::table('parametros')->first();
+        $cond = $params->impuesto_nombre == 'IGV' ? 'IGV incluido' : 'IGV no incluido';
+        
         $proforma = Proforma::Create([
             "idproforma" => $maxIdProforma,
             "idlocal" => $user["idlocal"],
@@ -42,35 +52,43 @@ class ProformaController extends Controller
             "total" => $request->total,
             "idvendedor" => $request->sellerId,
             "condicion" => strtoupper($request->condition),
+            "cond_impuesto" => $cond,
             "observac" => $request->observation,
             "atencion" => $request->attention,
             "estado" => "PE",
+            "usuario" => $user["name"],
+            "correo" => $request->email,
+            "telefonos" => $request->phone,
         ]);
 
         // save products_items
         foreach ($productos as $producto) {
+            $price = $producto["tipo"] == 'G' ? $producto["precio"] / (1 +  $producto["igv"] / 100) : $producto["precio"];   
             DetailProduct::Create([
                 "idproforma" => $proforma->idproforma,
-                "idlocal" => 1,
+                "idlocal" => $user["idlocal"],
                 "idproducto" => Product::where("codigo", $producto["codigo"])->first()->idproducto,
                 "codigo" => $producto["codigo"],
+                "codigo2" => $producto["codigo2"],
                 "descripcion" => $producto["descripcion"],
-                "medida" => $producto["medida"],
+                "medida" => $producto["num_um"] == 2 ? $producto["medida_fra"] : $producto["medida"],
                 "cantidad" => $producto["cantidad"],
-                "num_um" => 1,
-                "moneda" => "S/",
+                "num_um" => $producto["num_um"],
+                "moneda" => $producto["moneda"],
                 "igv" => 0.00,
-                "precio" => $producto["precio"],
+                "precio" => $price,
+                "desc_cad" => null,
                 "descuento" => 0.00,
-                "precio_neto" => $producto["precio"],
-                "importe" => $producto["precio"],
+                "precio_neto" => $price,
+                "importe" => $price,
                 "tipo" => "P",
+                "tipo_afecta" => $producto["tipo_imp"],
                 "no_stock" => 0,
                 "canjeado" => 0.00,
             ]);
         }
-        $user = (object) ["email" => request('email') ];
-        \Mail::to($user)->send(new SendProforma($user, $proforma));
+        // $user = (object) ["email" => request('email') ];
+        // \Mail::to($user)->send(new SendProforma($user, $proforma));
 
         return response()->json(['message' => "Proforma creada"], 200);
     }

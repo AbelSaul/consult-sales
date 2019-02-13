@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,14 +14,20 @@
 */
 
 Route::view('/', 'home')->middleware('verify');
+Route::get('/proformas', 'ProformaController@index')->name('proformas')->middleware('verify');
 
 Route::get('/login', function() {
     return view('login', ['header' => 'none']);
 })->middleware('redirect');
 
+Route::get('/data', function() {
+    $params = DB::table('parametros')->first();
+    return $params->impuesto_nombre;
+})->middleware('verify');
+
 Route::get('/logout', function() {
     session()->forget('user');
     return redirect('login');
-})->name('logout');;
+})->name('logout');
 
 Route::get('/proforma/{doc}', 'PdfController@ticket')->middleware('verify');
