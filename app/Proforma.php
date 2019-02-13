@@ -12,11 +12,16 @@ class Proforma extends Model
 
     public function details()
     {
-        return $this->hasMany('App\DetailProduct',  'idproforma', 'idproforma');
+        return $this->hasMany('App\DetailProduct', 'idproforma', 'idproforma');
     }
    
     public function client()
     {
-        return $this->hasOne('App\Client',  'idcliente', 'idcliente');
+        return $this->hasOne('App\Client', 'idcliente', 'idcliente');
+    }
+    
+    public function seller()
+    {
+        return $this->hasOne('App\Seller', 'idpersonal', 'idvendedor');
     }
 }
