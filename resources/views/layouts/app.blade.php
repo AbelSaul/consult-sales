@@ -15,15 +15,33 @@
         <div id="app">
             @if(!isset($header))
                 <v-toolbar color="primary" dark>
-                    <v-toolbar-title>Consultas</v-toolbar-title>
+                    <v-toolbar-title><a class="white--text" href="{{ url('') }}">Consultas</a></v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items class="hidden-sm-and-down">
-                        <v-btn flat><a class="white--text" href="{{ route('logout') }}">Cerrar sesion</a></v-btn>
+                        <a class="white--text" href="{{ route('proformas') }}">
+                            <v-btn flat class="full-height">
+                                Proformas
+                            </v-btn>
+                        </a>
+                        <a class="white--text" href="{{ route('logout') }}">
+                            <v-btn flat class="full-height">
+                                Cerrar sesion
+                            </v-btn>
+                        </a>
                     </v-toolbar-items>
                     <v-menu class="hidden-md-and-up">
                         <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
                         <v-list >
-                        <v-btn flat><a href="{{ route('logout') }}">Cerrar sesion</a></v-btn>
+                            <a class="white--text" href="{{ route('proformas') }}">
+                                <v-btn flat>
+                                    Proformas
+                                </v-btn>
+                            </a>
+                            <a class="white--text" href="{{ route('logout') }}">
+                                <v-btn flat>
+                                    Cerrar sesion
+                                </v-btn>
+                            </a>
                         </v-list>
                     </v-menu>
                 </v-toolbar>
@@ -37,13 +55,22 @@
 </html>
 <style>
     .container {
-        max-width: inherit;
+        max-width: 1280px;
     }
+    .v-toolbar__content, .v-toolbar__extension {
+        max-width: 1280px;
+        margin: auto;
+    }
+
     a {
         text-decoration: none;
     }
 
     .application--wrap {
         min-height: inherit;
+    }
+
+    .full-height {
+        height: 100% !important;
     }
 </style>

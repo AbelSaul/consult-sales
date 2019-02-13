@@ -69,10 +69,10 @@
             <v-toolbar flat color="white">
               <v-spacer></v-spacer>
               <v-dialog v-model="dialog" max-width="800px">
-                <v-btn slot="activator" color="primary" dark class="mb-2">AGREGAR</v-btn>
+                <v-btn slot="activator" color="primary" dark class="mb-2">AGREGAR PRODUCTOS</v-btn>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">Seleccionar Producto</span>
+                    <span class="headline">Seleccionar</span>
                     <v-spacer></v-spacer>
                     <v-text-field
                       v-model="search"
@@ -117,24 +117,29 @@
                             </td>
 
                             <td class="text-xs-center">
-                              <v-select
-                                :items="props.item.prices"
-                                v-model="props.item.precio"
-                                item-value="price"
-                              >
-                                <template
-                                  slot="selection"
-                                  slot-scope="data"
-                                  v-bind:class="data.item.label"
+                              <template
+                                v-if="props.item.num_um == 2"
+                              >{{ Number(props.item.precio_fra).toFixed(2) }}</template>
+                              <template v-else>
+                                <v-select
+                                  :items="props.item.prices"
+                                  v-model="props.item.precio"
+                                  item-value="price"
                                 >
-                                  <span>{{ Number(data.item.price).toFixed(2) }}</span>
-                                </template>
-                                <template slot="item" slot-scope="data">
-                                  <span
+                                  <template
+                                    slot="selection"
+                                    slot-scope="data"
                                     v-bind:class="data.item.label"
-                                  >{{ Number(data.item.price).toFixed(2) }}</span>
-                                </template>
-                              </v-select>
+                                  >
+                                    <span>{{ Number(data.item.price).toFixed(2) }}</span>
+                                  </template>
+                                  <template slot="item" slot-scope="data">
+                                    <span
+                                      v-bind:class="data.item.label"
+                                    >{{ Number(data.item.price).toFixed(2) }}</span>
+                                  </template>
+                                </v-select>
+                              </template>
                             </td>
                           </template>
                         </v-data-table>
