@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Product;
 
 class ProductController extends Controller
 {
     public function index() {
 
+        $params = DB::table('parametros')->first();
+        $cond = $params->igv_inc == 1;
+        
         $products = Product::where('estado', 'A')->get();
         $name_prices = ['precio','precio1','precio2','precio3','precio4'];
         foreach ($products as $product) {
@@ -19,12 +23,13 @@ class ProductController extends Controller
                     $label = $name_price != 'precio' ? str_replace('precio', 'P', $name_price) : 'P0'; 
                     array_push($prices, [
                         'label' => $label,
-                        'price' => $this->calcIgv($product['tipo_imp'], $price, $product['igv']),
+                        'price' => $this->calcIgv($cond, $price, $product['igv']),
                     ]);
                 }
             }
             $product->prices = $prices;
-            $product->precio = $this->calcIgv($product['tipo_imp'], $product['precio'], $product['igv']);
+            $product->precio = $this->calcIgv($cond, $product['precio'], $product['igv']);
+            $product->precio_fra = $this->calcIgv($cond, $product['precio_fra'], $product['igv']);
             $product->cantidad = 1;
             $product->num_um = 1;
         }
@@ -32,8 +37,8 @@ class ProductController extends Controller
         return $products;
     }
 
-    public function calcIgv($tipo, $price, $igv) {
-        return $tipo == 'G' ? $price * (1 + $igv / 100 ) : $price;
+    public function calcIgv($cond, $price, $igv) {
+        return $cond ? $price * (1 + 18 / 100 ) : $price;
     }
 }
 
