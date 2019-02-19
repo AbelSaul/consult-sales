@@ -22,7 +22,6 @@ class ProformaController extends Controller
             'clientId' => 'required',
             'sellerId' => 'required',
             'condition' => 'required',
-            'observation' => 'required',
         ]);
 
         $productos = $request->products;
@@ -33,8 +32,8 @@ class ProformaController extends Controller
         
         // cond_impuesto
         $params = DB::table('parametros')->first();
-        $cond = $params->impuesto_nombre == 'IGV' ? 'IGV incluido' : 'IGV no incluido';
-        
+        $cond = $params->igv_inc == 1 ? 'IGV incluido' : 'IGV no incluido';
+        $subTotal = $params->igv_inc == 1 ? $request->total / 1.18 : $request->total;
         $proforma = Proforma::Create([
             "idproforma" => $maxIdProforma,
             "idlocal" => $user["idlocal"],
@@ -43,12 +42,12 @@ class ProformaController extends Controller
             "fecha" => date("Y-m-d"),
             "hora" => date("h:i:s A"),
             "lista_prec" => 0,
-            "moneda" => "S/",
-            "cambio" => 3,
+            "moneda" => $params->moneda,
+            "cambio" => $params->tcambio,
             "bruto" => $request->total,
             "descuento" => 0.00,
-            "subtotal" => $request->total,
-            "igv" => 0.00,
+            "subtotal" => $subTotal,
+            "igv" => $request->total - $subTotal,
             "total" => $request->total,
             "idvendedor" => $request->sellerId,
             "condicion" => strtoupper($request->condition),
@@ -75,7 +74,7 @@ class ProformaController extends Controller
                 "cantidad" => $producto["cantidad"],
                 "num_um" => $producto["num_um"],
                 "moneda" => $producto["moneda"],
-                "igv" => 0.00,
+                "igv" => $producto["igv"],
                 "precio" => $price,
                 "desc_cad" => null,
                 "descuento" => 0.00,
@@ -87,18 +86,22 @@ class ProformaController extends Controller
                 "canjeado" => 0.00,
             ]);
         }
-        // $user = (object) ["email" => request('email') ];
-        // \Mail::to($user)->send(new SendProforma($user, $proforma));
+
+        if (request('email')) {
+            // $user = (object) ["email" => request('email') ];
+            // \Mail::to($user)->send(new SendProforma($user, $proforma));
+        }
 
         return response()->json(['message' => "Proforma creada"], 200);
     }
 
-    public function createDocument($pro_max_num)   {
+    public function createDocument($pro_max_num) {
         return "0001-" . str_pad($pro_max_num, 9, "0", STR_PAD_LEFT);
     }
 
-    public function conditions(){
+    public function conditions() {
         $conditions = [['id' => 01 , 'text' => 'Al contado'],['id' => 02 , 'text' => 'Al crédito'],['id' => 03 , 'text' => 'Otros']];
         return $conditions;
     }
+
 }
