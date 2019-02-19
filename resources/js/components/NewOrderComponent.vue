@@ -35,6 +35,7 @@
                     item-text="nombre"
                     item-value="idpersonal"
                     return-object
+                    disabled
                   ></v-autocomplete>
                 </v-flex>
 
@@ -116,29 +117,12 @@
                               </template>
                             </td>
 
-                            <td class="text-xs-center">
+                            <td class="text-xs-center super-price">
                               <template
                                 v-if="props.item.num_um == 2"
                               >{{ Number(props.item.precio_fra).toFixed(2) }}</template>
                               <template v-else>
-                                <v-select
-                                  :items="props.item.prices"
-                                  v-model="props.item.precio"
-                                  item-value="price"
-                                >
-                                  <template
-                                    slot="selection"
-                                    slot-scope="data"
-                                    v-bind:class="data.item.label"
-                                  >
-                                    <span>{{ Number(data.item.price).toFixed(2) }}</span>
-                                  </template>
-                                  <template slot="item" slot-scope="data">
-                                    <span
-                                      v-bind:class="data.item.label"
-                                    >{{ Number(data.item.price).toFixed(2) }}</span>
-                                  </template>
-                                </v-select>
+                                <SelectEdit :items="props.item.prices" v-model="props.item.precio"></SelectEdit>
                               </template>
                             </td>
                           </template>
@@ -164,20 +148,6 @@
                 <td
                   class="text-left product-td"
                 >{{ props.item.descripcion + ' - ' + props.item.codigo }}</td>
-                <td class="text-xs-center">
-                  <v-select
-                    :items="props.item.prices"
-                    v-model="props.item.precio"
-                    item-value="price"
-                  >
-                    <template slot="selection" slot-scope="data" v-bind:class="data.item.label">
-                      <span>{{ Number(data.item.price).toFixed(2) }}</span>
-                    </template>
-                    <template slot="item" slot-scope="data">
-                      <span v-bind:class="data.item.label">{{ Number(data.item.price).toFixed(2) }}</span>
-                    </template>
-                  </v-select>
-                </td>
                 <td class="text-xs-rigth">
                   <template v-if="props.item.fraccion == 1">{{ props.item.medida }}</template>
                   <template v-else>
@@ -192,6 +162,15 @@
                     ></v-select>
                   </template>
                 </td>
+                <td class="text-xs-center super-price">
+                  <template
+                    v-if="props.item.num_um == 2"
+                  >{{ Number(props.item.precio_fra).toFixed(2) }}</template>
+                  <template v-else>
+                    <SelectEdit :items="props.item.prices" v-model="props.item.precio"></SelectEdit>
+                  </template>
+                </td>
+
                 <td class="text-xs-right">
                   <input type="number" min="1" v-model.number="props.item.cantidad">
                 </td>
@@ -218,7 +197,12 @@
               <div>{{Number(sumaTotal).toFixed(2)}}</div>
             </div>
           </div>
-          <v-btn color="success darken-1" dark @click="onSubmitOrder">Guardar Pedido</v-btn>
+          <v-btn
+            color="success darken-1"
+            dark
+            @click="onSubmitOrder"
+            style="margin: 1.2em 0;"
+          >Guardar Pedido</v-btn>
           <loader v-if="isLoadingProforma"></loader>
         </v-card>
       </v-flex>
@@ -291,8 +275,11 @@ export default {
   computed: {
     sumaTotal() {
       this.total = 0;
-      this.selected.forEach(element => {
-        this.total = this.total + element.precio * element.cantidad;
+      this.selected.forEach(product => {
+        if (product.num_um == 2) {
+          product.precio = product.precio_fra;
+        }
+        this.total = this.total + product.precio * product.cantidad;
       });
       return this.total;
     }
@@ -329,6 +316,7 @@ export default {
     },
 
     close() {
+      this.search = "";
       this.dialog = false;
     },
 
@@ -352,6 +340,27 @@ export default {
         phone: this.phone
       };
       console.log(data);
+
+      if (!this.clientId) {
+        notify.error("Elija un cliente");
+        return;
+      }
+
+      if (!this.condition) {
+        notify.error("Elija una condicion de pago");
+        return;
+      }
+
+      if (!this.sellerId) {
+        notify.error("Elija un vendedor");
+        return;
+      }
+
+      if (this.selected.length === 0) {
+        notify.error("Agregue al menos un producto");
+        return;
+      }
+
       this.isLoadingProforma = true;
 
       axios
@@ -369,7 +378,6 @@ export default {
 
     reset() {
       this.clientId = "";
-      this.sellerId = "";
       this.condition = "";
       this.observation = "";
       this.phone = "";
@@ -487,5 +495,10 @@ export default {
 
 .P4 {
   color: #ffc107;
+}
+
+.super-price {
+  font-size: 16px !important;
+  text-align: left !important;
 }
 </style>
