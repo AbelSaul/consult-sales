@@ -14,6 +14,10 @@ Vue.component('vue-input-number', require('vue-input-number').default);
 
 Vue.component('loader', require('./components/Loader').default);
 
+Vue.component('SelectEdit', require('./components/SelectEdit').default);
+
+Vue.component('list-proformas', require('./components/ListProformas').default);
+
 new Vue({
     el: '#app'
 });
