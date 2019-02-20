@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<v-container bg grid-list-md>
+<div class="container">
+  <list-proformas></list-proformas>
   <div class="head">
     <a class="white--text" href="/">
       <v-btn slot="activator" color="success" dark class="mb-2">
@@ -9,7 +10,7 @@
       </v-btn>
     </a>
   </div>
-  <table>
+  <table class="table table-hover">
     <thead>
       <th>ID</th>
       <th>Documento</th>
@@ -23,7 +24,7 @@
         <tr>
           <td>{{ $proforma->idproforma }}</td>
           <td>{{ $proforma->documento }}</td>
-          <td>{{ $proforma->seller->nombre}}</td>
+          <td>{{ $proforma->seller ?  $proforma->seller->nombre : '----'}}</td>
           <td>{{ $proforma->client->cliente }}</td>
           <td>{{ $proforma->fecha }}</td>
           <td>
@@ -34,37 +35,32 @@
       @endforeach
     </tbody>
   </table>
-</v-container>
+  <div class="d-flex">
+    {{ $proformas->links() }}
+  </div>
+</div>
 @endsection
 
 <style>
 body {
-  color: #606c76;
+  /* color: #606c76; */
 }
-
+table {
+  font-size: 15px;
+}
 .head {
     text-align: right;
     width: 100%;
-    padding: 1em 0
+    padding: 1em 0 !important;
 }
 
 .head button{
   margin: 0;
 }
 
-table {
-  border-spacing: 0;
-  width: 100%;
-  font-size: 14px;
+.pagination {
+  justify-content: center;
 }
 
-td, th {
-  border-bottom: 0.1rem solid #e1e1e1;
-  padding: 1.2rem 1.5rem;
-  text-align: left;
-}
 
-td:first-child, th:first-child {
-  padding-left: 0;
-}
 </style>

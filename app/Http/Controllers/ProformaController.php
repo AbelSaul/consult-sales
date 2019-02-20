@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Proforma;
@@ -12,7 +13,8 @@ use App\Mail\SendProforma;
 class ProformaController extends Controller
 {
     public function index() {
-        $proformas = Proforma::all();
+        $proformas = Proforma::where('fecha', '>=' ,Carbon::now()->subDays(30)->format('Y-m-d'))
+            ->orderByRaw('idproforma * 1 DESC')->paginate(10);
         return view('proformas.index', compact('proformas'));
     }
 
