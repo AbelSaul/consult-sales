@@ -6,15 +6,17 @@ import vueInputNumber from 'vue-input-number';
 // import component and stylesheet
 import AirbnbStyleDatepicker from 'vue-airbnb-style-datepicker';
 import 'vue-airbnb-style-datepicker/dist/vue-airbnb-style-datepicker.min.css';
+import { datepickerOptions, localeFormat } from './date';
 
 window.Vue = Vue;
 
 Vue.use(Vuetify);
 Vue.use(vueInputNumber);
 // see docs for available options vue-airbnb-style-datepicker
-const datepickerOptions = {};
+
 Vue.use(AirbnbStyleDatepicker, datepickerOptions);
 
+window.localeFormat = localeFormat;
 window.notify = vuetifyToast;
 window.notify.showCool = (text) => notify.show({ text, color: '' });
 window.axios = axios;
