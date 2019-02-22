@@ -148,9 +148,9 @@ export default {
 
     onEdit(proforma) {
       if (proforma.fecha === format(new Date(), "YYYY-MM-DD")) {
-        alert("aun puedes");
+        window.location = `${this.baseUrl}/proformas/${proforma.idproforma}`;
       } else {
-        alert("ya espoiro");
+        notify.error("La proforma no se puede editar");
       }
     },
 
