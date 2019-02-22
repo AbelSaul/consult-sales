@@ -6,7 +6,7 @@
           <v-card-title class="headline font-weight-regular blue-grey white--text">Iniciar sesión</v-card-title>
           <v-card-text>
             <v-subheader class="pa-0">INGRESA TÚ RUC</v-subheader>
-            <v-text-field v-model="ruc" label="RUC" required></v-text-field>
+            <v-text-field v-model="ruc" label="RUC" @keyup.enter.native="onNext" required></v-text-field>
             <v-btn color="success darken-1" outline @click="onNext" :disabled="!ruc">SIGUIENTE</v-btn>
           </v-card-text>
         </v-card>
