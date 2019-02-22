@@ -16,7 +16,7 @@ class CreateConnectionsTable extends Migration
         Schema::create('connections', function (Blueprint $table) {
             $table->increments('id');
             $table->string('ruc')->unique();
-            $table->string('database');
+            $table->string('basedata');
             $table->timestamps();
         });
     }
