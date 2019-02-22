@@ -17,6 +17,20 @@ class ProformaController extends Controller
             ->orderByRaw('idproforma * 1 DESC')->paginate(10);
         return view('proformas.index', compact('proformas'));
     }
+   
+    public function search(Request $request) {
+
+        $startDate = $request->startDate ? $request->startDate : Carbon::now()->subDays(30)->format('Y-m-d');
+        $endDate = $request->endDate ? 
+            $request->endDate : 
+            ($request->startDate ? $request->startDate : Carbon::now()->format('Y-m-d') );
+                
+        $proformas = Proforma::whereBetween('fecha', [$startDate, $endDate])
+            ->orderByRaw('idproforma * 1 DESC')->with(['client', 'seller'])->paginate(10);
+
+        return response()->json($proformas);
+    }
+
 
     public function create(Request $request) {
 
@@ -99,11 +113,6 @@ class ProformaController extends Controller
 
     public function createDocument($pro_max_num) {
         return "0001-" . str_pad($pro_max_num, 9, "0", STR_PAD_LEFT);
-    }
-
-    public function conditions() {
-        $conditions = [['id' => 01 , 'text' => 'Al contado'],['id' => 02 , 'text' => 'Al crédito'],['id' => 03 , 'text' => 'Otros']];
-        return $conditions;
     }
 
 }

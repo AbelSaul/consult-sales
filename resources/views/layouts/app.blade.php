@@ -10,7 +10,6 @@
         <link rel="shortcut icon" href="https://storage.googleapis.com/builderbook/favicon32.png">
         <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
         <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     </head>
     <body>
         <div id="app">

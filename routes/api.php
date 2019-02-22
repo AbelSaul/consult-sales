@@ -28,3 +28,4 @@ Route::get('users', 'SellerController@users')->middleware('verify');
 Route::get('clients', 'ClientController@index')->middleware('verify');
 Route::get('conditions', 'ProformaController@conditions')->middleware('verify');
 Route::post('proforma/create', 'ProformaController@create')->middleware('verify');
+Route::get('search-proformas', 'ProformaController@search')->middleware('verify');
