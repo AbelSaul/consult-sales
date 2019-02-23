@@ -38,7 +38,7 @@ class ProductController extends Controller
     }
 
     public function calcIgv($cond, $price, $igv) {
-        return $cond ? $price * (1 + 18 / 100 ) : $price;
+        return number_format($cond ? $price * (1 + 18 / 100 ) : $price, 4);
     }
 }
 
