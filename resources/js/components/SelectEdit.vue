@@ -7,6 +7,7 @@
     <template slot="item" slot-scope="{ index, item }">
       <v-list-tile-content>
         <v-text-field
+          type="number"
           v-if="editing === item"
           v-model="editing.price"
           autofocus
@@ -45,7 +46,20 @@ export default {
   },
   watch: {
     model: function(val, prev) {
-      console.log(val, prev);
+      this.$emit("input", val);
+    },
+    editing: {
+      handler: function(val, oldVal) {
+        console.log("in profunding");
+        if (val) {
+          this.$emit("input", val.price);
+        }
+        console.log(val, oldVal);
+      },
+      deep: true
+    },
+    value: function(val, prev) {
+      this.model = val;
       this.$emit("input", val);
     }
   },
@@ -55,6 +69,7 @@ export default {
         this.editing = item;
         this.index = index;
       } else {
+        console.log(this.editing);
         this.editing = null;
         this.index = -1;
       }
