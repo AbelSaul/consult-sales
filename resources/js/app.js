@@ -18,6 +18,11 @@ Vue.component('SelectEdit', require('./components/SelectEdit').default);
 
 Vue.component('list-proformas', require('./components/ListProformas').default);
 
+Vue.component(
+    'edit-proforma',
+    require('./components/EditProforma.vue').default
+);
+
 new Vue({
     el: '#app'
 });

@@ -38,6 +38,7 @@
               :value="proformas.length === 0"
               color="error"
               icon="warning"
+              v-if="!loading"
             >Ninguna proforma coincide con las fechas :(</v-alert>
           </template>
           <template slot="items" slot-scope="props">
@@ -88,7 +89,7 @@ export default {
         { text: "Fecha", sortable: false, value: "fecha" },
         { text: "Acciones", sortable: false, value: "fecha" }
       ],
-      loading: false,
+      loading: true,
       proformas: [],
       pagination: {
         rowsPerPage: 10,

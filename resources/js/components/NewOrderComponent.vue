@@ -228,24 +228,17 @@ export default {
       search: "",
       sellerDefault: {},
       headers_orders: [
-        // {
-        //   text: "Código",
-        //   sortable: false,
-        //   align: "left",
-        //   value: "codigo"
-        // },
         { text: "Producto", sortable: false, value: "descripcion" },
-        { text: "Precio Unitario", sortable: false, value: "precio" },
         { text: "Medida", sortable: false, value: "num_un" },
+        { text: "Precio Unitario", sortable: false, value: "precio" },
         { text: "Cantidad", sortable: false, value: "cantidad" },
         { text: "Importe", sortable: false, value: "precio_total" },
         { text: "Acción", sortable: false, value: "accion" }
       ],
       headers_products: [
-        // { text: "Código", sortable: true, align: "left", value: "codigo" },
-        { text: "Producto", sortable: true, value: "descripcion" },
-        { text: "Medida", sortable: true, value: "medida" },
-        { text: "Precio", sortable: true, value: "precio" }
+        { text: "Producto", sortable: false, value: "descripcion" },
+        { text: "Medida", sortable: false, value: "medida" },
+        { text: "Precio", sortable: false, value: "precio" }
       ],
       editedIndex: -1,
       clientId: "",
