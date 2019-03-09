@@ -13,7 +13,7 @@ class CreateConnectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('connections', function (Blueprint $table) {
+        Schema::create('clientes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('ruc')->unique();
             $table->string('basedata');
