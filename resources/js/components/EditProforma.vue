@@ -237,9 +237,9 @@ export default {
         { text: "Acción", sortable: false, value: "accion" }
       ],
       headers_products: [
-        { text: "Producto", sortable: edit, value: "descripcion" },
-        { text: "Medida", sortable: edit, value: "medida" },
-        { text: "Precio", sortable: edit, value: "precio" }
+        { text: "Producto", sortable: "edit", value: "descripcion" },
+        { text: "Medida", sortable: "edit", value: "medida" },
+        { text: "Precio", sortable: "edit", value: "precio" }
       ],
       editedIndex: -1,
       clientId: "",
