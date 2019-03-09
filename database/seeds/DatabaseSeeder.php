@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         if (env('DB_DATABASE') == 'connection') {
             Connection::create([
                 "ruc" => "12312312312",
-                "basedata" => "demo",
+                "basedata" => "nbdata2018_1",
             ]);
             
             Connection::create([
