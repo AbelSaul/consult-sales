@@ -42,7 +42,7 @@
             >Ninguna proforma coincide con las fechas :(</v-alert>
           </template>
           <template slot="items" slot-scope="props">
-            <td>{{ props.item.idproforma }}</td>
+            <td>{{ props.item.documento }}</td>
             <td>{{ props.item.seller ? props.item.seller.nombre : '' }}</td>
             <td>{{ props.item.client.cliente ? props.item.client.cliente : '' }}</td>
             <td>{{ props.item.fecha }}</td>
@@ -80,7 +80,7 @@ export default {
       endDate: localeFormat(new Date(), this.dateFormat),
       headers: [
         {
-          text: "id",
+          text: "Documento",
           sortable: false,
           value: "idproforma"
         },

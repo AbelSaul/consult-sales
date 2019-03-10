@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <neworder-component></neworder-component>
+    <create-proforma></create-proforma>
 @endsection
 

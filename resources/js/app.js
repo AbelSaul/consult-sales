@@ -6,8 +6,8 @@ Vue.component(
 );
 
 Vue.component(
-    'neworder-component',
-    require('./components/NewOrderComponent.vue').default
+    'create-proforma',
+    require('./components/CreateProforma.vue').default
 );
 
 Vue.component('vue-input-number', require('vue-input-number').default);

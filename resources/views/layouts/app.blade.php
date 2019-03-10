@@ -15,12 +15,12 @@
         <div id="app">
             @if(!isset($header))
                 <v-toolbar color="primary" dark>
-                    <v-toolbar-title><a class="white--text" href="{{ url('') }}">Consultas</a></v-toolbar-title>
+                    <v-toolbar-title><a class="white--text" href="{{ url('') }}">PEDIDOS</a></v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items class="hidden-sm-and-down">
-                        <a class="white--text" href="{{ route('proformas') }}">
+                        <a class="white--text" href="{{ route('consultas') }}">
                             <v-btn flat class="full-height">
-                                Proformas
+                                CONSULTAS
                             </v-btn>
                         </a>
                         <a class="white--text" href="{{ route('logout') }}">
@@ -32,9 +32,9 @@
                     <v-menu class="hidden-md-and-up">
                         <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
                         <v-list >
-                            <a class="white--text" href="{{ route('proformas') }}">
+                            <a class="white--text" href="{{ route('consultas') }}">
                                 <v-btn flat>
-                                    Proformas
+                                    CONSULTAS
                                 </v-btn>
                             </a>
                             <a class="white--text" href="{{ route('logout') }}">
