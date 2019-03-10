@@ -12,15 +12,16 @@ class ProductController extends Controller
 
         $params = DB::table('parametros')->first();
         $cond = $params->igv_inc == 1;
-        
-        $products = Product::where('estado', 'A')->get();
+
+        $products = Product::where('estado', 'A')->orderBy('descripcion', 'asc')
+                                                 ->get();
         $name_prices = ['precio','precio1','precio2','precio3','precio4'];
         foreach ($products as $product) {
             $prices = array();
             foreach ($name_prices as $name_price) {
                 $price = $product[$name_price];
                 if($price != null ) {
-                    $label = $name_price != 'precio' ? str_replace('precio', 'P', $name_price) : 'P0'; 
+                    $label = $name_price != 'precio' ? str_replace('precio', 'P', $name_price) : 'P0';
                     array_push($prices, [
                         'label' => $label,
                         'price' => $this->calcIgv($cond, $price, $product['igv']),
@@ -33,7 +34,6 @@ class ProductController extends Controller
             $product->cantidad = 1;
             $product->num_um = 1;
         }
-
         return $products;
     }
 
