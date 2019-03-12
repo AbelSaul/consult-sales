@@ -23,6 +23,8 @@ Vue.component(
     require('./components/EditProforma.vue').default
 );
 
+
+//Vue
 new Vue({
     el: '#app'
 });
