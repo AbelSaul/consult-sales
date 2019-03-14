@@ -45,6 +45,7 @@
             <td>{{ props.item.documento }}</td>
             <td>{{ props.item.seller ? props.item.seller.nombre : '' }}</td>
             <td>{{ props.item.client.cliente ? props.item.client.cliente : '' }}</td>
+            <td>{{ props.item.total}}</td>
             <td>{{ props.item.fecha }}</td>
             <td>
               <button @click="showPdf(props.item)">
@@ -79,13 +80,10 @@ export default {
       startDate: localeFormat(subMonths(new Date(), 1), this.dateFormat),
       endDate: localeFormat(new Date(), this.dateFormat),
       headers: [
-        {
-          text: "Documento",
-          sortable: false,
-          value: "idproforma"
-        },
+        { text: "Documento", sortable: false, value: "idproforma" },
         { text: "Vendedor", sortable: false, value: "idvendedor" },
         { text: "Cliente", sortable: false, value: "idcliente" },
+        { text: "Total", sortable: false, value: "total" },
         { text: "Fecha", sortable: false, value: "fecha" },
         { text: "Acciones", sortable: false, value: "fecha" }
       ],
