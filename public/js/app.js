@@ -2824,6 +2824,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2844,6 +2845,10 @@ __webpack_require__.r(__webpack_exports__);
         text: "Cliente",
         sortable: false,
         value: "idcliente"
+      }, {
+        text: "Total",
+        sortable: false,
+        value: "total"
       }, {
         text: "Fecha",
         sortable: false,
@@ -15688,6 +15693,8 @@ var render = function() {
                           )
                         )
                       ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(props.item.total))]),
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(props.item.fecha))]),
                       _vm._v(" "),
