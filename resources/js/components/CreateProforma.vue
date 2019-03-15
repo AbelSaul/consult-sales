@@ -66,78 +66,7 @@
                 </v-flex>
               </v-layout>
             </v-form>
-
-            <v-toolbar flat color="white">
-              <v-spacer></v-spacer>
-              <v-dialog v-model="dialog" max-width="800px">
-                <v-btn slot="activator" color="primary" dark class="mb-2">AGREGAR PRODUCTOS</v-btn>
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">Seleccionar</span>
-                    <v-spacer></v-spacer>
-                    <v-text-field
-                      v-model="search"
-                      append-icon="search"
-                      label="Buscar"
-                      single-line
-                      hide-details
-                    ></v-text-field>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-layout wrap>
-                      <v-flex xs12 sm12 md12>
-                        <v-data-table
-                          v-model="selected"
-                          :headers="headers_products"
-                          :items="products"
-                          :search="search"
-                          item-key="idproducto"
-                          select-all
-                          class="elevation-1 table-modal"
-                        >
-                          <template slot="items" slot-scope="props">
-                            <td>
-                              <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
-                            </td>
-                            <td
-                              class="text-right product-td"
-                            >{{ props.item.descripcion + ' - ' + props.item.codigo }}</td>
-                            <td class="text-xs-rigth">
-                              <template v-if="props.item.fraccion == 1">{{ props.item.medida }}</template>
-                              <template v-else>
-                                <v-select
-                                  v-model="props.item.num_um"
-                                  :items="[
-                                    { id:1, text: props.item.medida }, 
-                                    { id: 2, text: props.item.medida_fra } 
-                                  ]"
-                                  item-value="id"
-                                  item-text="text"
-                                ></v-select>
-                              </template>
-                            </td>
-
-                            <td class="text-xs-center super-price">
-                              <template
-                                v-if="props.item.num_um == 2"
-                              >{{ Number(props.item.precio_fra).toFixed(2) }}</template>
-                              <template v-else>
-                                <SelectEdit :items="props.item.prices" v-model="props.item.precio"></SelectEdit>
-                              </template>
-                            </td>
-                          </template>
-                        </v-data-table>
-                      </v-flex>
-                    </v-layout>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click="close">Cerrar</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </v-toolbar>
-
+            <list-products></list-products>
             <v-data-table
               :headers="headers_orders"
               :items="selected"
@@ -154,8 +83,8 @@
                     <v-select
                       v-model="props.item.num_um"
                       :items="[
-                        { id:1, text: props.item.medida }, 
-                        { id: 2, text: props.item.medida_fra } 
+                        { id:1, text: props.item.medida },
+                        { id: 2, text: props.item.medida_fra }
                       ]"
                       item-value="id"
                       item-text="text"
@@ -211,6 +140,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions } from "vuex";
+
 export default {
   data: function() {
     return {
@@ -222,8 +153,6 @@ export default {
       sellers: [],
       searchSeller: null,
       conditions: ["contado", "credito"],
-      products: [],
-      selected: [],
       dialog: false,
       search: "",
       sellerDefault: {},
@@ -234,11 +163,6 @@ export default {
         { text: "Cantidad", sortable: false, value: "cantidad" },
         { text: "Importe", sortable: false, value: "precio_total" },
         { text: "Acción", sortable: false, value: "accion" }
-      ],
-      headers_products: [
-        { text: "Producto", sortable: false, value: "descripcion" },
-        { text: "Medida", sortable: false, value: "medida" },
-        { text: "Precio", sortable: false, value: "precio" }
       ],
       editedIndex: -1,
       clientId: "",
@@ -255,10 +179,6 @@ export default {
     };
   },
   mounted() {
-    axios.get("/api/products").then(({ data }) => {
-      this.products = data;
-    });
-
     axios.get("/api/seller_user").then(({ data }) => {
       this.sellerDefault = data;
       this.sellers = [data];
@@ -266,6 +186,7 @@ export default {
     });
   },
   computed: {
+    ...mapState(["selected"]),
     sumaTotal() {
       this.total = 0;
       this.selected.forEach(product => {
@@ -300,6 +221,10 @@ export default {
   },
 
   methods: {
+    ...mapActions(["removeAll","removeProduct"]),
+    removeAllSelected() {
+      this.removeAll().then(() => {});
+    },
     onChangeClient(client) {
       if (client) {
         this.phone = client.telefono;
@@ -312,11 +237,10 @@ export default {
       this.search = "";
       this.dialog = false;
     },
-
     deleteItem(item) {
       const index = this.selected.indexOf(item);
       confirm("Esta seguro de querer borrar este item?") &&
-        this.selected.splice(index, 1);
+        this.removeProduct(index);
     },
 
     onSubmitOrder() {
@@ -376,7 +300,7 @@ export default {
       this.phone = "";
       this.attention = "";
       this.email = "";
-      this.selected = [];
+      this.removeAllSelected();
     }
   }
 };

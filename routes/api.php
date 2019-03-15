@@ -22,6 +22,7 @@ Route::post('login', 'SessionController@login');
 Route::get('connections', 'ConnectionController@index');
 Route::get('validate_ruc', 'ConnectionController@validateRuc');
 Route::get('products', 'ProductController@index')->middleware('verify');
+Route::get('search-products', 'ProductController@search')->middleware('verify');
 Route::get('sellers', 'SellerController@index')->middleware('verify');
 Route::get('seller_user', 'SellerController@findSeller')->middleware('verify');
 Route::get('users', 'SellerController@users')->middleware('verify');
