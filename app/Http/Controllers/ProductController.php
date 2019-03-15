@@ -10,11 +10,30 @@ class ProductController extends Controller
 {
     public function index() {
 
-        $params = DB::table('parametros')->first();
-        $cond = $params->igv_inc == 1;
-
         $products = Product::where('estado', 'A')->orderBy('descripcion', 'asc')
                                                  ->get();
+        $products_convert = $this->convert($products);
+
+        return $products_convert;
+    }
+
+    public function search(Request $request) {
+
+        $search = $request->search;
+        $products = Product::where('estado', 'A')
+                                                 ->where('descripcion', 'like', '%'.$search.'%')
+                                                 ->orderBy('descripcion', 'asc')
+                                                 ->paginate(5);
+
+
+        $products_convert = $this->convert($products);
+
+        return response()->json($products_convert);
+    }
+
+    public function convert($products){
+        $params = DB::table('parametros')->first();
+        $cond = $params->igv_inc == 1;
         $name_prices = ['precio','precio1','precio2','precio3','precio4'];
         foreach ($products as $product) {
             $prices = array();

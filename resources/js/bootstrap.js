@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import Vuex from 'vuex'
 import axios from 'axios';
 import Vuetify from 'vuetify';
 import vuetifyToast from 'vuetify-toast';
@@ -12,7 +11,6 @@ import { datepickerOptions, localeFormat } from './date';
 
 window.Vue = Vue;
 
-Vue.use(Vuex)
 Vue.use(Vuetify);
 Vue.use(vueInputNumber);
 // see docs for available options vue-airbnb-style-datepicker

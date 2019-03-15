@@ -1,4 +1,6 @@
 import './bootstrap';
+import {store} from './store'
+
 
 Vue.component(
     'auth-component',
@@ -18,6 +20,8 @@ Vue.component('SelectEdit', require('./components/SelectEdit').default);
 
 Vue.component('list-proformas', require('./components/ListProformas').default);
 
+Vue.component('list-products', require('./components/ListProducts').default);
+
 Vue.component(
     'edit-proforma',
     require('./components/EditProforma.vue').default
@@ -26,5 +30,5 @@ Vue.component(
 
 //Vue
 new Vue({
-    el: '#app'
-});
+    store,
+}).$mount('#app')
