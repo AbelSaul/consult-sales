@@ -108,6 +108,7 @@ export default {
         total: 0
       },
       headers_products: [
+        { text: "#", sortable: false, value: "" },
         { text: "Producto", sortable: false, value: "descripcion" },
         { text: "Medida", sortable: false, value: "medida" },
         { text: "Precio", sortable: false, value: "precio" }
