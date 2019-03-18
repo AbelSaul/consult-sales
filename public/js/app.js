@@ -1857,6 +1857,304 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Client.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Client.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["clients"],
+  data: function data() {
+    return {
+      isLoading: false,
+      isLoadingNumDocument: false,
+      dialog: false,
+      mask_documento: "###########",
+      mask_telefono: "##########",
+      mask_celular: "###-###-###",
+      search: "",
+      searchPeople: null,
+      headers: [{
+        text: "N°",
+        value: "n"
+      }, {
+        text: "Número Documento",
+        value: "numero_documento"
+      }, {
+        text: "Nombres/Razon Social",
+        value: "primer_nombre"
+      }, {
+        text: "Apellidos/Nombre Comercial",
+        value: "segundo_nombre"
+      }, {
+        text: "Distrito",
+        value: "distrito"
+      }, {
+        text: "Teléfono",
+        value: "telefono"
+      }, {
+        text: "Celular",
+        value: "celular"
+      }, {
+        text: "Correo",
+        value: "correo" // { text: "Acciones", value: "action", sortable: false }
+
+      }],
+      numDocumentoRules: [function (v) {
+        return v.length == 8 || v.length == 11 || "Ingrese 8 o 11 números";
+      }],
+      editedIndex: -1,
+      editedItem: {
+        numero_documento: "",
+        primer_nombre: "",
+        segundo_nombre: "",
+        telefono: "",
+        celular: "",
+        correo: "",
+        distrito: ""
+      },
+      defaultItem: {
+        numero_documento: "",
+        primer_nombre: "",
+        segundo_nombre: "",
+        telefono: "",
+        celular: "",
+        correo: "",
+        distrito: ""
+      }
+    };
+  },
+  mounted: function mounted() {// axios.get("/api/clients").then(({ data }) => {
+    //   this.clientes = data;
+    //   console.log(this.clientes);
+    // });
+  },
+  computed: {
+    formTitle: function formTitle() {
+      return this.editedIndex === -1 ? "Nuevo Cliente" : "Editar CLiente";
+    }
+  },
+  watch: {
+    dialog: function dialog(val) {
+      val || this.close();
+    }
+  },
+  methods: {
+    // initialize() {
+    //   axios.get("/api/clients-list").then(({ data }) => {
+    //     this.clients = data;
+    //     console.log(this.clients);
+    //   });
+    // },
+    editItem: function editItem(item) {
+      this.editedIndex = this.clients.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    deleteItem: function deleteItem(item) {
+      var index = this.clients.indexOf(item);
+      confirm("Are you sure you want to delete this item?") && this.clients.splice(index, 1);
+    },
+    close: function close() {
+      var _this = this;
+
+      this.dialog = false;
+      setTimeout(function () {
+        _this.editedItem = Object.assign({}, _this.defaultItem);
+        _this.editedIndex = -1;
+      }, 300);
+    },
+    save: function save() {
+      var _this2 = this;
+
+      if (this.editedIndex > -1) {
+        Object.assign(this.clients[this.editedIndex], this.editedItem);
+      } else {
+        var data = {
+          numero_documento: this.editedItem.numero_documento,
+          primer_nombre: this.editedItem.primer_nombre,
+          segundo_nombre: this.editedItem.segundo_nombre,
+          distrito: this.editedItem.distrito,
+          telefono: this.editedItem.telefono,
+          celular: this.editedItem.celular,
+          correo: this.editedItem.correo
+        };
+
+        if (!this.editedItem.numero_documento) {
+          notify.error("Ingrese número de documento");
+          return;
+        }
+
+        if (!this.editedItem.primer_nombre) {
+          notify.error("Ingrese Nombre/Razón social ");
+          return;
+        }
+
+        if (!this.editedItem.segundo_nombre) {
+          notify.error("Ingrese Apellidos/Nombre comercial");
+          return;
+        }
+
+        if (!this.editedItem.distrito) {
+          notify.error("Ingrese distrito");
+          return;
+        }
+
+        this.isLoading = true;
+        axios.post("/api/client/create", data).then(function (_ref) {
+          var data = _ref.data;
+          notify.showCool(data.message);
+
+          _this2.reset();
+
+          _this2.close(); // this.initialize();
+
+
+          _this2.isLoading = false;
+        }).catch(function (error) {
+          notify.error(error.response.data.message);
+          _this2.isLoading = false;
+        });
+      }
+    },
+    getFindPeople: function getFindPeople() {
+      var _this3 = this;
+
+      var params = {
+        numero_documento: this.editedItem["numero_documento"]
+      };
+      this.isLoadingNumDocument = true;
+      axios.get("/api/find_people", {
+        params: params
+      }).then(function (_ref2) {
+        var data = _ref2.data;
+        _this3.editedItem = data;
+        _this3.isLoadingNumDocument = false;
+      }).catch(function (error) {
+        notify.error(error.response.data.message);
+        _this3.isLoadingNumDocument = false;
+
+        _this3.reset();
+      });
+    },
+    reset: function reset() {
+      // (this.editedItem[numero_documento] = ""),
+      this.editedItem["primer_nombre"] = "", this.editedItem["segundo_nombre"] = "", this.editedItem["telefono"] = "", this.editedItem["celular"] = "", this.editedItem["correo"] = "", this.editedItem["distrito"] = "";
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateProforma.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CreateProforma.vue?vue&type=script&lang=js& ***!
@@ -2784,6 +3082,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         total: 0
       },
       headers_products: [{
+        text: "#",
+        sortable: false,
+        value: ""
+      }, {
         text: "Producto",
         sortable: false,
         value: "descripcion"
@@ -15399,6 +15701,388 @@ var render = function() {
         ],
         1
       )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Client.vue?vue&type=template&id=87947714&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Client.vue?vue&type=template&id=87947714& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-toolbar",
+        { attrs: { flat: "", color: "white" } },
+        [
+          _c(
+            "v-layout",
+            { attrs: { wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm6: "", md4: "" } },
+                [
+                  _c("v-toolbar-title", [_vm._v("Clientes")]),
+                  _vm._v(" "),
+                  _c("v-divider", {
+                    staticClass: "mx-2",
+                    attrs: { inset: "", vertical: "" }
+                  }),
+                  _vm._v(" "),
+                  _c("v-spacer")
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm6: "", md4: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      "append-icon": "search",
+                      label: "Búscar cliente",
+                      "single-line": "",
+                      "hide-details": ""
+                    },
+                    model: {
+                      value: _vm.search,
+                      callback: function($$v) {
+                        _vm.search = $$v
+                      },
+                      expression: "search"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-dialog",
+            {
+              attrs: { "max-width": "800px" },
+              model: {
+                value: _vm.dialog,
+                callback: function($$v) {
+                  _vm.dialog = $$v
+                },
+                expression: "dialog"
+              }
+            },
+            [
+              _c(
+                "v-btn",
+                {
+                  staticClass: "mb-2",
+                  attrs: { slot: "activator", color: "primary", dark: "" },
+                  slot: "activator"
+                },
+                [_c("v-icon", [_vm._v("add")]), _vm._v("CLIENTE\n      ")],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card",
+                [
+                  _c("v-card-title", [
+                    _c("span", { staticClass: "headline" }, [
+                      _vm._v(_vm._s(_vm.formTitle))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c(
+                        "v-container",
+                        { attrs: { "grid-list-md": "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            {
+                              attrs: {
+                                xs12: "",
+                                sm6: "",
+                                md4: "",
+                                "offset-md4": ""
+                              }
+                            },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  mask: _vm.mask_documento,
+                                  label: "Número de Documento",
+                                  placeholder: "Buscar..",
+                                  loading: _vm.isLoadingNumDocument,
+                                  outline: "",
+                                  rules: _vm.numDocumentoRules
+                                },
+                                on: { change: _vm.getFindPeople },
+                                model: {
+                                  value: _vm.editedItem.numero_documento,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.editedItem,
+                                      "numero_documento",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "editedItem.numero_documento"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-layout",
+                            { attrs: { wrap: "" } },
+                            [
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md4: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Nombre/Razón Social" },
+                                    model: {
+                                      value: _vm.editedItem.primer_nombre,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.editedItem,
+                                          "primer_nombre",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "editedItem.primer_nombre"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md4: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Apellidos/Nombre Comercial"
+                                    },
+                                    model: {
+                                      value: _vm.editedItem.segundo_nombre,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.editedItem,
+                                          "segundo_nombre",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "editedItem.segundo_nombre"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md4: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Distrito" },
+                                    model: {
+                                      value: _vm.editedItem.distrito,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.editedItem,
+                                          "distrito",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "editedItem.distrito"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md4: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      mask: _vm.mask_telefono,
+                                      label: "Teléfono"
+                                    },
+                                    model: {
+                                      value: _vm.editedItem.telefono,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.editedItem,
+                                          "telefono",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "editedItem.telefono"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md4: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      mask: _vm.mask_celular,
+                                      label: "Celular"
+                                    },
+                                    model: {
+                                      value: _vm.editedItem.celular,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.editedItem, "celular", $$v)
+                                      },
+                                      expression: "editedItem.celular"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "", md4: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Correo" },
+                                    model: {
+                                      value: _vm.editedItem.correo,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.editedItem, "correo", $$v)
+                                      },
+                                      expression: "editedItem.correo"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-actions",
+                    [
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "error darken-1", flat: "" },
+                          on: { click: _vm.close }
+                        },
+                        [_vm._v("Cancelar")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "success darken-1", flat: "" },
+                          on: { click: _vm.save }
+                        },
+                        [_vm._v("Guardar")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _vm.isLoading ? _c("loader") : _vm._e()
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("v-data-table", {
+        staticClass: "elevation-1",
+        attrs: { headers: _vm.headers, items: _vm.clients, search: _vm.search },
+        scopedSlots: _vm._u([
+          {
+            key: "items",
+            fn: function(props) {
+              return [
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _vm._v(_vm._s(props.index + 1))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _vm._v(_vm._s(props.item.numero_documento))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _vm._v(_vm._s(props.item.primer_nombre))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _vm._v(_vm._s(props.item.segundo_nombre))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _vm._v(_vm._s(props.item.distrito))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _vm._v(_vm._s(props.item.telefono))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _vm._v(_vm._s(props.item.celular))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _vm._v(_vm._s(props.item.correo))
+                ])
+              ]
+            }
+          }
+        ])
+      })
     ],
     1
   )
@@ -53612,7 +54296,8 @@ Vue.component('loader', __webpack_require__(/*! ./components/Loader */ "./resour
 Vue.component('SelectEdit', __webpack_require__(/*! ./components/SelectEdit */ "./resources/js/components/SelectEdit.vue").default);
 Vue.component('list-proformas', __webpack_require__(/*! ./components/ListProformas */ "./resources/js/components/ListProformas.vue").default);
 Vue.component('list-products', __webpack_require__(/*! ./components/ListProducts */ "./resources/js/components/ListProducts.vue").default);
-Vue.component('edit-proforma', __webpack_require__(/*! ./components/EditProforma.vue */ "./resources/js/components/EditProforma.vue").default); //Vue
+Vue.component('edit-proforma', __webpack_require__(/*! ./components/EditProforma.vue */ "./resources/js/components/EditProforma.vue").default);
+Vue.component('client', __webpack_require__(/*! ./components/Client */ "./resources/js/components/Client.vue").default); //Vue
 
 new Vue({
   store: _store__WEBPACK_IMPORTED_MODULE_1__["store"]
@@ -53764,6 +54449,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AuthComponent_vue_vue_type_template_id_b0e5954c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AuthComponent_vue_vue_type_template_id_b0e5954c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Client.vue":
+/*!********************************************!*\
+  !*** ./resources/js/components/Client.vue ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Client_vue_vue_type_template_id_87947714___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Client.vue?vue&type=template&id=87947714& */ "./resources/js/components/Client.vue?vue&type=template&id=87947714&");
+/* harmony import */ var _Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Client.vue?vue&type=script&lang=js& */ "./resources/js/components/Client.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Client_vue_vue_type_template_id_87947714___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Client_vue_vue_type_template_id_87947714___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Client.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Client.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/Client.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Client.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Client.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Client.vue?vue&type=template&id=87947714&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/Client.vue?vue&type=template&id=87947714& ***!
+  \***************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_87947714___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Client.vue?vue&type=template&id=87947714& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Client.vue?vue&type=template&id=87947714&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_87947714___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Client_vue_vue_type_template_id_87947714___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

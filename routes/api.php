@@ -26,7 +26,12 @@ Route::get('search-products', 'ProductController@search')->middleware('verify');
 Route::get('sellers', 'SellerController@index')->middleware('verify');
 Route::get('seller_user', 'SellerController@findSeller')->middleware('verify');
 Route::get('users', 'SellerController@users')->middleware('verify');
+
 Route::get('clients', 'ClientController@index')->middleware('verify');
+Route::get('find_people', 'ClientController@findPeople')->middleware('verify');
+Route::post('client/create', 'ClientController@create')->middleware('verify');
+Route::get('/clients-list', 'ClientController@list')->name('clientes-list')->middleware('verify');
+
 Route::get('conditions', 'ProformaController@conditions')->middleware('verify');
 Route::get('search-proformas', 'ProformaController@search')->middleware('verify');
 Route::post('proforma/create', 'ProformaController@create')->middleware('verify');

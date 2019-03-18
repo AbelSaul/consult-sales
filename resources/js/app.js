@@ -1,5 +1,5 @@
 import './bootstrap';
-import {store} from './store'
+import { store } from './store'
 
 
 Vue.component(
@@ -27,6 +27,7 @@ Vue.component(
     require('./components/EditProforma.vue').default
 );
 
+Vue.component('client', require('./components/Client').default);
 
 //Vue
 new Vue({
