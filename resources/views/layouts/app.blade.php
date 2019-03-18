@@ -18,7 +18,7 @@
                     <v-toolbar-title><a class="white--text" href="{{ url('') }}">PEDIDOS</a></v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items class="hidden-sm-and-down">
-                        <a class="white--text" href="{{ route('clientes-list') }}">
+                        <a class="white--text" href="{{ route('clientes-form') }}">
                             <v-btn flat class="full-height">
                                 CLIENTES
                             </v-btn>
