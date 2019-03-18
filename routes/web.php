@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\DB;
 Route::view('/', 'home')->middleware('verify');
 Route::get('/proformas', 'ProformaController@index')->name('consultas')->middleware('verify');
 Route::get('/proformas/{id}', 'ProformaController@edit')->middleware('verify');
+Route::get('/clientes-form', 'ClientController@form')->name('clientes-form')->middleware('verify');
+
+Route::get('/clientes/{id}', 'ClientController@edit')->middleware('verify');
+
+
 
 Route::get('/login', function() {
     return view('login', ['header' => 'none']);
