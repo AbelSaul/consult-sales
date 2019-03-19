@@ -23,7 +23,7 @@ class ClientController extends Controller
     public function form(Request $request){
 
         $search = $request->search;
-        $fields = ['idcliente as id', 'cliente as primer_nombre' , 'ncomercial as segundo_nombre', 'direccion as distrito', 'ruc as numero_documento','telefono','celular','correo'];
+        $fields = ['idcliente as id', 'cliente as primer_nombre' , 'ncomercial as segundo_nombre', 'direccion as direccion', 'ruc as numero_documento','telefono','celular','correo'];
         $clients = $this->find($search,$fields);
 
         return view('clients.index',compact('clients'));
@@ -32,7 +32,7 @@ class ClientController extends Controller
     public function list(Request $request){
 
         $search = $request->search;
-        $fields = ['idcliente as id', 'cliente as primer_nombre' , 'ncomercial as segundo_nombre', 'direccion as distrito', 'ruc as numero_documento','telefono','celular','correo'];
+        $fields = ['idcliente as id', 'cliente as primer_nombre' , 'ncomercial as segundo_nombre', 'direccion as direccion', 'ruc as numero_documento','telefono','celular','correo'];
         $clients = $this->find($search,$fields);
         return $clients;
 
@@ -105,7 +105,7 @@ class ClientController extends Controller
          $numero_documento = $people["dni"];
          $primer_nombre = $people["nombres"];
          $segundo_nombre = $people["apellido_paterno"]." ".$people["apellido_materno"];
-         $distrito = "";
+         $direccion = "";
          $telefono = "";
          $celular = "";
          $correo = "";
@@ -116,14 +116,14 @@ class ClientController extends Controller
                 $segundo_nombre = $people["nombre_comercial"];
                 $address = explode("-",$people["domicilio_fiscal"]);
                 $length = sizeof($address);
-                $distrito = $address[$length - 2]." " .$address[$length - 1];
+                $direccion = $address[$length - 2]." " .$address[$length - 1];
                 $telefono = "";
                 $celular = "";
                 $correo = "";
             }
         }
 
-        $people_convert = array('numero_documento'=>$numero_documento, 'primer_nombre'=>$primer_nombre, 'segundo_nombre'=>$segundo_nombre, 'distrito' => $distrito, 'telefono' => $telefono, 'celular' => $celular, 'correo' => $correo);
+        $people_convert = array('numero_documento'=>$numero_documento, 'primer_nombre'=>$primer_nombre, 'segundo_nombre'=>$segundo_nombre, 'direccion' => $direccion, 'telefono' => $telefono, 'celular' => $celular, 'correo' => $correo);
 
          return $people_convert;
     }
@@ -135,7 +135,7 @@ class ClientController extends Controller
             'numero_documento'   => 'required',
             'primer_nombre' => 'required',
             'segundo_nombre' => 'required',
-            'distrito' => 'required',
+            'direccion' => 'required',
         ]);
 
         $client = Client::where('ruc', $request->numero_documento)->orWhere('dni', $request->numero_documento)->first();
@@ -163,7 +163,7 @@ class ClientController extends Controller
             "cliente" => $request->primer_nombre,
             "ncomercial" => $request->segundo_nombre,
             "ruc" => $request->numero_documento,
-            "direccion" => $request->distrito,
+            "direccion" => $request->direccion,
             "telefono" => $request->telefono,
             "celular" => $request->celular,
             "correo" => $request->correo
