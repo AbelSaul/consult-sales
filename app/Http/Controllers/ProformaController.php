@@ -108,8 +108,8 @@ class ProformaController extends Controller
         }
 
         if (request('email')) {
-            // $user = (object) ["email" => request('email') ];
-            // \Mail::to($user)->send(new SendProforma($user, $proforma));
+            $user = (object) ["email" => request('email') ];
+            \Mail::to($user)->send(new SendProforma($user, $proforma));
         }
         
         return response()->json(['message' => "Proforma creada"], 200);
