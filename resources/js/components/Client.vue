@@ -55,7 +55,7 @@
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.distrito" label="Distrito"></v-text-field>
+                  <v-text-field v-model="editedItem.direccion" label="Dirección"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-text-field
@@ -90,7 +90,7 @@
         <td class="text-xs-center">{{ props.item.numero_documento }}</td>
         <td class="text-xs-center">{{ props.item.primer_nombre }}</td>
         <td class="text-xs-center">{{ props.item.segundo_nombre }}</td>
-        <td class="text-xs-center">{{ props.item.distrito }}</td>
+        <td class="text-xs-center">{{ props.item.direccion }}</td>
         <td class="text-xs-center">{{ props.item.telefono }}</td>
         <td class="text-xs-center">{{ props.item.celular }}</td>
         <td class="text-xs-center">{{ props.item.correo }}</td>
@@ -121,7 +121,7 @@ export default {
         { text: "Número Documento", value: "numero_documento" },
         { text: "Nombres/Razon Social", value: "primer_nombre" },
         { text: "Apellidos/Nombre Comercial", value: "segundo_nombre" },
-        { text: "Distrito", value: "distrito" },
+        { text: "Direccion", value: "direccion" },
         { text: "Teléfono", value: "telefono" },
         { text: "Celular", value: "celular" },
         { text: "Correo", value: "correo" }
@@ -138,7 +138,7 @@ export default {
         telefono: "",
         celular: "",
         correo: "",
-        distrito: ""
+        direccion: ""
       },
       defaultItem: {
         numero_documento: "",
@@ -147,7 +147,7 @@ export default {
         telefono: "",
         celular: "",
         correo: "",
-        distrito: ""
+        direccion: ""
       }
     };
   },
@@ -204,7 +204,7 @@ export default {
           numero_documento: this.editedItem.numero_documento,
           primer_nombre: this.editedItem.primer_nombre,
           segundo_nombre: this.editedItem.segundo_nombre,
-          distrito: this.editedItem.distrito,
+          direccion: this.editedItem.direccion,
           telefono: this.editedItem.telefono,
           celular: this.editedItem.celular,
           correo: this.editedItem.correo
@@ -225,8 +225,8 @@ export default {
           return;
         }
 
-        if (!this.editedItem.distrito) {
-          notify.error("Ingrese distrito");
+        if (!this.editedItem.direccion) {
+          notify.error("Ingrese dirección");
           return;
         }
 
@@ -273,7 +273,7 @@ export default {
         (this.editedItem["telefono"] = ""),
         (this.editedItem["celular"] = ""),
         (this.editedItem["correo"] = ""),
-        (this.editedItem["distrito"] = "");
+        (this.editedItem["direccion"] = "");
     }
   }
 };

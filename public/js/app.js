@@ -1996,8 +1996,8 @@ __webpack_require__.r(__webpack_exports__);
         text: "Apellidos/Nombre Comercial",
         value: "segundo_nombre"
       }, {
-        text: "Distrito",
-        value: "distrito"
+        text: "Direccion",
+        value: "direccion"
       }, {
         text: "Teléfono",
         value: "telefono"
@@ -2020,7 +2020,7 @@ __webpack_require__.r(__webpack_exports__);
         telefono: "",
         celular: "",
         correo: "",
-        distrito: ""
+        direccion: ""
       },
       defaultItem: {
         numero_documento: "",
@@ -2029,7 +2029,7 @@ __webpack_require__.r(__webpack_exports__);
         telefono: "",
         celular: "",
         correo: "",
-        distrito: ""
+        direccion: ""
       }
     };
   },
@@ -2083,7 +2083,7 @@ __webpack_require__.r(__webpack_exports__);
           numero_documento: this.editedItem.numero_documento,
           primer_nombre: this.editedItem.primer_nombre,
           segundo_nombre: this.editedItem.segundo_nombre,
-          distrito: this.editedItem.distrito,
+          direccion: this.editedItem.direccion,
           telefono: this.editedItem.telefono,
           celular: this.editedItem.celular,
           correo: this.editedItem.correo
@@ -2104,8 +2104,8 @@ __webpack_require__.r(__webpack_exports__);
           return;
         }
 
-        if (!this.editedItem.distrito) {
-          notify.error("Ingrese distrito");
+        if (!this.editedItem.direccion) {
+          notify.error("Ingrese dirección");
           return;
         }
 
@@ -2148,7 +2148,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     reset: function reset() {
       // (this.editedItem[numero_documento] = ""),
-      this.editedItem["primer_nombre"] = "", this.editedItem["segundo_nombre"] = "", this.editedItem["telefono"] = "", this.editedItem["celular"] = "", this.editedItem["correo"] = "", this.editedItem["distrito"] = "";
+      this.editedItem["primer_nombre"] = "", this.editedItem["segundo_nombre"] = "", this.editedItem["telefono"] = "", this.editedItem["celular"] = "", this.editedItem["correo"] = "", this.editedItem["direccion"] = "";
     }
   }
 });
@@ -15912,17 +15912,17 @@ var render = function() {
                                 { attrs: { xs12: "", sm6: "", md4: "" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "Distrito" },
+                                    attrs: { label: "Dirección" },
                                     model: {
-                                      value: _vm.editedItem.distrito,
+                                      value: _vm.editedItem.direccion,
                                       callback: function($$v) {
                                         _vm.$set(
                                           _vm.editedItem,
-                                          "distrito",
+                                          "direccion",
                                           $$v
                                         )
                                       },
-                                      expression: "editedItem.distrito"
+                                      expression: "editedItem.direccion"
                                     }
                                   })
                                 ],
@@ -16064,7 +16064,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.distrito))
+                  _vm._v(_vm._s(props.item.direccion))
                 ]),
                 _vm._v(" "),
                 _c("td", { staticClass: "text-xs-center" }, [
