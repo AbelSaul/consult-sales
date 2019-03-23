@@ -2481,7 +2481,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this5.reset();
 
         _this5.isLoadingProforma = false;
-      }).catch(function (response) {
+      }).catch(function (error) {
+        // notify.error(error.response.data.message);
         notify.error("Ocurrio un error");
         _this5.isLoadingProforma = false;
       });
@@ -3070,6 +3071,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3097,6 +3102,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         text: "Precio",
         sortable: false,
         value: "precio"
+      }, {
+        text: "Marca",
+        sortable: false,
+        value: "marca"
+      }, {
+        text: "Stock Físico",
+        sortable: false,
+        value: "stock_fisico"
+      }, {
+        text: "Stock Reservado",
+        sortable: false,
+        value: "stock_reservado"
+      }, {
+        text: "Stock Disponible",
+        sortable: false,
+        value: "stock_disponible"
       }],
       dialog: false,
       search: "",
@@ -17360,7 +17381,7 @@ var render = function() {
           _c(
             "v-dialog",
             {
-              attrs: { "max-width": "800px" },
+              attrs: { "max-width": "1200px" },
               model: {
                 value: _vm.dialog,
                 callback: function($$v) {
@@ -17562,6 +17583,34 @@ var render = function() {
                                                 ]
                                           ],
                                           2
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "td",
+                                          { staticClass: "text-right" },
+                                          [_vm._v(_vm._s(props.item.marca))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "td",
+                                          { staticClass: "text-right" },
+                                          [_vm._v(_vm._s(props.item.stock))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "td",
+                                          { staticClass: "text-right" },
+                                          [_vm._v(_vm._s(props.item.reserva))]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "td",
+                                          { staticClass: "text-right" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(props.item.disponible)
+                                            )
+                                          ]
                                         )
                                       ]
                                     }
@@ -17593,7 +17642,7 @@ var render = function() {
                       _c(
                         "v-btn",
                         {
-                          attrs: { color: "blue darken-1", flat: "" },
+                          attrs: { color: "error darken-1", flat: "" },
                           on: { click: _vm.close }
                         },
                         [_vm._v("Cerrar")]
