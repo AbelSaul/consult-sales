@@ -221,7 +221,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["removeAll","removeProduct"]),
+    ...mapActions(["removeAll", "removeProduct"]),
     removeAllSelected() {
       this.removeAll().then(() => {});
     },
@@ -287,7 +287,8 @@ export default {
           this.reset();
           this.isLoadingProforma = false;
         })
-        .catch(response => {
+        .catch(error => {
+          // notify.error(error.response.data.message);
           notify.error("Ocurrio un error");
           this.isLoadingProforma = false;
         });

@@ -2,7 +2,7 @@
   <div>
     <v-toolbar flat color="white">
       <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="800px">
+      <v-dialog v-model="dialog" max-width="1200px">
         <v-btn
           slot="activator"
           color="primary"
@@ -72,6 +72,10 @@
                         <SelectEdit :items="props.item.prices" v-model="props.item.precio"></SelectEdit>
                       </template>
                     </td>
+                    <td class="text-right">{{ props.item.marca }}</td>
+                    <td class="text-right">{{ props.item.stock }}</td>
+                    <td class="text-right">{{ props.item.reserva }}</td>
+                    <td class="text-right">{{ props.item.disponible }}</td>
                   </template>
                 </v-data-table>
                 <!-- <div class="text-xs-center pt-2">
@@ -86,7 +90,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close">Cerrar</v-btn>
+            <v-btn color="error darken-1" flat @click="close">Cerrar</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -111,7 +115,11 @@ export default {
         { text: "#", sortable: false, value: "" },
         { text: "Producto", sortable: false, value: "descripcion" },
         { text: "Medida", sortable: false, value: "medida" },
-        { text: "Precio", sortable: false, value: "precio" }
+        { text: "Precio", sortable: false, value: "precio" },
+        { text: "Marca", sortable: false, value: "marca" },
+        { text: "Stock Físico", sortable: false, value: "stock_fisico" },
+        { text: "Stock Reservado", sortable: false, value: "stock_reservado" },
+        { text: "Stock Disponible", sortable: false, value: "stock_disponible" }
       ],
       dialog: false,
       search: "",
