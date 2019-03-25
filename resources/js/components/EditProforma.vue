@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <v-flex xs12 sm12 md12>
         <v-card>
-          <v-card-title class="headline font-weight-regular border-gray">NUEVO PEDIDO</v-card-title>
+          <v-card-title class="headline font-weight-regular border-gray">EDITAR PEDIDO</v-card-title>
           <v-card-text>
             <v-form>
               <v-layout wrap>
@@ -69,7 +69,7 @@
 
             <v-toolbar flat color="white">
               <v-spacer></v-spacer>
-              <v-dialog v-model="dialog" max-width="800px">
+              <v-dialog v-model="dialog" max-width="1200px">
                 <v-btn slot="activator" color="primary" dark class="mb-2">AGREGAR PRODUCTOS</v-btn>
                 <v-card>
                   <v-card-title>
@@ -92,7 +92,6 @@
                           :items="products"
                           :search="search"
                           item-key="idproducto"
-                          select-all
                           class="elevation-1 table-modal"
                         >
                           <template slot="items" slot-scope="props">
@@ -108,8 +107,8 @@
                                 <v-select
                                   v-model="props.item.num_um"
                                   :items="[
-                                    { id:1, text: props.item.medida }, 
-                                    { id: 2, text: props.item.medida_fra } 
+                                    { id:1, text: props.item.medida },
+                                    { id: 2, text: props.item.medida_fra }
                                   ]"
                                   item-value="id"
                                   item-text="text"
@@ -125,6 +124,10 @@
                                 <SelectEdit :items="props.item.prices" v-model="props.item.precio"></SelectEdit>
                               </template>
                             </td>
+                            <td class="text-right">{{ props.item.marca }}</td>
+                            <td class="text-right">{{ props.item.stock }}</td>
+                            <td class="text-right">{{ props.item.reserva }}</td>
+                            <td class="text-right">{{ props.item.disponible }}</td>
                           </template>
                         </v-data-table>
                       </v-flex>
@@ -132,7 +135,7 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click="close">Cerrar</v-btn>
+                    <v-btn color="error darken-1" flat @click="close">Cerrar</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -154,8 +157,8 @@
                     <v-select
                       v-model="props.item.num_um"
                       :items="[
-                        { id:1, text: props.item.medida }, 
-                        { id: 2, text: props.item.medida_fra } 
+                        { id:1, text: props.item.medida },
+                        { id: 2, text: props.item.medida_fra }
                       ]"
                       item-value="id"
                       item-text="text"
@@ -212,7 +215,7 @@
 
 <script>
 export default {
-  props: ["proforma"],
+  props: ["proforma", "selected_detail"],
   data: function() {
     return {
       isLoadingProforma: false,
@@ -222,9 +225,9 @@ export default {
       isLoadingSeller: false,
       sellers: [],
       searchSeller: null,
+      selected: this.selected_detail,
       conditions: ["contado", "credito"],
       products: [],
-      selected: [],
       dialog: false,
       search: "",
       sellerDefault: {},
@@ -239,7 +242,11 @@ export default {
       headers_products: [
         { text: "Producto", sortable: "edit", value: "descripcion" },
         { text: "Medida", sortable: "edit", value: "medida" },
-        { text: "Precio", sortable: "edit", value: "precio" }
+        { text: "Precio", sortable: "edit", value: "precio" },
+        { text: "Marca", sortable: false, value: "marca" },
+        { text: "Stock Físico", sortable: false, value: "stock_fisico" },
+        { text: "Stock Reservado", sortable: false, value: "stock_reservado" },
+        { text: "Stock Disponible", sortable: false, value: "stock_disponible" }
       ],
       editedIndex: -1,
       clientId: "",
@@ -257,23 +264,26 @@ export default {
   },
   mounted() {
     axios.get("/api/products").then(({ data }) => {
-      this.products = data.map(product => {
-        if (
-          this.proforma.details.some(
-            detail => detail.idproducto === product.idproducto
-          )
-        ) {
-          this.proforma.details.forEach(detail => {
-            product.num_um = detail.num_um;
-            product.precio = detail.precio;
-            product.cantidad =
-              detail.num_um == 1 ? parseInt(detail.cantidad) : detail.cantidad;
-          });
-          this.selected.push(product);
-          return product;
-        }
-        return product;
-      });
+      this.products = data;
+
+      // this.products = this.data.map(product => {
+      //   if (
+      //     this.proforma.details.some(
+      //       detail => detail.idproducto === product.idproducto
+      //     )
+      //   ) {
+      //     this.proforma.details.forEach(detail => {
+      //       product.num_um = detail.num_um;
+      //       product.precio = detail.precio;
+      //       product.cantidad =
+      //         detail.num_um == 1 ? parseInt(detail.cantidad) : detail.cantidad;
+      //     });
+
+      //     this.selected.push(product);
+      //     return product;
+      //   }
+      //   return product;
+      // });
       this.initEdit();
     });
 
@@ -318,6 +328,9 @@ export default {
   },
 
   methods: {
+    addItem(elemt) {
+      this.selected.push(elemt);
+    },
     initEdit() {
       this.clientId = {
         ...this.proforma.client,

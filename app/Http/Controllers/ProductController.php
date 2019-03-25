@@ -47,7 +47,6 @@ class ProductController extends Controller
                                                  ->orderBy('descripcion', 'asc')
                                                  ->paginate(5);
 
-
         $products_convert = $this->convert($products);
 
         return response()->json($products_convert);
