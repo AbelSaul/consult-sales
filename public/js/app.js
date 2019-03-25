@@ -2726,8 +2726,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["proforma"],
+  props: ["proforma", "selected_detail"],
   data: function data() {
     return {
       isLoadingProforma: false,
@@ -2737,9 +2740,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       isLoadingSeller: false,
       sellers: [],
       searchSeller: null,
+      selected: this.selected_detail,
       conditions: ["contado", "credito"],
       products: [],
-      selected: [],
       dialog: false,
       search: "",
       sellerDefault: {},
@@ -2780,6 +2783,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         text: "Precio",
         sortable: "edit",
         value: "precio"
+      }, {
+        text: "Marca",
+        sortable: false,
+        value: "marca"
+      }, {
+        text: "Stock Físico",
+        sortable: false,
+        value: "stock_fisico"
+      }, {
+        text: "Stock Reservado",
+        sortable: false,
+        value: "stock_reservado"
+      }, {
+        text: "Stock Disponible",
+        sortable: false,
+        value: "stock_disponible"
       }],
       editedIndex: -1,
       clientId: "",
@@ -2802,23 +2821,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     axios.get("/api/products").then(function (_ref) {
       var data = _ref.data;
-      _this.products = data.map(function (product) {
-        if (_this.proforma.details.some(function (detail) {
-          return detail.idproducto === product.idproducto;
-        })) {
-          _this.proforma.details.forEach(function (detail) {
-            product.num_um = detail.num_um;
-            product.precio = detail.precio;
-            product.cantidad = detail.num_um == 1 ? parseInt(detail.cantidad) : detail.cantidad;
-          });
-
-          _this.selected.push(product);
-
-          return product;
-        }
-
-        return product;
-      });
+      _this.products = data; // this.products = this.data.map(product => {
+      //   if (
+      //     this.proforma.details.some(
+      //       detail => detail.idproducto === product.idproducto
+      //     )
+      //   ) {
+      //     this.proforma.details.forEach(detail => {
+      //       product.num_um = detail.num_um;
+      //       product.precio = detail.precio;
+      //       product.cantidad =
+      //         detail.num_um == 1 ? parseInt(detail.cantidad) : detail.cantidad;
+      //     });
+      //     this.selected.push(product);
+      //     return product;
+      //   }
+      //   return product;
+      // });
 
       _this.initEdit();
     });
@@ -2871,6 +2890,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   methods: {
+    addItem: function addItem(elemt) {
+      this.selected.push(elemt);
+    },
     initEdit: function initEdit() {
       this.clientId = _objectSpread({}, this.proforma.client, {
         id: this.proforma.idcliente,
@@ -16610,7 +16632,7 @@ var render = function() {
                   _c(
                     "v-card-title",
                     { staticClass: "headline font-weight-regular border-gray" },
-                    [_vm._v("NUEVO PEDIDO")]
+                    [_vm._v("EDITAR PEDIDO")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -16805,7 +16827,7 @@ var render = function() {
                           _c(
                             "v-dialog",
                             {
-                              attrs: { "max-width": "800px" },
+                              attrs: { "max-width": "1200px" },
                               model: {
                                 value: _vm.dialog,
                                 callback: function($$v) {
@@ -16884,8 +16906,7 @@ var render = function() {
                                                   headers: _vm.headers_products,
                                                   items: _vm.products,
                                                   search: _vm.search,
-                                                  "item-key": "idproducto",
-                                                  "select-all": ""
+                                                  "item-key": "idproducto"
                                                 },
                                                 scopedSlots: _vm._u([
                                                   {
@@ -17061,6 +17082,68 @@ var render = function() {
                                                                 ]
                                                           ],
                                                           2
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "td",
+                                                          {
+                                                            staticClass:
+                                                              "text-right"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              _vm._s(
+                                                                props.item.marca
+                                                              )
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "td",
+                                                          {
+                                                            staticClass:
+                                                              "text-right"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              _vm._s(
+                                                                props.item.stock
+                                                              )
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "td",
+                                                          {
+                                                            staticClass:
+                                                              "text-right"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              _vm._s(
+                                                                props.item
+                                                                  .reserva
+                                                              )
+                                                            )
+                                                          ]
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _c(
+                                                          "td",
+                                                          {
+                                                            staticClass:
+                                                              "text-right"
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              _vm._s(
+                                                                props.item
+                                                                  .disponible
+                                                              )
+                                                            )
+                                                          ]
                                                         )
                                                       ]
                                                     }
@@ -17093,7 +17176,7 @@ var render = function() {
                                         "v-btn",
                                         {
                                           attrs: {
-                                            color: "blue darken-1",
+                                            color: "error darken-1",
                                             flat: ""
                                           },
                                           on: { click: _vm.close }
@@ -17784,7 +17867,9 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(props.item.total))]),
+                      _c("td", [
+                        _vm._v(_vm._s(Number(props.item.total).toFixed(2)))
+                      ]),
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(props.item.fecha))]),
                       _vm._v(" "),

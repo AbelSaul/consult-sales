@@ -45,7 +45,7 @@
             <td>{{ props.item.documento }}</td>
             <td>{{ props.item.seller ? props.item.seller.nombre : '' }}</td>
             <td>{{ props.item.client.cliente ? props.item.client.cliente : '' }}</td>
-            <td>{{ props.item.total}}</td>
+            <td>{{Number(props.item.total).toFixed(2)}}</td>
             <td>{{ props.item.fecha }}</td>
             <td>
               <button @click="showPdf(props.item)">
