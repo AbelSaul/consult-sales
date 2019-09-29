@@ -141,7 +141,7 @@ class ClientController extends Controller
         $client = Client::where('ruc', $request->numero_documento)->orWhere('dni', $request->numero_documento)->first();
         // var_dump($client);
         // exit;
-        if ($client->ruc == $request->numero_documento){
+        if ($client != null && $client->ruc == $request->numero_documento){
             return response()->json(['message' => "Ya existe un cliente con el número de documento ingresado "], 400);
 
         }
