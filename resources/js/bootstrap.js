@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css'
 import vuetifyToast from 'vuetify-toast';
 import vueInputNumber from 'vue-input-number';
 import 'es6-promise/auto'

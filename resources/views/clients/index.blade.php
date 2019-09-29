@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-  <client :clients="{{ $clients }}"></client>
+  <client></client>
 </div>
 @endsection
 

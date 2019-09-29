@@ -16,7 +16,6 @@ class ClientController extends Controller
         $search = $request->search;
         $fields = ['idcliente as id', DB::raw('CONCAT(cliente," - ",ruc) as text') , 'contacto', 'telefono', 'correo'];
         $clients = $this->find($search,$fields);
-
         return $clients;
     }
 
@@ -34,7 +33,8 @@ class ClientController extends Controller
         $search = $request->search;
         $fields = ['idcliente as id', 'cliente as primer_nombre' , 'ncomercial as segundo_nombre', 'direccion as direccion', 'ruc as numero_documento','telefono','celular','correo'];
         $clients = $this->find($search,$fields);
-        return $clients;
+        return response()->json($clients);
+
 
     }
 
@@ -43,12 +43,12 @@ class ClientController extends Controller
     public function find($search, $fields){
         if($search) {
             return Client::where('cliente', 'like', "%$search%")
-                ->limit(10)
                 ->orWhere('ruc', 'like', "%$search%")
                 ->orWhere('dni', 'like', "%$search%")
-                ->select($fields)->get();
+                ->orderByRaw('cliente  ASC')
+                ->select($fields)->paginate(10);
         }
-        return Client::limit(10)->select($fields)->get();
+        return Client::select($fields)->orderByRaw('cliente  ASC')->paginate(10);
     }
 
 

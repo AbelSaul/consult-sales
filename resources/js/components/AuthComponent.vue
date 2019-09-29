@@ -75,7 +75,7 @@ export default {
           user: this.user,
           password: this.password
         };
-        console.log(data);
+        // console.log(data);
         axios
           .post("/api/login", data)
           .then(({ data }) => {

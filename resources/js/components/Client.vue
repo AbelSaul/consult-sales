@@ -9,13 +9,10 @@
           <v-spacer></v-spacer>
         </v-flex>
         <v-flex xs12 sm6 md4>
-          <v-text-field
-            v-model="search"
-            append-icon="search"
-            label="Búscar cliente"
-            single-line
-            hide-details
-          ></v-text-field>
+          <v-text-field v-model="search" label="Búscar cliente" single-line hide-details></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6 md2>
+          <v-btn color="primary darken-1" outline @click="onSearch">Buscar</v-btn>
         </v-flex>
       </v-layout>
 
@@ -84,7 +81,14 @@
         </v-card>
       </v-dialog>
     </v-toolbar>
-    <v-data-table :headers="headers" :items="clients" class="elevation-1" :search="search">
+    <v-data-table
+      :headers="headers"
+      :items="clients"
+      :loading="loadingTable"
+      class="elevation-1"
+      :pagination.sync="pagination"
+      hide-actions
+    >
       <template slot="items" slot-scope="props">
         <td class="text-xs-center">{{ props.index + 1}}</td>
         <td class="text-xs-center">{{ props.item.numero_documento }}</td>
@@ -100,12 +104,15 @@
         </td>-->
       </template>
     </v-data-table>
+    <div class="text-xs-center pt-2">
+      <v-pagination v-model="pagination.current" :length="pagination.total" @input="onPageChange"></v-pagination>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["clients"],
+  // props: ["clients"],
   data() {
     return {
       isLoading: false,
@@ -115,7 +122,9 @@ export default {
       mask_telefono: "##########",
       mask_celular: "###-###-###",
       search: "",
-      searchPeople: null,
+      clients: [],
+      loadingTable: true,
+
       headers: [
         { text: "N°", value: "n" },
         { text: "Número Documento", value: "numero_documento" },
@@ -148,14 +157,17 @@ export default {
         celular: "",
         correo: "",
         direccion: ""
+      },
+      pagination: {
+        rowsPerPage: 10,
+        current: 1,
+        total: 0
       }
     };
   },
   mounted() {
-    // axios.get("/api/clients").then(({ data }) => {
-    //   this.clientes = data;
-    //   console.log(this.clientes);
-    // });
+    this.pagination.current = 1;
+    this.getSearchClients();
   },
   computed: {
     formTitle() {
@@ -170,12 +182,41 @@ export default {
   },
 
   methods: {
-    // initialize() {
-    //   axios.get("/api/clients-list").then(({ data }) => {
-    //     this.clients = data;
-    //     console.log(this.clients);
-    //   });
-    // },
+    onSearch() {
+      this.pagination.current = 1;
+      this.getSearchClients();
+    },
+
+    getSearchClients() {
+      // initialize() {
+      //   axios.get("/api/clients-list").then(({ data }) => {
+      //     this.clients = data;
+      //     console.log(this.clients);
+      //   });
+      // },
+
+      const params = {
+        search: this.search,
+        page: this.pagination.current
+      };
+      axios
+        .get(`/api/clients-list`, { params })
+        .then(({ data }) => {
+          console.log(data);
+          this.clients = data.data;
+          this.pagination.current = data.current_page;
+          this.pagination.total = data.last_page;
+          this.loadingTable = false;
+        })
+        .catch(error => {
+          notify.error(error.response.data.message);
+          this.loadingTable = false;
+        });
+      // console.log(this.startDate, this.endDate);
+    },
+    onPageChange() {
+      this.getSearchClients();
+    },
     editItem(item) {
       this.editedIndex = this.clients.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -199,6 +240,7 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.clients[this.editedIndex], this.editedItem);
+        console.log(this.editedItem);
       } else {
         const data = {
           numero_documento: this.editedItem.numero_documento,
@@ -209,6 +251,8 @@ export default {
           celular: this.editedItem.celular,
           correo: this.editedItem.correo
         };
+
+        console.log("ESTO ES EDITED ITEM", this.editedItem);
 
         if (!this.editedItem.numero_documento) {
           notify.error("Ingrese número de documento");
@@ -229,6 +273,10 @@ export default {
           notify.error("Ingrese dirección");
           return;
         }
+        if (this.editedItem.direccion === " ") {
+          notify.error("Ingrese dirección");
+          return;
+        }
 
         this.isLoading = true;
 
@@ -238,8 +286,7 @@ export default {
             notify.showCool(data.message);
             this.reset();
             this.close();
-            // this.initialize();
-
+            this.getSearchClients();
             this.isLoading = false;
           })
           .catch(error => {
@@ -257,13 +304,15 @@ export default {
       axios
         .get(`/api/find_people`, { params })
         .then(({ data }) => {
-          this.editedItem = data;
+          console.log();
+          if (data.numero_documento) {
+            this.editedItem = data;
+          }
           this.isLoadingNumDocument = false;
         })
         .catch(error => {
           notify.error(error.response.data.message);
           this.isLoadingNumDocument = false;
-          this.reset();
         });
     },
     reset() {

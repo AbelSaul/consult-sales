@@ -9,7 +9,11 @@
         <title>{{ config('app.name', 'Consulta de Proformas') }}</title>
         <link rel="shortcut icon" href="https://storage.googleapis.com/builderbook/favicon32.png">
         <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-        <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+        {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/2.0.19/vuetify.min.css"> --}}
+        {{-- <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet"> --}}
+                {{-- <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet"> --}}
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
     </head>
     <body>
         <div id="app">
