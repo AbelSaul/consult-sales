@@ -9,7 +9,13 @@
           <v-spacer></v-spacer>
         </v-flex>
         <v-flex xs12 sm6 md4>
-          <v-text-field v-model="search" label="Búscar cliente" single-line hide-details></v-text-field>
+          <v-text-field
+            v-model="search"
+            label="Búscar cliente"
+            single-line
+            hide-details
+            v-on:keyup="onSearch"
+          ></v-text-field>
         </v-flex>
         <v-flex xs12 sm6 md2>
           <v-btn color="primary darken-1" outline @click="onSearch">Buscar</v-btn>

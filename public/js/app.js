@@ -1978,6 +1978,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   // props: ["clients"],
   data: function data() {
@@ -15905,6 +15911,7 @@ var render = function() {
                       "single-line": "",
                       "hide-details": ""
                     },
+                    on: { keyup: _vm.onSearch },
                     model: {
                       value: _vm.search,
                       callback: function($$v) {
@@ -55447,7 +55454,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\laragon\www\Laravel\consult-sales\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\consult-sales\resources\js\app.js */"./resources/js/app.js");
 
 
 /***/ })
