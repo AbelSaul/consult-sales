@@ -32,7 +32,7 @@ class ClientController extends Controller
 
         $search = $request->search;
         $fields = ['idcliente as id', 'cliente as primer_nombre' , 'ncomercial as segundo_nombre', 'direccion as direccion', 'ruc as numero_documento','telefono','celular','correo'];
-        $clients = $this->find($search,$fields);
+        $clients = $this->findTable($search,$fields);
         return response()->json($clients);
 
 
@@ -40,7 +40,7 @@ class ClientController extends Controller
 
 
 
-    public function find($search, $fields){
+    public function findTable($search, $fields){
         if($search) {
             return Client::where('cliente', 'like', "%$search%")
                 ->orWhere('ruc', 'like', "%$search%")
@@ -51,6 +51,16 @@ class ClientController extends Controller
         return Client::select($fields)->orderByRaw('cliente  ASC')->paginate(10);
     }
 
+    public function find($search, $fields){
+        if($search) {
+            return Client::where('cliente', 'like', "%$search%")
+                ->limit(10)
+                ->orWhere('ruc', 'like', "%$search%")
+                ->orWhere('dni', 'like', "%$search%")
+                ->select($fields)->get();
+        }
+        return Client::limit(10)->select($fields)->get();
+    }
 
     public function findPeople( Request $request ){
 
@@ -166,7 +176,9 @@ class ClientController extends Controller
             "direccion" => $request->direccion,
             "telefono" => $request->telefono,
             "celular" => $request->celular,
-            "correo" => $request->correo
+            "correo" => $request->correo,
+            "credito" => 0,
+            "lista_prec" => 0
         ]);
 
 

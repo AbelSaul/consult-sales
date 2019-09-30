@@ -45,7 +45,7 @@ class ProformaController extends Controller
             },
             $details
         );
-
+        $user = session('user');
        $selected_products = DB::select("SELECT
         productos.idproducto, productos.codigo, productos.codigo2, productos.moneda ,productos.tipo ,productos.tipo_imp,productos.descripcion , productos.precio, productos.precio1, productos.precio2, productos.precio3, productos.precio4,productos.precio_fra ,productos.medida, productos.medida_fra,productos.fraccion, productos.igv, productos.marca  , productos.codigo, productos.descripcion,
         kardex.idlocal, SUM(entrada)-SUM(salida) as stock,
@@ -60,7 +60,7 @@ class ProformaController extends Controller
                                         FROM productos
                                         LEFT JOIN kardex ON productos.idproducto=kardex.idproducto
                                         LEFT JOIN det_pro ON productos.idproducto=det_pro.idproducto
-                                        WHERE (productos.idlocal=1 OR productos.idlocal=0) AND (kardex.idlocal=1 or kardex.idlocal IS NULL) AND productos.estado='A'  AND productos.idproducto IN (".implode(',',$ids).")
+                                        WHERE (productos.idlocal=1 OR productos.idlocal=0) AND (kardex.idlocal='".$user["idlocal"]."' or kardex.idlocal IS NULL) AND productos.estado='A'  AND productos.idproducto IN (".implode(',',$ids).")
                                         AND (YEAR(kardex.fecha)=2019 OR YEAR(kardex.fecha) IS NULL)
 
                                         GROUP BY productos.idproducto
@@ -127,6 +127,7 @@ class ProformaController extends Controller
 
 
         $user = session('user');
+        $maxIdProforma1 = DB::select("(select max(`idproforma` * 1) as pro from proformas where idlocal='".$user["idlocal"]."' )")[0]->pro + 1;
         $maxIdProforma = DB::select("(select max(`idproforma` * 1) as pro from proformas)")[0]->pro + 1;
 
         // cond_impuesto
@@ -137,7 +138,7 @@ class ProformaController extends Controller
             "idproforma" => $maxIdProforma,
             "idlocal" => $user["idlocal"],
             "idcliente" => $request->clientId,
-            "documento" => $this->createDocument($maxIdProforma),
+            "documento" => $this->createDocument($user["idlocal"],$maxIdProforma1),
             "fecha" => date("Y-m-d"),
             "hora" => date("h:i:s A"),
             "lista_prec" => 0,
@@ -159,6 +160,7 @@ class ProformaController extends Controller
             "telefonos" => $request->phone,
         ]);
 
+   
         // save products_items
         foreach ($productos as $producto) {
             $price = $producto["tipo"] == 'G' ? $producto["precio"] / (1 +  $producto["igv"] / 100) : $producto["precio"];
@@ -172,13 +174,13 @@ class ProformaController extends Controller
                 "medida" => $producto["num_um"] == 2 ? $producto["medida_fra"] : $producto["medida"],
                 "cantidad" => $producto["cantidad"],
                 "num_um" => $producto["num_um"],
-                "moneda" => $producto["moneda"],
+                "moneda" => "S/",
                 "igv" => $producto["igv"],
                 "precio" => $price,
                 "desc_cad" => null,
                 "descuento" => 0.00,
                 "precio_neto" => $price,
-                "importe" => $price,
+                "importe" => $price * $producto["cantidad"],
                 "tipo" => "P",
                 "tipo_afecta" => $producto["tipo_imp"],
                 "no_stock" => 0,
@@ -242,7 +244,7 @@ class ProformaController extends Controller
                 "medida" => $producto["num_um"] == 2 ? $producto["medida_fra"] : $producto["medida"],
                 "cantidad" => $producto["cantidad"],
                 "num_um" => $producto["num_um"],
-                "moneda" => $producto["moneda"],
+                "moneda" => "S/",
                 "igv" => $producto["igv"],
                 "precio" => $price,
                 "desc_cad" => null,
@@ -264,8 +266,9 @@ class ProformaController extends Controller
         return response()->json(['message' => "Proforma actualizada"], 200);
     }
 
-    public function createDocument($pro_max_num) {
-        return "0001-" . str_pad($pro_max_num, 9, "0", STR_PAD_LEFT);
+	//Aqui se crea el documento con 0001 tendriamos que pasar la serie
+    public function createDocument($idLocal,$pro_max_num) {
+        return "000{$idLocal}-" . str_pad($pro_max_num, 9, "0", STR_PAD_LEFT);
     }
 
 }
