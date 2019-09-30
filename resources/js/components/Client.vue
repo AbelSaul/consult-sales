@@ -12,13 +12,11 @@
           <v-text-field
             v-model="search"
             label="Búscar cliente"
+            append-icon="search"
             single-line
             hide-details
             v-on:keyup="onSearch"
           ></v-text-field>
-        </v-flex>
-        <v-flex xs12 sm6 md2>
-          <v-btn color="primary darken-1" outline @click="onSearch">Buscar</v-btn>
         </v-flex>
       </v-layout>
 

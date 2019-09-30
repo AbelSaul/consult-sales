@@ -1982,8 +1982,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   // props: ["clients"],
   data: function data() {
@@ -15908,6 +15906,7 @@ var render = function() {
                   _c("v-text-field", {
                     attrs: {
                       label: "Búscar cliente",
+                      "append-icon": "search",
                       "single-line": "",
                       "hide-details": ""
                     },
@@ -15920,22 +15919,6 @@ var render = function() {
                       expression: "search"
                     }
                   })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-flex",
-                { attrs: { xs12: "", sm6: "", md2: "" } },
-                [
-                  _c(
-                    "v-btn",
-                    {
-                      attrs: { color: "primary darken-1", outline: "" },
-                      on: { click: _vm.onSearch }
-                    },
-                    [_vm._v("Buscar")]
-                  )
                 ],
                 1
               )

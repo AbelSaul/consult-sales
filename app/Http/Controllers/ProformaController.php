@@ -16,8 +16,10 @@ use View;
 class ProformaController extends Controller
 {
     public function index() {
-        $proformas = Proforma::where('fecha', '>=' ,Carbon::now()->subDays(30)->format('Y-m-d'))
+        $user = session('user');
+        $proformas = Proforma::where('fecha', '>=' ,Carbon::now()->subDays(30)->format('Y-m-d'))->where('idlocla','=',$user["idlocal"])
             ->orderByRaw('idproforma * 1 DESC')->paginate(10);
+
         return view('proformas.index', compact('proformas'));
     }
 
@@ -160,7 +162,7 @@ class ProformaController extends Controller
             "telefonos" => $request->phone,
         ]);
 
-   
+
         // save products_items
         foreach ($productos as $producto) {
             $price = $producto["tipo"] == 'G' ? $producto["precio"] / (1 +  $producto["igv"] / 100) : $producto["precio"];
