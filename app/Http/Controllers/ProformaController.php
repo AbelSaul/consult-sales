@@ -17,20 +17,23 @@ class ProformaController extends Controller
 {
     public function index() {
         $user = session('user');
-        $proformas = Proforma::where('fecha', '>=' ,Carbon::now()->subDays(30)->format('Y-m-d'))->where('idlocla','=',$user["idlocal"])
+        $proformas = Proforma::where('fecha', '>=' ,Carbon::now()->subDays(30)->format('Y-m-d'))->where('idlocal','=',$user["idlocal"])
+        ->where('idvendedor','=',$user["idpersonal"])
             ->orderByRaw('idproforma * 1 DESC')->paginate(10);
 
         return view('proformas.index', compact('proformas'));
     }
 
     public function search(Request $request) {
+        $user = session('user');
 
         $startDate = $request->startDate ? $request->startDate : Carbon::now()->subDays(30)->format('Y-m-d');
         $endDate = $request->endDate ?
             $request->endDate :
             ($request->startDate ? $request->startDate : Carbon::now()->format('Y-m-d') );
 
-        $proformas = Proforma::whereBetween('fecha', [$startDate, $endDate])
+        $proformas = Proforma::whereBetween('fecha', [$startDate, $endDate])->where('idlocal','=',$user["idlocal"])
+        ->where('idvendedor','=',$user["idpersonal"])
             ->orderByRaw('idproforma * 1 DESC')->with(['client', 'seller'])->paginate(10);
 
         return response()->json($proformas);
