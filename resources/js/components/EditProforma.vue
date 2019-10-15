@@ -405,6 +405,7 @@ export default {
       axios
         .post("/api/proforma/update", data)
         .then(({ data }) => {
+          this.reset();
           notify.showCool(data.message);
           this.isLoadingProforma = false;
         })

@@ -70,14 +70,14 @@
 </template>
 
 <script>
-import { format, subMonths } from "date-fns";
+import { format, subMonths, subDays } from "date-fns";
 
 export default {
   data() {
     return {
       baseUrl: "",
       dateFormat: "DD MMM YYYY",
-      startDate: localeFormat(subMonths(new Date(), 1), this.dateFormat),
+      startDate: localeFormat(subDays(new Date(), 1), this.dateFormat),
       endDate: localeFormat(new Date(), this.dateFormat),
       headers: [
         { text: "Documento", sortable: false, value: "idproforma" },
@@ -146,7 +146,8 @@ export default {
     },
 
     onEdit(proforma) {
-      if (proforma.fecha === format(new Date(), "YYYY-MM-DD")) {
+      // proforma.fecha === format(new Date(), "YYYY-MM-DD")
+      if (proforma.estado === "PE" ) {
         window.location = `${this.baseUrl}/proformas/${proforma.idproforma}`;
       } else {
         notify.error("La proforma no se puede editar");

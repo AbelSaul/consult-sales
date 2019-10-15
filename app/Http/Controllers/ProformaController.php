@@ -17,7 +17,8 @@ class ProformaController extends Controller
 {
     public function index() {
         $user = session('user');
-        $proformas = Proforma::where('fecha', '>=' ,Carbon::now()->subDays(30)->format('Y-m-d'))->where('idlocal','=',$user["idlocal"])
+       // $proformas = Proforma::where('fecha', '>=' ,Carbon::now()->format('Y-m-d'))->where('idlocal','=',$user["idlocal"])
+		$proformas = Proforma::where('fecha', '>=' ,Carbon::now()->subDays(1)->format('Y-m-d'))->where('idlocal','=',$user["idlocal"])
         ->where('idvendedor','=',$user["idpersonal"])
             ->orderByRaw('idproforma * 1 DESC')->paginate(10);
 
@@ -27,7 +28,8 @@ class ProformaController extends Controller
     public function search(Request $request) {
         $user = session('user');
 
-        $startDate = $request->startDate ? $request->startDate : Carbon::now()->subDays(30)->format('Y-m-d');
+       // $startDate = $request->startDate ? $request->startDate : Carbon::now()->format('Y-m-d');
+		$startDate = $request->startDate ? $request->startDate : Carbon::now()->format('Y-m-d');
         $endDate = $request->endDate ?
             $request->endDate :
             ($request->startDate ? $request->startDate : Carbon::now()->format('Y-m-d') );
@@ -137,7 +139,7 @@ class ProformaController extends Controller
 
         // cond_impuesto
         $params = DB::table('parametros')->first();
-        $cond = $params->igv_inc == 1 ? 'IGV incluido' : 'IGV no incluido';
+        $cond = $params->igv_inc == 1 ? 'IGV Incluido' : 'IGV no Incluido';
         $subTotal = $params->igv_inc == 1 ? $request->total / 1.18 : $request->total;
         $proforma = Proforma::create([
             "idproforma" => $maxIdProforma,
@@ -169,7 +171,8 @@ class ProformaController extends Controller
         // save products_items
         foreach ($productos as $producto) {
             $price = $producto["tipo"] == 'G' ? $producto["precio"] / (1 +  $producto["igv"] / 100) : $producto["precio"];
-            DetailProduct::create([
+			$tipo_imp = $producto["tipo_imp"] == 'G' ? "10" : "20";
+			DetailProduct::create([
                 "idproforma" => $proforma->idproforma,
                 "idlocal" => $user["idlocal"],
                 "idproducto" => Product::where("codigo", $producto["codigo"])->first()->idproducto,
@@ -187,15 +190,17 @@ class ProformaController extends Controller
                 "precio_neto" => $price,
                 "importe" => $price * $producto["cantidad"],
                 "tipo" => "P",
-                "tipo_afecta" => $producto["tipo_imp"],
+				"marca" => $producto["marca"],
+			    "tipo_afecta" => $tipo_imp,
+				//"tipo_afecta" => $producto["tipo_imp"],
                 "no_stock" => 0,
                 "canjeado" => 0.00,
             ]);
         }
 
         if (request('email')) {
-            $user = (object) ["email" => request('email') ];
-            \Mail::to($user)->send(new SendProforma($user, $proforma));
+          //  $user = (object) ["email" => request('email') ];
+          //  \Mail::to($user)->send(new SendProforma($user, $proforma));
         }
 
         return response()->json(['message' => "Proforma creada"], 200);
@@ -215,7 +220,7 @@ class ProformaController extends Controller
 
         // cond_impuesto
         $params = DB::table('parametros')->first();
-        $cond = $params->igv_inc == 1 ? 'IGV incluido' : 'IGV no incluido';
+        $cond = $params->igv_inc == 1 ? 'IGV Incluido' : 'IGV no Incluido';
         $subTotal = $params->igv_inc == 1 ? $request->total / 1.18 : $request->total;
 
         $proforma = Proforma::where('idproforma', $request->idproforma)->first();
@@ -224,6 +229,7 @@ class ProformaController extends Controller
             "idcliente" => $request->clientId,
             "fecha" => date("Y-m-d"),
             "hora" => date("h:i:s A"),
+			"bruto" => $request->total,
             "subtotal" => $subTotal,
             "igv" => $request->total - $subTotal,
             "total" => $request->total,
@@ -239,7 +245,8 @@ class ProformaController extends Controller
 
         foreach ($productos as $producto) {
             $price = $producto["tipo"] == 'G' ? $producto["precio"] / (1 +  $producto["igv"] / 100) : $producto["precio"];
-            DetailProduct::create([
+			$tipo_imp = $producto["tipo_imp"] == 'G' ? "10" : "20";
+			DetailProduct::create([
                 "idproforma" => $proforma->idproforma,
                 "idlocal" => $user["idlocal"],
                 "idproducto" => Product::where("codigo", $producto["codigo"])->first()->idproducto,
@@ -255,9 +262,11 @@ class ProformaController extends Controller
                 "desc_cad" => null,
                 "descuento" => 0.00,
                 "precio_neto" => $price,
-                "importe" => $price,
+                "importe" => $price * $producto["cantidad"],
                 "tipo" => "P",
-                "tipo_afecta" => $producto["tipo_imp"],
+				"marca" => $producto["marca"],
+                "tipo_afecta" => $tipo_imp,
+				//"tipo_afecta" => $producto["tipo_imp"],
                 "no_stock" => 0,
                 "canjeado" => 0.00,
             ]);

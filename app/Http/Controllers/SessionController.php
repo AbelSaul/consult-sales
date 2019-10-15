@@ -13,7 +13,11 @@ class SessionController extends Controller
         $basedata = $request->basedata;
         config(['database.connections.mysql.database' => $basedata]);
         DB::reconnect('mysql');
-        $user = UserOther::where('usuario', $request->user)->where('contraseña', $request->password)->first();
+  
+
+      $user = UserOther::where([['usuario','=' ,$request->user],['contraseña','=', $request->password],['tipo', '=','PEDIDOS']])->first();
+
+       // $user = UserOther::where('usuario', $request->user)->where('contraseña', $request->password)->first();
         
         if($user) {
           session(['user' => [
@@ -24,7 +28,11 @@ class SessionController extends Controller
           ]]);
           return response()->json(['message' => "Inicio de sesion exitoso"], 200);
         } else {
-          return response()->json(['message' => "Usuario no encontrado"], 404);
+        
+             return response()->json(['message' => "Usuario no habillitado"], 404);
+         
+          
+
         }
     }
 }

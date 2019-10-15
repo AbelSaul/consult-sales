@@ -3017,6 +3017,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.isLoadingProforma = true;
       axios.post("/api/proforma/update", data).then(function (_ref4) {
         var data = _ref4.data;
+
+        _this5.reset();
+
         notify.showCool(data.message);
         _this5.isLoadingProforma = false;
       }).catch(function (response) {
@@ -3356,7 +3359,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       baseUrl: "",
       dateFormat: "DD MMM YYYY",
-      startDate: localeFormat(Object(date_fns__WEBPACK_IMPORTED_MODULE_0__["subMonths"])(new Date(), 1), this.dateFormat),
+      startDate: localeFormat(Object(date_fns__WEBPACK_IMPORTED_MODULE_0__["subDays"])(new Date(), 1), this.dateFormat),
       endDate: localeFormat(new Date(), this.dateFormat),
       headers: [{
         text: "Documento",
@@ -3441,7 +3444,8 @@ __webpack_require__.r(__webpack_exports__);
       this.getSearchProformas();
     },
     onEdit: function onEdit(proforma) {
-      if (proforma.fecha === Object(date_fns__WEBPACK_IMPORTED_MODULE_0__["format"])(new Date(), "YYYY-MM-DD")) {
+      // proforma.fecha === format(new Date(), "YYYY-MM-DD")
+      if (proforma.estado === "PE") {
         window.location = "".concat(this.baseUrl, "/proformas/").concat(proforma.idproforma);
       } else {
         notify.error("La proforma no se puede editar");
