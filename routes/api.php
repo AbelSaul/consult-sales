@@ -32,7 +32,9 @@ Route::get('find_people', 'ClientController@findPeople')->middleware('verify');
 Route::post('client/create', 'ClientController@create')->middleware('verify');
 Route::get('/clients-list', 'ClientController@list')->name('clientes-list')->middleware('verify');
 
+//PROFORMAS
 Route::get('conditions', 'ProformaController@conditions')->middleware('verify');
 Route::get('search-proformas', 'ProformaController@search')->middleware('verify');
+Route::get('total-proformas', 'ProformaController@getTotalProformas')->middleware('verify');
 Route::post('proforma/create', 'ProformaController@create')->middleware('verify');
 Route::post('proforma/update', 'ProformaController@update')->middleware('verify');

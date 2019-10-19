@@ -15,9 +15,9 @@ class SessionController extends Controller
         DB::reconnect('mysql');
   
 
-      $user = UserOther::where([['usuario','=' ,$request->user],['contraseña','=', $request->password],['tipo', '=','PEDIDOS']])->first();
+     $user = UserOther::where([['usuario','=' ,$request->user],['contraseña','=', $request->password],['tipo', '=','PEDIDOS']])->first();
 
-       // $user = UserOther::where('usuario', $request->user)->where('contraseña', $request->password)->first();
+      //  $user = UserOther::where('usuario', $request->user)->where('contraseña', $request->password)->first();
         
         if($user) {
           session(['user' => [

@@ -3353,6 +3353,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3388,6 +3394,7 @@ __webpack_require__.r(__webpack_exports__);
       }],
       loading: true,
       proformas: [],
+      total: 0,
       pagination: {
         rowsPerPage: 10,
         current: 1,
@@ -3397,6 +3404,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getSearchProformas();
+    this.getTotalProformas();
     this.baseUrl = document.head.querySelector('meta[name="api-base-url"]').content;
   },
   methods: {
@@ -3414,11 +3422,30 @@ __webpack_require__.r(__webpack_exports__);
       return formattedDates;
     },
     onSearch: function onSearch() {
+      this.getTotalProformas();
       this.pagination.current = 1;
       this.getSearchProformas();
     },
-    getSearchProformas: function getSearchProformas() {
+    getTotalProformas: function getTotalProformas() {
       var _this = this;
+
+      var params = {
+        startDate: this.startDate,
+        endDate: this.endDate,
+        page: this.pagination.current
+      };
+      axios.get("/api/total-proformas", {
+        params: params
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.total = data;
+        console.log("data es : ", _this.total);
+      }).catch(function (error) {
+        notify.error(error.response.data.message);
+      });
+    },
+    getSearchProformas: function getSearchProformas() {
+      var _this2 = this;
 
       var params = {
         startDate: this.startDate,
@@ -3427,16 +3454,16 @@ __webpack_require__.r(__webpack_exports__);
       };
       axios.get("/api/search-proformas", {
         params: params
-      }).then(function (_ref) {
-        var data = _ref.data;
+      }).then(function (_ref2) {
+        var data = _ref2.data;
         console.log(data);
-        _this.proformas = data.data;
-        _this.pagination.current = data.current_page;
-        _this.pagination.total = data.last_page;
-        _this.loading = false;
+        _this2.proformas = data.data;
+        _this2.pagination.current = data.current_page;
+        _this2.pagination.total = data.last_page;
+        _this2.loading = false;
       }).catch(function (error) {
         notify.error(error.response.data.message);
-        _this.loading = false;
+        _this2.loading = false;
       });
       console.log(this.startDate, this.endDate);
     },
@@ -3600,7 +3627,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.head {\r\n  border-bottom: 1px solid #ddd;\r\n  padding-bottom: 8px;\n}\n@media (min-width: 1000px) {\n.full-heigth {\r\n    height: 100vh;\n}\n}\n@media (max-width: 800px) {\n.full-heigth {\r\n    margin-top: 4em;\n}\n}\r\n", ""]);
+exports.push([module.i, "\n.head {\n  border-bottom: 1px solid #ddd;\n  padding-bottom: 8px;\n}\n@media (min-width: 1000px) {\n.full-heigth {\n    height: 100vh;\n}\n}\n@media (max-width: 800px) {\n.full-heigth {\n    margin-top: 4em;\n}\n}\n", ""]);
 
 // exports
 
@@ -3619,7 +3646,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.custom-table th:not(:first-child),\r\n.table-modal th:not(:first-child) {\r\n  text-align: right !important;\n}\n.custom-table th:last-child {\r\n  text-align: center !important;\n}\n.border-gray {\r\n  border-bottom: 1px solid #949494;\n}\n[type=\"number\"] {\r\n  border: 2px solid #949494;\r\n  max-width: 60px;\r\n  text-align: center;\r\n  padding: 4px;\r\n  border-radius: 4px;\r\n  outline: none;\n}\n[type=\"number\"]:focus {\r\n  border: 2px solid #1976d2;\n}\n.total-flex {\r\n  display: flex;\r\n  justify-content: flex-end;\r\n  margin: 0 16px;\n}\n.total-header {\r\n  padding: 10px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  min-width: 200px;\n}\n.total-header div:first-child {\r\n  padding-right: 20px;\r\n  text-transform: uppercase;\n}\n.total-header div:last-child {\r\n  min-width: 10%;\n}\n.custom-table thead tr > th:nth-of-type(3),\r\n.table-modal thead tr > th:last-child {\r\n  width: 200px;\n}\n.text-right {\r\n  text-align: right;\n}\n.text-left {\r\n  text-align: left;\n}\n.product-td {\r\n  min-width: 200px !important;\n}\n@media (max-width: 500px) {\n.v-text-field {\r\n    padding-top: 0;\n}\n.custom-table td,\r\n  .custom-table th,\r\n  .table-modal td,\r\n  .table-modal th {\r\n    padding: 0 12px !important;\n}\ntable .v-input {\r\n    font-size: 13px !important;\n}\n}\n.theme--light.v-table tbody tr[active] {\r\n  background: rgba(97, 180, 247, 0.15);\n}\n.theme--light.v-table tbody tr[active]:hover {\r\n  background: rgba(97, 180, 247, 0.3);\n}\n.P0 {\r\n  color: #00e676;\n}\n.P1 {\r\n  color: #ff5722;\n}\n.P2 {\r\n  color: #ff9800;\n}\n.P3 {\r\n  color: #9c27b0;\n}\n.P4 {\r\n  color: #ffc107;\n}\n.super-price {\r\n  font-size: 16px !important;\r\n  text-align: left !important;\n}\r\n", ""]);
+exports.push([module.i, "\n.custom-table th:not(:first-child),\n.table-modal th:not(:first-child) {\n  text-align: right !important;\n}\n.custom-table th:last-child {\n  text-align: center !important;\n}\n.border-gray {\n  border-bottom: 1px solid #949494;\n}\n[type=\"number\"] {\n  border: 2px solid #949494;\n  max-width: 60px;\n  text-align: center;\n  padding: 4px;\n  border-radius: 4px;\n  outline: none;\n}\n[type=\"number\"]:focus {\n  border: 2px solid #1976d2;\n}\n.total-flex {\n  display: flex;\n  justify-content: flex-end;\n  margin: 0 16px;\n}\n.total-header {\n  padding: 10px;\n  display: flex;\n  justify-content: space-between;\n  min-width: 200px;\n}\n.total-header div:first-child {\n  padding-right: 20px;\n  text-transform: uppercase;\n}\n.total-header div:last-child {\n  min-width: 10%;\n}\n.custom-table thead tr > th:nth-of-type(3),\n.table-modal thead tr > th:last-child {\n  width: 200px;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.product-td {\n  min-width: 200px !important;\n}\n@media (max-width: 500px) {\n.v-text-field {\n    padding-top: 0;\n}\n.custom-table td,\n  .custom-table th,\n  .table-modal td,\n  .table-modal th {\n    padding: 0 12px !important;\n}\ntable .v-input {\n    font-size: 13px !important;\n}\n}\n.theme--light.v-table tbody tr[active] {\n  background: rgba(97, 180, 247, 0.15);\n}\n.theme--light.v-table tbody tr[active]:hover {\n  background: rgba(97, 180, 247, 0.3);\n}\n.P0 {\n  color: #00e676;\n}\n.P1 {\n  color: #ff5722;\n}\n.P2 {\n  color: #ff9800;\n}\n.P3 {\n  color: #9c27b0;\n}\n.P4 {\n  color: #ffc107;\n}\n.super-price {\n  font-size: 16px !important;\n  text-align: left !important;\n}\n", ""]);
 
 // exports
 
@@ -3638,7 +3665,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.custom-table th:not(:first-child),\r\n.table-modal th:not(:first-child) {\r\n  text-align: right !important;\n}\n.custom-table th:last-child {\r\n  text-align: center !important;\n}\n.border-gray {\r\n  border-bottom: 1px solid #949494;\n}\n[type=\"number\"] {\r\n  border: 2px solid #949494;\r\n  max-width: 60px;\r\n  text-align: center;\r\n  padding: 4px;\r\n  border-radius: 4px;\r\n  outline: none;\n}\n[type=\"number\"]:focus {\r\n  border: 2px solid #1976d2;\n}\n.total-flex {\r\n  display: flex;\r\n  justify-content: flex-end;\r\n  margin: 0 16px;\n}\n.total-header {\r\n  padding: 10px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  min-width: 200px;\n}\n.total-header div:first-child {\r\n  padding-right: 20px;\r\n  text-transform: uppercase;\n}\n.total-header div:last-child {\r\n  min-width: 10%;\n}\n.custom-table thead tr > th:nth-of-type(3),\r\n.table-modal thead tr > th:last-child {\r\n  width: 200px;\n}\n.text-right {\r\n  text-align: right;\n}\n.text-left {\r\n  text-align: left;\n}\n.product-td {\r\n  min-width: 200px !important;\n}\n@media (max-width: 500px) {\n.v-text-field {\r\n    padding-top: 0;\n}\n.custom-table td,\r\n  .custom-table th,\r\n  .table-modal td,\r\n  .table-modal th {\r\n    padding: 0 12px !important;\n}\ntable .v-input {\r\n    font-size: 13px !important;\n}\n}\n.theme--light.v-table tbody tr[active] {\r\n  background: rgba(97, 180, 247, 0.15);\n}\n.theme--light.v-table tbody tr[active]:hover {\r\n  background: rgba(97, 180, 247, 0.3);\n}\n.P0 {\r\n  color: #00e676;\n}\n.P1 {\r\n  color: #ff5722;\n}\n.P2 {\r\n  color: #ff9800;\n}\n.P3 {\r\n  color: #9c27b0;\n}\n.P4 {\r\n  color: #ffc107;\n}\n.super-price {\r\n  font-size: 16px !important;\r\n  text-align: left !important;\n}\r\n", ""]);
+exports.push([module.i, "\n.custom-table th:not(:first-child),\n.table-modal th:not(:first-child) {\n  text-align: right !important;\n}\n.custom-table th:last-child {\n  text-align: center !important;\n}\n.border-gray {\n  border-bottom: 1px solid #949494;\n}\n[type=\"number\"] {\n  border: 2px solid #949494;\n  max-width: 60px;\n  text-align: center;\n  padding: 4px;\n  border-radius: 4px;\n  outline: none;\n}\n[type=\"number\"]:focus {\n  border: 2px solid #1976d2;\n}\n.total-flex {\n  display: flex;\n  justify-content: flex-end;\n  margin: 0 16px;\n}\n.total-header {\n  padding: 10px;\n  display: flex;\n  justify-content: space-between;\n  min-width: 200px;\n}\n.total-header div:first-child {\n  padding-right: 20px;\n  text-transform: uppercase;\n}\n.total-header div:last-child {\n  min-width: 10%;\n}\n.custom-table thead tr > th:nth-of-type(3),\n.table-modal thead tr > th:last-child {\n  width: 200px;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.product-td {\n  min-width: 200px !important;\n}\n@media (max-width: 500px) {\n.v-text-field {\n    padding-top: 0;\n}\n.custom-table td,\n  .custom-table th,\n  .table-modal td,\n  .table-modal th {\n    padding: 0 12px !important;\n}\ntable .v-input {\n    font-size: 13px !important;\n}\n}\n.theme--light.v-table tbody tr[active] {\n  background: rgba(97, 180, 247, 0.15);\n}\n.theme--light.v-table tbody tr[active]:hover {\n  background: rgba(97, 180, 247, 0.3);\n}\n.P0 {\n  color: #00e676;\n}\n.P1 {\n  color: #ff5722;\n}\n.P2 {\n  color: #ff9800;\n}\n.P3 {\n  color: #9c27b0;\n}\n.P4 {\n  color: #ffc107;\n}\n.super-price {\n  font-size: 16px !important;\n  text-align: left !important;\n}\n", ""]);
 
 // exports
 
@@ -3657,7 +3684,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.container-picker {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\n}\n#datepicker-trigger {\r\n  padding: 7px;\r\n  border: 1px solid #ddd;\r\n  min-width: 300px;\n}\r\n", ""]);
+exports.push([module.i, "\n.container-picker {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n#datepicker-trigger {\n  padding: 7px;\n  border: 1px solid #ddd;\n  min-width: 300px;\n}\n", ""]);
 
 // exports
 
@@ -3676,7 +3703,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.container-picker {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\n}\n#datepicker-trigger {\r\n  padding: 7px;\r\n  border: 1px solid #ddd;\r\n  min-width: 300px;\n}\r\n", ""]);
+exports.push([module.i, "\n.container-picker {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n#datepicker-trigger {\n  padding: 7px;\n  border: 1px solid #ddd;\n  min-width: 300px;\n}\n.total-flex {\n  display: flex;\n  justify-content: flex-end;\n  margin: 16px 0 !important;\n}\n\n\n", ""]);
 
 // exports
 
@@ -3695,7 +3722,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.loader {\r\n  position: fixed;\r\n  height: 100vh;\r\n  top: 0;\r\n  display: flex;\r\n  align-items: center;\r\n  left: 0;\r\n  justify-content: center;\r\n  width: 100%;\r\n  background: rgba(0, 0, 0, 0.4);\r\n  color: #fff;\n}\n.spinner {\r\n  width: 70px;\r\n  text-align: center;\n}\n.spinner > div {\r\n  width: 18px;\r\n  height: 18px;\r\n  background-color: #fff;\r\n\r\n  border-radius: 100%;\r\n  display: inline-block;\r\n  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;\r\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n}\n.spinner .bounce1 {\r\n  -webkit-animation-delay: -0.32s;\r\n  animation-delay: -0.32s;\n}\n.spinner .bounce2 {\r\n  -webkit-animation-delay: -0.16s;\r\n  animation-delay: -0.16s;\n}\n@-webkit-keyframes sk-bouncedelay {\n0%,\r\n  80%,\r\n  100% {\r\n    -webkit-transform: scale(0);\n}\n40% {\r\n    -webkit-transform: scale(1);\n}\n}\n@keyframes sk-bouncedelay {\n0%,\r\n  80%,\r\n  100% {\r\n    -webkit-transform: scale(0);\r\n    transform: scale(0);\n}\n40% {\r\n    -webkit-transform: scale(1);\r\n    transform: scale(1);\n}\n}\r\n", ""]);
+exports.push([module.i, "\n.loader {\n  position: fixed;\n  height: 100vh;\n  top: 0;\n  display: flex;\n  align-items: center;\n  left: 0;\n  justify-content: center;\n  width: 100%;\n  background: rgba(0, 0, 0, 0.4);\n  color: #fff;\n}\n.spinner {\n  width: 70px;\n  text-align: center;\n}\n.spinner > div {\n  width: 18px;\n  height: 18px;\n  background-color: #fff;\n\n  border-radius: 100%;\n  display: inline-block;\n  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n}\n.spinner .bounce1 {\n  -webkit-animation-delay: -0.32s;\n  animation-delay: -0.32s;\n}\n.spinner .bounce2 {\n  -webkit-animation-delay: -0.16s;\n  animation-delay: -0.16s;\n}\n@-webkit-keyframes sk-bouncedelay {\n0%,\n  80%,\n  100% {\n    -webkit-transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n}\n}\n@keyframes sk-bouncedelay {\n0%,\n  80%,\n  100% {\n    -webkit-transform: scale(0);\n    transform: scale(0);\n}\n40% {\n    -webkit-transform: scale(1);\n    transform: scale(1);\n}\n}\n", ""]);
 
 // exports
 
@@ -18074,6 +18101,14 @@ var render = function() {
             ],
             2
           ),
+          _vm._v(" "),
+          _c("div", { staticClass: "total-flex" }, [
+            _c("div", { staticClass: "total-header elevation-1" }, [
+              _c("div", [_vm._v("Total: ")]),
+              _vm._v(" "),
+              _c("div", [_vm._v(" " + _vm._s(Number(this.total).toFixed(2)))])
+            ])
+          ]),
           _vm._v(" "),
           _c(
             "div",
@@ -55441,7 +55476,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\laragon\www\consult-sales\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/abel/Programming/consult-sales/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })

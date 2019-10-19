@@ -57,6 +57,12 @@
             </td>
           </template>
         </v-data-table>
+          <div class="total-flex">
+            <div class="total-header elevation-1">
+              <div>Total: </div>
+              <div> {{Number(this.total).toFixed(2)}}</div>
+            </div>
+          </div>
         <div class="text-xs-center pt-2">
           <v-pagination
             v-model="pagination.current"
@@ -89,6 +95,7 @@ export default {
       ],
       loading: true,
       proformas: [],
+      total: 0,
       pagination: {
         rowsPerPage: 10,
         current: 1,
@@ -98,6 +105,7 @@ export default {
   },
   mounted() {
     this.getSearchProformas();
+    this.getTotalProformas();
     this.baseUrl = document.head.querySelector(
       'meta[name="api-base-url"]'
     ).content;
@@ -115,8 +123,27 @@ export default {
     },
 
     onSearch() {
+      this.getTotalProformas();
       this.pagination.current = 1;
       this.getSearchProformas();
+    },
+
+    getTotalProformas() {
+      const params = {
+        startDate: this.startDate,
+        endDate: this.endDate,
+        page: this.pagination.current
+      };
+      axios
+        .get(`/api/total-proformas`, { params })
+        .then(({ data }) => {
+          this.total = data;
+          console.log("data es : ",this.total);
+
+        })
+        .catch(error => {
+          notify.error(error.response.data.message);          
+        });
     },
 
     getSearchProformas() {
@@ -171,4 +198,12 @@ export default {
   border: 1px solid #ddd;
   min-width: 300px;
 }
+
+.total-flex {
+  display: flex;
+  justify-content: flex-end;
+  margin: 16px 0 !important; 
+}
+
+
 </style>

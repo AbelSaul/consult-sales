@@ -18,7 +18,7 @@ class ProformaController extends Controller
     public function index() {
         $user = session('user');
        // $proformas = Proforma::where('fecha', '>=' ,Carbon::now()->format('Y-m-d'))->where('idlocal','=',$user["idlocal"])
-		$proformas = Proforma::where('fecha', '>=' ,Carbon::now()->subDays(1)->format('Y-m-d'))->where('idlocal','=',$user["idlocal"])
+		$proformas = Proforma::where('fecha', '>=' ,Carbon::now())->where('idlocal','=',$user["idlocal"])
         ->where('idvendedor','=',$user["idpersonal"])
             ->orderByRaw('idproforma * 1 DESC')->paginate(10);
 
@@ -284,5 +284,31 @@ class ProformaController extends Controller
     public function createDocument($idLocal,$pro_max_num) {
         return "000{$idLocal}-" . str_pad($pro_max_num, 9, "0", STR_PAD_LEFT);
     }
+
+    public function getTotalProformas(Request $request){
+         $user = session('user');
+
+		$startDate = $request->startDate ? $request->startDate : Carbon::now()->format('Y-m-d');
+        $endDate = $request->endDate ?
+            $request->endDate :
+            ($request->startDate ? $request->startDate : Carbon::now()->format('Y-m-d') );
+
+        $proformas = Proforma::whereBetween('fecha', [$startDate, $endDate])
+        ->where('idlocal','=',$user["idlocal"])
+        ->where('idvendedor','=',$user["idpersonal"])
+        ->get();
+
+        $total = 0;
+        foreach ($proformas as $proforma) {
+            $total += $proforma->total;
+        }
+
+        return $total;
+        
+            
+    }
+
+
+
 
 }
