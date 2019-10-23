@@ -14,11 +14,14 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::view('/', 'home')->middleware('verify');
+//Proformas
 Route::get('/proformas', 'ProformaController@index')->name('consultas')->middleware('verify');
 Route::get('/proformas/{id}', 'ProformaController@edit')->middleware('verify');
+//Clientes
 Route::get('/clientes-form', 'ClientController@form')->name('clientes-form')->middleware('verify');
-
 Route::get('/clientes/{id}', 'ClientController@edit')->middleware('verify');
+//Cuentas por cobrar
+Route::get('/cuentas-por-cobrar', 'FinanceController@receivable')->name('cuentas-por-cobrar')->middleware('verify');
 
 
 

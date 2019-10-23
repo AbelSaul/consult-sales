@@ -22,6 +22,11 @@
                     <v-toolbar-title><a class="white--text" href="{{ url('') }}">PEDIDOS</a></v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items class="hidden-sm-and-down">
+                                       <a class="white--text" href="{{ route('cuentas-por-cobrar') }}">
+                            <v-btn flat class="full-height">
+                                CUENTAS POR COBRAR
+                            </v-btn>
+                        </a>
                         <a class="white--text" href="{{ route('clientes-form') }}">
                             <v-btn flat class="full-height">
                                 CLIENTES
@@ -41,6 +46,11 @@
                     <v-menu class="hidden-md-and-up">
                         <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
                         <v-list >
+                            <a class="white--text" href="{{ route('cuentas-por-cobrar') }}">
+                                <v-btn flat>
+                                    CUENTAS POR COBRAR
+                                </v-btn>
+                            </a>
                             <a class="white--text" href="{{ route('clientes-form') }}">
                                 <v-btn flat>
                                     CLIENTES

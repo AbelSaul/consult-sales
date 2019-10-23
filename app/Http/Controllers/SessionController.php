@@ -30,9 +30,7 @@ class SessionController extends Controller
         } else {
         
              return response()->json(['message' => "Usuario no habillitado"], 404);
-         
-          
-
+        
         }
     }
 }
