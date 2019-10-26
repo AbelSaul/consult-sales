@@ -145,6 +145,10 @@ import { mapState, mapMutations, mapActions } from "vuex";
 export default {
   data: function() {
     return {
+          date: new Date().toISOString().substr(0, 10),
+      menu: false,
+      modal: false,
+      menu2: false,
       isLoadingProforma: false,
       isLoadingClient: false,
       clients: [],
@@ -152,7 +156,7 @@ export default {
       isLoadingSeller: false,
       sellers: [],
       searchSeller: null,
-      conditions: ["contado", "credito"],
+      conditions: ["Contado ", "Crédito"],
       dialog: false,
       search: "",
       sellerDefault: {},

@@ -42,3 +42,5 @@ Route::post('proforma/update', 'ProformaController@update')->middleware('verify'
 
 //CUENTAS POR COBRAR
 Route::get('receivables', 'FinanceController@getReceivables')->middleware('verify');
+Route::get('details-charges', 'FinanceController@getDetailsCharges')->middleware('verify');
+Route::post('charge/create', 'FinanceController@saveCharges')->middleware('verify');

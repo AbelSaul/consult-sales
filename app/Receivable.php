@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Receivable extends Model {
     protected $table = 'cuentas_cobrar';
+    protected $primaryKey = 'idcobro';
     public $timestamps = false;
     protected $guarded = [];
 

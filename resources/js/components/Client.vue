@@ -128,7 +128,6 @@ export default {
       search: "",
       clients: [],
       loadingTable: true,
-
       headers: [
         { text: "N°", value: "n" },
         { text: "Número Documento", value: "numero_documento" },
