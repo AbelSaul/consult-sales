@@ -1997,7 +1997,7 @@ __webpack_require__.r(__webpack_exports__);
       loadingTable: true,
       headers: [{
         text: "N°",
-        value: "n"
+        sortable: false
       }, {
         text: "Número Documento",
         value: "numero_documento"
@@ -3674,6 +3674,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3697,6 +3699,9 @@ __webpack_require__.r(__webpack_exports__);
       totalReceivables: 0,
       totalDetailsCharges: 0,
       headers: [{
+        text: "N°",
+        sortable: false
+      }, {
         text: "Fecha Emi.",
         value: "fecha"
       }, {
@@ -3713,7 +3718,7 @@ __webpack_require__.r(__webpack_exports__);
         value: "client.ruc"
       }, {
         text: "Cliente",
-        value: "client.client"
+        value: "client.cliente"
       }, {
         text: "Moneda",
         value: "moneda"
@@ -3745,7 +3750,7 @@ __webpack_require__.r(__webpack_exports__);
         value: "forma_pago"
       }, {
         text: "Ref. Pago",
-        value: "referencia_pago"
+        value: "ref_pago"
       }, {
         text: "Monto.",
         value: "monto"
@@ -3767,14 +3772,12 @@ __webpack_require__.r(__webpack_exports__);
           return 'Ingrese un monto válido ';
         }
       },
-      charge: {
-        monto: "",
-        referencia_pago: "",
-        fecha_pago: luxon__WEBPACK_IMPORTED_MODULE_0__["DateTime"].local().toISO(),
-        forma_pago: "",
-        cobrador: "",
-        observacion: ""
-      },
+      monto: "",
+      referencia_pago: "",
+      fecha_pago: luxon__WEBPACK_IMPORTED_MODULE_0__["DateTime"].local().toISO(),
+      forma_pago: "",
+      cobrador: "",
+      observacion: "",
       pagination: {
         rowsPerPage: 10,
         current: 1,
@@ -3812,7 +3815,7 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref2.data;
         _this2.sellerDefault = data;
         _this2.sellers = [data];
-        _this2.charge.cobrador = data;
+        _this2.cobrador = data;
       });
     },
     getReceivables: function getReceivables() {
@@ -3854,7 +3857,7 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogCharge = true;
       this.document = documento;
       this.idcobro = idcobro;
-      this.charge.monto = Number(saldoDeudor).toFixed(2);
+      this.monto = Number(saldoDeudor).toFixed(2);
       this.cliente = cliente;
     },
     getDetailsCharges: function getDetailsCharges(idcobro) {
@@ -3917,48 +3920,49 @@ __webpack_require__.r(__webpack_exports__);
     save: function save() {
       var _this5 = this;
 
-      var fecha = new Date(this.charge.fecha_pago);
+      var fecha = new Date(this.fecha_pago);
       var data = {
         idcobro: this.idcobro,
         cliente: this.cliente,
-        monto: this.charge.monto,
-        referencia_pago: this.charge.referencia_pago,
+        monto: this.monto,
+        referencia_pago: this.referencia_pago,
         fecha_pago: this.formatDateYearMonthDay(fecha),
         hora_pago: this.formatHourAmPm(fecha),
-        forma_pago: this.charge.forma_pago,
-        cobrador: this.charge.cobrador.idpersonal,
-        observacion: this.charge.observacion
+        forma_pago: this.forma_pago,
+        cobrador: this.cobrador.idpersonal,
+        observacion: this.observacion
       };
 
-      if (!this.charge.monto || isNaN(this.charge.monto || this.charge.monto <= 0)) {
+      if (!this.monto || isNaN(this.monto || this.monto <= 0)) {
         notify.error("Ingrese un monto validó");
         return;
       }
 
-      if (!this.charge.referencia_pago) {
-        notify.error("Ingrese referencia de pago ");
-        return;
-      }
-
-      if (!this.charge.fecha_pago) {
-        notify.error("Ingrese fecha de pago");
-        return;
-      }
-
-      if (!this.charge.forma_pago) {
+      if (!this.forma_pago) {
         notify.error("Ingrese forma de pago");
         return;
       }
 
-      if (!this.charge.cobrador) {
-        notify.error("Ingrese cobrador");
+      console.log("Referencia de pago: ", this.referencia_pago);
+
+      if (this.forma_pago != "Efectivo" && this.referencia_pago === "OP Nº ") {
+        notify.error("Ingrese referencia de pago ");
         return;
       }
 
-      if (!this.charge.observacion) {
-        notify.error("Ingrese observación");
+      if (!this.fecha_pago) {
+        notify.error("Ingrese fecha de pago");
         return;
       }
+
+      if (!this.cobrador) {
+        notify.error("Ingrese cobrador");
+        return;
+      } // if (!this.observacion) {
+      //   notify.error("Ingrese observación");
+      //   return;
+      // }
+
 
       this.isLoading = true;
       this.isLoadingTable = true;
@@ -3982,8 +3986,21 @@ __webpack_require__.r(__webpack_exports__);
         _this5.isLoading = false;
       });
     },
+    changeReference: function changeReference(formaPago) {
+      if (formaPago === "Efectivo") {
+        this.referencia_pago = "";
+      } else {
+        if (formaPago === "Depósito" || formaPago === "Transferencia") {
+          this.referencia_pago = "OP Nº ";
+        }
+      }
+    },
     reset: function reset() {
-      this.charge["monto"] = "", this.charge["referencia_pago"] = "", this.charge["fecha_pago"] = luxon__WEBPACK_IMPORTED_MODULE_0__["DateTime"].local().toISO(), this.charge["forma_pago"] = "", this.charge["observacion"] = "";
+      this.monto = "";
+      this.referencia_pago = "";
+      this.fecha_pago = luxon__WEBPACK_IMPORTED_MODULE_0__["DateTime"].local().toISO();
+      this.forma_pago = "";
+      this.observacion = "";
     }
   }
 });
@@ -28137,11 +28154,11 @@ var render = function() {
                                       label: "Monto a Cobrar"
                                     },
                                     model: {
-                                      value: _vm.charge.monto,
+                                      value: _vm.monto,
                                       callback: function($$v) {
-                                        _vm.$set(_vm.charge, "monto", $$v)
+                                        _vm.monto = $$v
                                       },
-                                      expression: "charge.monto"
+                                      expression: "monto"
                                     }
                                   })
                                 ],
@@ -28171,11 +28188,11 @@ var render = function() {
                                       }
                                     },
                                     model: {
-                                      value: _vm.charge.cobrador,
+                                      value: _vm.cobrador,
                                       callback: function($$v) {
-                                        _vm.$set(_vm.charge, "cobrador", $$v)
+                                        _vm.cobrador = $$v
                                       },
-                                      expression: "charge.cobrador"
+                                      expression: "cobrador"
                                     }
                                   })
                                 ],
@@ -28196,11 +28213,11 @@ var render = function() {
                                       "use12-hour": ""
                                     },
                                     model: {
-                                      value: _vm.charge.fecha_pago,
+                                      value: _vm.fecha_pago,
                                       callback: function($$v) {
-                                        _vm.$set(_vm.charge, "fecha_pago", $$v)
+                                        _vm.fecha_pago = $$v
                                       },
-                                      expression: "charge.fecha_pago"
+                                      expression: "fecha_pago"
                                     }
                                   })
                                 ],
@@ -28214,15 +28231,15 @@ var render = function() {
                                   _c("v-combobox", {
                                     attrs: {
                                       label: "Forma de pago",
-                                      items: _vm.conditions,
-                                      clearable: ""
+                                      items: _vm.conditions
                                     },
+                                    on: { change: _vm.changeReference },
                                     model: {
-                                      value: _vm.charge.forma_pago,
+                                      value: _vm.forma_pago,
                                       callback: function($$v) {
-                                        _vm.$set(_vm.charge, "forma_pago", $$v)
+                                        _vm.forma_pago = $$v
                                       },
-                                      expression: "charge.forma_pago"
+                                      expression: "forma_pago"
                                     }
                                   })
                                 ],
@@ -28236,15 +28253,11 @@ var render = function() {
                                   _c("v-text-field", {
                                     attrs: { label: "Referencia de pago" },
                                     model: {
-                                      value: _vm.charge.referencia_pago,
+                                      value: _vm.referencia_pago,
                                       callback: function($$v) {
-                                        _vm.$set(
-                                          _vm.charge,
-                                          "referencia_pago",
-                                          $$v
-                                        )
+                                        _vm.referencia_pago = $$v
                                       },
-                                      expression: "charge.referencia_pago"
+                                      expression: "referencia_pago"
                                     }
                                   })
                                 ],
@@ -28258,11 +28271,11 @@ var render = function() {
                                   _c("v-text-field", {
                                     attrs: { label: "Observación" },
                                     model: {
-                                      value: _vm.charge.observacion,
+                                      value: _vm.observacion,
                                       callback: function($$v) {
-                                        _vm.$set(_vm.charge, "observacion", $$v)
+                                        _vm.observacion = $$v
                                       },
-                                      expression: "charge.observacion"
+                                      expression: "observacion"
                                     }
                                   })
                                 ],
@@ -28334,6 +28347,10 @@ var render = function() {
             key: "items",
             fn: function(props) {
               return [
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _vm._v(_vm._s(props.index + 1))
+                ]),
+                _vm._v(" "),
                 _c("td", { staticClass: "text-xs-center" }, [
                   _vm._v(_vm._s(props.item.fecha))
                 ]),

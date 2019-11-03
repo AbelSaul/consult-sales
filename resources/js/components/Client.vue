@@ -129,7 +129,7 @@ export default {
       clients: [],
       loadingTable: true,
       headers: [
-        { text: "N°", value: "n" },
+        { text: "N°", sortable: false },
         { text: "Número Documento", value: "numero_documento" },
         { text: "Nombres/Razon Social", value: "primer_nombre" },
         { text: "Apellidos/Nombre Comercial", value: "segundo_nombre" },

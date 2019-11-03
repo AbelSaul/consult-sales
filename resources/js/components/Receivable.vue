@@ -69,13 +69,13 @@
               <v-layout wrap>
                 
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="charge.monto" :rules="[rules.onlyNumbers]" label="Monto a Cobrar"></v-text-field>
+                  <v-text-field v-model="monto" :rules="[rules.onlyNumbers]" label="Monto a Cobrar"></v-text-field>
                 </v-flex>
      
 
                                 <v-flex xs12 sm6 md4>
                  <v-autocomplete
-                    v-model="charge.cobrador"
+                    v-model="cobrador"
                     :items="sellers"
                     :loading="isLoadingSeller"
                     :search-input.sync="searchSeller"
@@ -90,26 +90,27 @@
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                 <label for="">Fecha de pago</label>
-                <datetime type="datetime" v-model="charge.fecha_pago" use12-hour></datetime>
+                <datetime type="datetime" v-model="fecha_pago" use12-hour></datetime>
                 
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                              <v-combobox
-                    :label="`Forma de pago`"
-                    v-model="charge.forma_pago"
+                  <v-combobox
+                    label="Forma de pago"
+                    v-model="forma_pago"
                     :items="conditions"
-                    clearable
+                   v-on:change="changeReference"
                   ></v-combobox>
+                     
                 </v-flex>
            <v-flex xs12 sm6 md4>
                   <v-text-field
-                    v-model="charge.referencia_pago"
+                    v-model="referencia_pago"
                     label="Referencia de pago"
                   ></v-text-field>
                 </v-flex>
 
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="charge.observacion" label="Observación"></v-text-field>
+                  <v-text-field v-model="observacion" label="Observación"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -133,6 +134,7 @@
       hide-actions
     >
       <template slot="items" slot-scope="props">
+        <td class="text-xs-center">{{ props.index + 1}}</td>
         <td class="text-xs-center">{{ props.item.fecha}}</td>
         <td class="text-xs-center">{{ props.item.fecha_vto }}</td>
         <td class="text-xs-center">{{ props.item.tipodoc }}</td>
@@ -199,12 +201,13 @@ export default {
       totalReceivables : 0,
       totalDetailsCharges: 0,
       headers: [
+          { text: "N°", sortable: false },
         { text: "Fecha Emi.", value: "fecha" },
         { text: "Fecha Vto.", value: "fecha_vto" },
         { text: "Tipo", value: "tipodoc" },
         { text: "Documento", value: "documento" },
         { text: "RUC/DNI", value: "client.ruc" },
-        { text: "Cliente", value: "client.client" },
+        { text: "Cliente", value: "client.cliente" },
         { text: "Moneda", value: "moneda" },
         { text: "Total", value: "total" },
         { text: "Saldo Deudor", value: "saldo" },
@@ -217,7 +220,7 @@ export default {
         { text: "Fecha Pago", value: "fecha_cob" },
         { text: "Documento", value: "documento_ref" },
         { text: "Forma de pago.", value: "forma_pago" },
-        { text: "Ref. Pago", value: "referencia_pago" },
+        { text: "Ref. Pago", value: "ref_pago" },
         { text: "Monto.", value: "monto" },
         { text: "Cobrador", value: "cobrador" },
         { text: "Observación", value: "observacion" },
@@ -232,14 +235,14 @@ export default {
       }
     },
 
-      charge: {
+     
         monto: "",
         referencia_pago: "",
         fecha_pago: LuxonDateTime.local().toISO(),
         forma_pago: "",
         cobrador: "",
-        observacion: ""
-      },
+        observacion: "",
+    
       pagination: {
         rowsPerPage: 10,
         current: 1,
@@ -275,7 +278,7 @@ export default {
     axios.get("/api/seller_user").then(({ data }) => {
       this.sellerDefault = data;
       this.sellers = [data];
-      this.charge.cobrador = data;
+      this.cobrador = data;
     });
     },
     getReceivables() {
@@ -315,7 +318,7 @@ export default {
        this.dialogCharge = true;
        this.document = documento;
        this.idcobro = idcobro;
-       this.charge.monto = Number(saldoDeudor).toFixed(2);
+       this.monto = Number(saldoDeudor).toFixed(2);
        this.cliente = cliente;
     },
     getDetailsCharges(idcobro) {
@@ -385,50 +388,51 @@ export default {
 
     save() {
     
-        const fecha = new Date(this.charge.fecha_pago);
+        const fecha = new Date(this.fecha_pago);
        
         const data = {
           idcobro:this.idcobro,
           cliente: this.cliente,
-          monto: this.charge.monto,
-          referencia_pago: this.charge.referencia_pago,
+          monto: this.monto,
+          referencia_pago: this.referencia_pago,
           fecha_pago: this.formatDateYearMonthDay(fecha),
           hora_pago: this.formatHourAmPm(fecha),
-          forma_pago: this.charge.forma_pago,
-          cobrador: this.charge.cobrador.idpersonal,
-          observacion: this.charge.observacion,
+          forma_pago: this.forma_pago,
+          cobrador: this.cobrador.idpersonal,
+          observacion: this.observacion,
        
         };
 
-        if (!this.charge.monto || isNaN(this.charge.monto || this.charge.monto <=0 )) {
+        if (!this.monto || isNaN(this.monto || this.monto <=0 )) {
           notify.error("Ingrese un monto validó");
           return;
         }
 
-        if (!this.charge.referencia_pago) {
-          notify.error("Ingrese referencia de pago ");
-          return;
-        }
-
-        if (!this.charge.fecha_pago) {
-          notify.error("Ingrese fecha de pago");
-          return;
-        }
-
-        if (!this.charge.forma_pago) {
+        if (!this.forma_pago) {
           notify.error("Ingrese forma de pago");
           return;
         }
 
-        if (!this.charge.cobrador) {
+        console.log("Referencia de pago: ", this.referencia_pago)
+        if (this.forma_pago != "Efectivo" && this.referencia_pago === "OP Nº " ) {
+          notify.error("Ingrese referencia de pago ");
+          return;
+        }
+
+        if (!this.fecha_pago) {
+          notify.error("Ingrese fecha de pago");
+          return;
+        }
+
+        if (!this.cobrador) {
           notify.error("Ingrese cobrador");
           return;
         }
 
-        if (!this.charge.observacion) {
-          notify.error("Ingrese observación");
-          return;
-        }
+        // if (!this.observacion) {
+        //   notify.error("Ingrese observación");
+        //   return;
+        // }
 
         this.isLoading = true;
         this.isLoadingTable = true;
@@ -453,14 +457,26 @@ export default {
           });
       
     },
+ 
+    changeReference(formaPago){
+
+    if(formaPago === "Efectivo"){
+      this.referencia_pago = "";
+    }else{
+      if (formaPago === "Depósito" || formaPago === "Transferencia") {
+      this.referencia_pago = "OP Nº ";
+      }
+    }
+   },
 
     reset() {
-        (this.charge["monto"] = ""),
-        (this.charge["referencia_pago"] = ""),
-        (this.charge["fecha_pago"] =  LuxonDateTime.local().toISO()),
-        (this.charge["forma_pago"] = ""),
-        (this.charge["observacion"] = "");
+        this.monto = "";
+        this.referencia_pago = "";
+        this.fecha_pago =  LuxonDateTime.local().toISO();
+        this.forma_pago = "";
+        this.observacion = "";
     }
+
   }
 };
 </script>

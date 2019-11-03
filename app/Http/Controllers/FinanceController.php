@@ -74,7 +74,6 @@ class FinanceController extends Controller
 
         $types = array(
                     "ING_EFE" => "Efectivo",
-                    "ING_DEP" => "Depósito",
                     "ING_DEP" => "Transferencia",
                 );
         return $types;
@@ -101,9 +100,7 @@ class FinanceController extends Controller
             'fecha_pago' => 'required',
             'hora_pago' => 'required',
             'forma_pago' => 'required',
-            'referencia_pago' => 'required',
             'cobrador' => 'required',
-            'observacion' => 'required',
         ]);
 
         /***************************** Get receivable ***********************/
@@ -139,7 +136,6 @@ class FinanceController extends Controller
         /*****************************Create box***********************/
         $maxIdBox = DB::select("(select max(`idcaja` * 1) as id  from caja)")[0]->id + 1;
 
-        $typesBox = $this->getTypesBox();
         $conceptsBox  = $this->getConceptsBox();
 
         $fecha_pago =   $request->fecha_pago;
@@ -148,7 +144,7 @@ class FinanceController extends Controller
             "idcaja" => $maxIdBox,
             "idventa" => $receivable->idventa,
             "idlocal" => $user["idlocal"],
-            "tipo" => array_search($request->forma_pago,$typesBox) ,
+            "tipo" => $request->forma_pago == "Efectivo" ? "ING_EFE" : "ING_DEP" ,
             "idcajero" => $request->cobrador,
             "documento" => $receivable->tipodoc.":".$receivable->documento,
             "fecha" => $request->fecha_pago,
@@ -190,6 +186,12 @@ class FinanceController extends Controller
 
         /************************ Update receivable ************************/
         $receivable->saldo -= $request->monto;
+        
+        if($receivable->saldo == 0){
+         $receivable->estado = "C";
+         Box::where('idcaja',$idcaja)->update(['concepto'=>'CANCELACION DE CUENTA']);
+        }
+
         $receivable->update();
 
         return response()->json(['message' => "Cobro realizado con éxito"], 200);

@@ -21,7 +21,7 @@ Route::get('/proformas/{id}', 'ProformaController@edit')->middleware('verify');
 Route::get('/clientes-form', 'ClientController@form')->name('clientes-form')->middleware('verify');
 Route::get('/clientes/{id}', 'ClientController@edit')->middleware('verify');
 //Cuentas por cobrar
-Route::get('/cuentas-por-cobrar', 'FinanceController@receivable')->name('cuentas-por-cobrar')->middleware('verify');
+Route::get('/cuentas-por-cobrar', 'FinanceController@receivable')->name('cuentas-por-cobrar')->middleware(['verify','receivables']);
 
 
 

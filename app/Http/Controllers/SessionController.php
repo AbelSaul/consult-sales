@@ -24,9 +24,10 @@ class SessionController extends Controller
             'name' => $user->usuario,
             'idpersonal' => $user->idpersonal,
             'idlocal' => $user->idlocal,
+            'cta_caja' => $user->cta_caja,
             'basedata' => $basedata,
           ]]);
-          return response()->json(['message' => "Inicio de sesion exitoso"], 200);
+          return response()->json(['message' => "Inicio de sesión exitoso"], 200);
         } else {
         
              return response()->json(['message' => "Usuario no habillitado"], 404);
