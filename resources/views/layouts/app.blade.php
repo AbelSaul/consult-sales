@@ -54,10 +54,14 @@
                     <v-menu class="hidden-md-and-up">
                         <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
                         <v-list >
+    @if($user["cta_caja"] == 1)
+                            <a class="white--text" href="{{ route('cuentas-por-cobrar') }}">
+                                <v-btn flat>
+                                  CUENTAS POR COBRAR
+                                </v-btn>
+                            </a>
 
-                 
-
-              
+                     @endif 
                             <a class="white--text" href="{{ route('clientes-form') }}">
                                 <v-btn flat>
                                     CLIENTES

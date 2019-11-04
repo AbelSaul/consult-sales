@@ -4,7 +4,7 @@
     <v-toolbar flat color="white">
       <v-layout wrap>
         <v-flex xs12 sm6 md4>
-          <v-toolbar-title>Clientes</v-toolbar-title>
+          <v-toolbar-title>CLIENTES</v-toolbar-title>
           <v-divider class="mx-2" inset vertical></v-divider>
           <v-spacer></v-spacer>
         </v-flex>
@@ -24,9 +24,12 @@
         <!-- <template v-slot:activator="{ on }">
           <v-btn color="primary" dark class="mb-2"  v-on="on">Nuevo Cliente</v-btn>
         </template>-->
+       
         <v-btn slot="activator" color="primary" dark class="mb-2">
           <v-icon>add</v-icon>CLIENTE
         </v-btn>
+    
+
         <v-card>
           <v-card-title>
             <span class="headline">{{ formTitle }}</span>
@@ -94,14 +97,14 @@
       hide-actions
     >
       <template slot="items" slot-scope="props">
-        <td class="text-xs-center">{{ props.index + 1}}</td>
-        <td class="text-xs-center">{{ props.item.numero_documento }}</td>
-        <td class="text-xs-center">{{ props.item.primer_nombre }}</td>
-        <td class="text-xs-center">{{ props.item.segundo_nombre }}</td>
-        <td class="text-xs-center">{{ props.item.direccion }}</td>
-        <td class="text-xs-center">{{ props.item.telefono }}</td>
-        <td class="text-xs-center">{{ props.item.celular }}</td>
-        <td class="text-xs-center">{{ props.item.correo }}</td>
+        <td>{{ props.index + 1}}</td>
+        <td>{{ props.item.numero_documento }}</td>
+        <td>{{ props.item.primer_nombre }}</td>
+        <td>{{ props.item.segundo_nombre }}</td>
+        <td>{{ props.item.direccion }}</td>
+        <td>{{ props.item.telefono }}</td>
+        <td>{{ props.item.celular }}</td>
+        <td>{{ props.item.correo }}</td>
         <!-- <td class="justify-center layout px-0">
           <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
           <v-icon small @click="deleteItem(props.item)">delete</v-icon>

@@ -1982,6 +1982,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   // props: ["clients"],
   data: function data() {
@@ -25627,7 +25630,7 @@ var render = function() {
                 "v-flex",
                 { attrs: { xs12: "", sm6: "", md4: "" } },
                 [
-                  _c("v-toolbar-title", [_vm._v("Clientes")]),
+                  _c("v-toolbar-title", [_vm._v("CLIENTES")]),
                   _vm._v(" "),
                   _c("v-divider", {
                     staticClass: "mx-2",
@@ -25944,37 +25947,21 @@ var render = function() {
             key: "items",
             fn: function(props) {
               return [
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.index + 1))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.index + 1))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.numero_documento))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.numero_documento))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.primer_nombre))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.primer_nombre))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.segundo_nombre))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.segundo_nombre))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.direccion))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.direccion))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.telefono))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.telefono))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.celular))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.celular))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.correo))
-                ])
+                _c("td", [_vm._v(_vm._s(props.item.correo))])
               ]
             }
           }
@@ -27919,7 +27906,7 @@ var render = function() {
                 "v-flex",
                 { attrs: { xs12: "", sm6: "", md4: "" } },
                 [
-                  _c("v-toolbar-title", [_vm._v("Cuentas por cobrar")]),
+                  _c("v-toolbar-title", [_vm._v("CUENTAS POR COBRAR")]),
                   _vm._v(" "),
                   _c("v-divider", {
                     staticClass: "mx-2",
@@ -28000,61 +27987,43 @@ var render = function() {
                                 key: "items",
                                 fn: function(props) {
                                   return [
-                                    _c(
-                                      "td",
-                                      { staticClass: "text-xs-center" },
-                                      [_vm._v(_vm._s(props.item.fecha_cob))]
-                                    ),
+                                    _c("td", [
+                                      _vm._v(_vm._s(props.item.fecha_cob))
+                                    ]),
                                     _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { staticClass: "text-xs-center" },
-                                      [_vm._v(_vm._s(props.item.documento_ref))]
-                                    ),
+                                    _c("td", [
+                                      _vm._v(_vm._s(props.item.documento_ref))
+                                    ]),
                                     _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { staticClass: "text-xs-center" },
-                                      [_vm._v(_vm._s(props.item.forma_pago))]
-                                    ),
+                                    _c("td", [
+                                      _vm._v(_vm._s(props.item.forma_pago))
+                                    ]),
                                     _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { staticClass: "text-xs-center" },
-                                      [_vm._v(_vm._s(props.item.ref_pago))]
-                                    ),
+                                    _c("td", [
+                                      _vm._v(_vm._s(props.item.ref_pago))
+                                    ]),
                                     _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { staticClass: "text-xs-center" },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            Number(props.item.monto).toFixed(2)
-                                          )
+                                    _c("td", [
+                                      _vm._v(
+                                        _vm._s(
+                                          Number(props.item.monto).toFixed(2)
                                         )
-                                      ]
-                                    ),
+                                      )
+                                    ]),
                                     _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { staticClass: "text-xs-center" },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            props.item.seller
-                                              ? props.item.seller.nombre
-                                              : ""
-                                          )
+                                    _c("td", [
+                                      _vm._v(
+                                        _vm._s(
+                                          props.item.seller
+                                            ? props.item.seller.nombre
+                                            : ""
                                         )
-                                      ]
-                                    ),
+                                      )
+                                    ]),
                                     _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { staticClass: "text-xs-center" },
-                                      [_vm._v(_vm._s(props.item.observacion))]
-                                    )
+                                    _c("td", [
+                                      _vm._v(_vm._s(props.item.observacion))
+                                    ])
                                   ]
                                 }
                               }
@@ -28347,51 +28316,31 @@ var render = function() {
             key: "items",
             fn: function(props) {
               return [
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.index + 1))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.index + 1))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.fecha))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.fecha))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.fecha_vto))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.fecha_vto))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.tipodoc))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.tipodoc))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.documento))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.documento))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.client.ruc))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.client.ruc))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.client.cliente))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.client.cliente))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.moneda))
-                ]),
+                _c("td", [_vm._v(_vm._s(props.item.moneda))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(Number(props.item.total).toFixed(2)))
-                ]),
+                _c("td", [_vm._v(_vm._s(Number(props.item.total).toFixed(2)))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(Number(props.item.saldo).toFixed(2)))
-                ]),
+                _c("td", [_vm._v(_vm._s(Number(props.item.saldo).toFixed(2)))]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
+                _c("td", [
                   _vm._v(_vm._s(Number(props.item.saldo_cred).toFixed(2)))
                 ]),
                 _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
+                _c("td", [
                   _vm._v(
                     _vm._s(props.item.seller ? props.item.seller.nombre : "")
                   )

@@ -4,7 +4,7 @@
     <v-toolbar flat color="white">
       <v-layout wrap>
         <v-flex xs12 sm6 md4>
-          <v-toolbar-title>Cuentas por cobrar</v-toolbar-title>
+          <v-toolbar-title>CUENTAS POR COBRAR</v-toolbar-title>
           <v-divider class="mx-2" inset vertical></v-divider>
           <v-spacer></v-spacer>
         </v-flex>
@@ -34,13 +34,13 @@
                     hide-actions
                   >
                     <template slot="items" slot-scope="props">
-                      <td class="text-xs-center">{{ props.item.fecha_cob}}</td>
-                      <td class="text-xs-center">{{ props.item.documento_ref}}</td>
-                      <td class="text-xs-center">{{ props.item.forma_pago }}</td>
-                      <td class="text-xs-center">{{ props.item.ref_pago }}</td>
-                      <td class="text-xs-center">{{Number(props.item.monto ).toFixed(2)   }}</td>
-                        <td class="text-xs-center">{{ props.item.seller ? props.item.seller.nombre : '' }}</td>
-                      <td class="text-xs-center">{{ props.item.observacion }}</td>
+                      <td>{{ props.item.fecha_cob}}</td>
+                      <td>{{ props.item.documento_ref}}</td>
+                      <td>{{ props.item.forma_pago }}</td>
+                      <td>{{ props.item.ref_pago }}</td>
+                      <td>{{Number(props.item.monto ).toFixed(2)   }}</td>
+                      <td>{{ props.item.seller ? props.item.seller.nombre : '' }}</td>
+                      <td>{{ props.item.observacion }}</td>
 
                     </template>
                   </v-data-table>
@@ -134,18 +134,18 @@
       hide-actions
     >
       <template slot="items" slot-scope="props">
-        <td class="text-xs-center">{{ props.index + 1}}</td>
-        <td class="text-xs-center">{{ props.item.fecha}}</td>
-        <td class="text-xs-center">{{ props.item.fecha_vto }}</td>
-        <td class="text-xs-center">{{ props.item.tipodoc }}</td>
-        <td class="text-xs-center">{{ props.item.documento }}</td>
-        <td  class="text-xs-center">{{  props.item.client.ruc  }}</td>
-        <td  class="text-xs-center">{{  props.item.client.cliente }}</td>
-        <td class="text-xs-center">{{ props.item.moneda }}</td>
-        <td class="text-xs-center">{{ Number(props.item.total).toFixed(2) }}</td> 
-        <td class="text-xs-center">{{ Number(props.item.saldo).toFixed(2) }}</td>
-        <td class="text-xs-center">{{ Number(props.item.saldo_cred).toFixed(2) }}</td>
-        <td class="text-xs-center">{{ props.item.seller ? props.item.seller.nombre : '' }}</td>
+        <td>{{ props.index + 1}}</td>
+        <td>{{ props.item.fecha}}</td>
+        <td>{{ props.item.fecha_vto }}</td>
+        <td>{{ props.item.tipodoc }}</td>
+        <td>{{ props.item.documento }}</td>
+        <td>{{  props.item.client.ruc  }}</td>
+        <td>{{  props.item.client.cliente }}</td>
+        <td>{{ props.item.moneda }}</td>
+        <td>{{ Number(props.item.total).toFixed(2) }}</td> 
+        <td>{{ Number(props.item.saldo).toFixed(2) }}</td>
+        <td>{{ Number(props.item.saldo_cred).toFixed(2) }}</td>
+        <td>{{ props.item.seller ? props.item.seller.nombre : '' }}</td>
 
         <td class="justify-center layout px-0">
           <v-icon ligth @click="newCharge(props.item.idcobro,props.item.documento, props.item.saldo, props.item.client.cliente)">edit</v-icon>
