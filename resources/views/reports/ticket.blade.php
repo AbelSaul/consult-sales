@@ -21,8 +21,8 @@
 		<div id="logo">
 			<img src="img/logo.jpg" />
 			<div class="title">
-				<h2 class="name text-center"><strong> COTIZACIÓN N° {{$proforma->documento}}</strong></h2>
-				<div class="text-right">{{ $proforma->fecha}} {{$proforma->hora}}</div>
+				<h2 class="name text-left"><strong> COTIZACIÓN N° {{$proforma->documento}}</strong></h2>
+				<div class="text-left">{{ $proforma->fecha}} {{$proforma->hora}}</div>
 			</div>
 		</div>
 	</header>
