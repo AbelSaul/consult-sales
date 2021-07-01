@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="utf-8">
-		<title>Ticket</title>
-		<link rel="stylesheet" href="css/pdf.css" media="all" />
-	</head>
+
+<head>
+	<meta charset="utf-8">
+	<title>Ticket</title>
+	<link rel="stylesheet" href="css/pdf.css" media="all" />
+</head>
+
 <body>
 	<header>
 		<div id="logo">
-			<img src="img/logo.png" />
+			<img src="img/logo.jpg" />
 		</div>
 		<div>
 			<h2 class="name text-center">COTIZACION N0 {{$proforma->documento}}</h2>
-		<div class="text-right">{{ $proforma->fecha}} {{$proforma->hora}}</div>
+			<div class="text-right">{{ $proforma->fecha}} {{$proforma->hora}}</div>
 		</div>
-		</header>
+	</header>
 	<main>
 		<div id="details" class="row">
 			<div id="client" class="column">
@@ -42,22 +44,22 @@
 				</tr>
 			</thead>
 			<tbody>
-			
+
 				@foreach ($proforma->details as $detail)
-					<tr>
-							<td class="no"> {{ $loop->iteration < 9 ? '0':'' }}{{ $loop->iteration }}</td>
-							<td class="no">{{ $detail->codigo }}</td>
-							<td class="no">{{ number_format($detail->cantidad, 0) }}</td>
-							<td class="no">{{ $detail->descripcion }}</td>
-							<td class="text-center">{{ $detail->medida }}</td>
-							<td class="no">{{ $detail->marca }}</td>
-							<td class="text-right">{{ number_format($detail->precio, 2) }}</td>
-							<td class="text-center">{{ $detail->descuento }}</td>
-							<td>{{ number_format($detail->precio * $detail->cantidad, 2) }}</td>
-						</tr>
+				<tr>
+					<td class="no"> {{ $loop->iteration < 9 ? '0':'' }}{{ $loop->iteration }}</td>
+					<td class="no">{{ $detail->codigo }}</td>
+					<td class="no">{{ number_format($detail->cantidad, 0) }}</td>
+					<td class="no">{{ $detail->descripcion }}</td>
+					<td class="text-center">{{ $detail->medida }}</td>
+					<td class="no">{{ $detail->marca }}</td>
+					<td class="text-right">{{ number_format($detail->precio, 2) }}</td>
+					<td class="text-center">{{ $detail->descuento }}</td>
+					<td>{{ number_format($detail->precio * $detail->cantidad, 2) }}</td>
+				</tr>
 				@endforeach
 			</tbody>
-	<tfoot>
+			<tfoot>
 				<tr>
 					<td colspan="6" class="text-uppercase">Dos mil Treinta y nueve con 00/100 Soles</td>
 					<td colspan="2" class="text-right">Neto:</td>
@@ -77,7 +79,7 @@
 				<tr class="back">
 					<td colspan="6">
 						<div class="to">
-							<span class="bolder">Condicion de pago:</span> 
+							<span class="bolder">Condicion de pago:</span>
 							<span class="text-uppercase">{{ $proforma->condicion}}</span>
 						</div>
 					</td>
@@ -85,14 +87,15 @@
 						<div>IGV:</div>
 					</td>
 					<td>
-						<div>{{  number_format($proforma->igv, 2) }}</div>
+						<div>{{ number_format($proforma->igv, 2) }}</div>
 					</td>
 				</tr>
 				<tr class="back">
 					<td colspan="6">
 						<div class="to">
 							<span class="bolder">Observaciones:</span>
-							<span class="text-uppercase">{{ $proforma->observac}}</span></div>
+							<span class="text-uppercase">{{ $proforma->observac}}</span>
+						</div>
 					</td>
 					<td colspan="2" class="text-right data">
 						<div>TOTAL: S/</div>
@@ -105,4 +108,5 @@
 		</table>
 	</main>
 </body>
+
 </html>
