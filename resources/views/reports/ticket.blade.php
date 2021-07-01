@@ -5,16 +5,25 @@
 	<meta charset="utf-8">
 	<title>Ticket</title>
 	<link rel="stylesheet" href="css/pdf.css" media="all" />
+	<style>
+		.title {
+			display: inline-block;
+		}
+
+		.empresa {
+			display: inline-block;
+		}
+	</style>
 </head>
 
 <body>
 	<header>
 		<div id="logo">
 			<img src="img/logo.jpg" />
-		</div>
-		<div>
-			<h2 class="name text-center">COTIZACION N0 {{$proforma->documento}}</h2>
-			<div class="text-right">{{ $proforma->fecha}} {{$proforma->hora}}</div>
+			<div class="title">
+				<h2 class="name text-center"><strong> COTIZACIÓN N° {{$proforma->documento}}</strong></h2>
+				<div class="text-right">{{ $proforma->fecha}} {{$proforma->hora}}</div>
+			</div>
 		</div>
 	</header>
 	<main>
