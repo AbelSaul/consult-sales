@@ -8,7 +8,8 @@ use App\Product;
 
 class ProductController extends Controller
 {
-    public function index() {
+    public function index()
+    {
 
         // $products = Product::where('estado', 'A')->orderBy('descripcion', 'asc')
         //                                          ->get();
@@ -28,7 +29,7 @@ class ProductController extends Controller
                                         FROM productos
                                         LEFT JOIN kardex ON productos.idproducto=kardex.idproducto
                                         LEFT JOIN det_pro ON productos.idproducto=det_pro.idproducto
-                                        WHERE (productos.idlocal=1 OR productos.idlocal=0) AND (kardex.idlocal='".$user["idlocal"]."' or kardex.idlocal IS NULL) AND productos.estado='A' AND (YEAR(kardex.fecha)=2019 OR YEAR(kardex.fecha) IS NULL)
+                                        WHERE (productos.idlocal=1 OR productos.idlocal=0) AND (kardex.idlocal='" . $user["idlocal"] . "' or kardex.idlocal IS NULL) AND productos.estado='A' AND (YEAR(kardex.fecha)=2021 OR YEAR(kardex.fecha) IS NULL)
 
                                         GROUP BY productos.idproducto
                                          ORDER BY productos.descripcion");
@@ -39,30 +40,32 @@ class ProductController extends Controller
         return $products_convert;
     }
 
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
 
         $search = $request->search;
         $products = Product::where('estado', 'A')
-                                                 ->where('descripcion', 'like', '%'.$search.'%')
-                                                 ->orderBy('descripcion', 'asc')
-                                                 ->paginate(5);
+            ->where('descripcion', 'like', '%' . $search . '%')
+            ->orderBy('descripcion', 'asc')
+            ->paginate(5);
 
         $products_convert = $this->convert($products);
 
         return response()->json($products_convert);
     }
 
-    public function convert($products){
+    public function convert($products)
+    {
         $params = DB::table('parametros')->first();
         $cond = $params->igv_inc == 1;
         $exchange_rate = $params->tcambio;
 
-        $name_prices = ['precio','precio1','precio2','precio3','precio4'];
+        $name_prices = ['precio', 'precio1', 'precio2', 'precio3', 'precio4'];
         foreach ($products as $product) {
             $prices = array();
             foreach ($name_prices as $name_price) {
                 $price = $product[$name_price];
-                if($price != null ) {
+                if ($price != null) {
                     $label = $name_price != 'precio' ? str_replace('precio', 'P', $name_price) : 'P0';
 
                     array_push($prices, [
@@ -80,28 +83,29 @@ class ProductController extends Controller
         return $products;
     }
 
-    public function objectConvert($products){
+    public function objectConvert($products)
+    {
         //Este metodo se usa debido a la consulta descrita
         $params = DB::table('parametros')->first();
         $cond = $params->igv_inc == 1;
-        $name_prices = ['precio','precio1','precio2','precio3','precio4'];
+        $name_prices = ['precio', 'precio1', 'precio2', 'precio3', 'precio4'];
         $exchange_rate = $params->tcambio;
 
         foreach ($products as $product) {
             $prices = array();
             foreach ($name_prices as $name_price) {
                 $price = $product->$name_price;
-                if($price != null ) {
+                if ($price != null) {
                     $label = $name_price != 'precio' ? str_replace('precio', 'P', $name_price) : 'P0';
                     $new_price = $product->moneda == "US$" ? $price * $exchange_rate : $price;
-                     array_push($prices, [
+                    array_push($prices, [
                         'label' => $label,
                         'price' => $this->calcIgv($cond, $new_price, $product->igv),
                     ]);
                 }
             }
             $new_price = $product->moneda == "US$" ? $product->precio * $exchange_rate : $product->precio;
-            $new_price_fra = $product->moneda == "US$" ? $product->precio_fra * $exchange_rate :$product->precio_fra;
+            $new_price_fra = $product->moneda == "US$" ? $product->precio_fra * $exchange_rate : $product->precio_fra;
 
 
             $product->prices = $prices;
@@ -113,8 +117,8 @@ class ProductController extends Controller
         return $products;
     }
 
-    public function calcIgv($cond, $price, $igv) {
-        return number_format($cond ? $price * (1 + 18 / 100 ) : $price, 4);
+    public function calcIgv($cond, $price, $igv)
+    {
+        return number_format($cond ? $price * (1 + 18 / 100) : $price, 4);
     }
 }
-
