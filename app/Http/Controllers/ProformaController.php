@@ -56,6 +56,7 @@ class ProformaController extends Controller
             $details
         );
         $user = session('user');
+        $year = date("Y");
 
         $selected_products = DB::select("SELECT
         productos.idproducto, productos.codigo, productos.codigo2, productos.moneda ,productos.tipo ,productos.tipo_imp,productos.descripcion , productos.precio, productos.precio1, productos.precio2, productos.precio3, productos.precio4,productos.precio_fra ,productos.medida, productos.medida_fra,productos.fraccion, productos.igv, productos.marca  , productos.codigo, productos.descripcion,
@@ -72,7 +73,7 @@ class ProformaController extends Controller
                                         LEFT JOIN kardex ON productos.idproducto=kardex.idproducto
                                         LEFT JOIN det_pro ON productos.idproducto=det_pro.idproducto
                                         WHERE (productos.idlocal=1 OR productos.idlocal=0) AND (kardex.idlocal='" . $user["idlocal"] . "' or kardex.idlocal IS NULL) AND productos.estado='A'  AND productos.idproducto IN (" . implode(',', $ids) . ")
-                                        AND (YEAR(kardex.fecha)=2021 OR YEAR(kardex.fecha) IS NULL)
+                                        AND (YEAR(kardex.fecha)= $year OR YEAR(kardex.fecha) IS NULL)
 
                                         GROUP BY productos.idproducto
                                          ORDER BY productos.descripcion");
