@@ -9,10 +9,6 @@
 		.title {
 			display: inline-block;
 		}
-
-		.empresa {
-			display: inline-block;
-		}
 	</style>
 </head>
 
