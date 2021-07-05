@@ -38,9 +38,9 @@ Route::get('conditions', 'ProformaController@conditions')->middleware('verify');
 Route::get('search-proformas', 'ProformaController@search')->middleware('verify');
 Route::get('total-proformas', 'ProformaController@getTotalProformas')->middleware('verify');
 Route::post('proforma/create', 'ProformaController@create')->middleware('verify');
-Route::post('proforma/update', 'ProformaController@update')->middleware('verify');
+Route::post('proforma/update', 'ProformaController@update')->middleware(['verify', 'edit.proforma']);
 
 //CUENTAS POR COBRAR
-Route::get('receivables', 'FinanceController@getReceivables')->middleware(['verify','receivables']);
-Route::get('details-charges', 'FinanceController@getDetailsCharges')->middleware(['verify','receivables']);
-Route::post('charge/create', 'FinanceController@saveCharges')->middleware(['verify','receivables']);
+Route::get('receivables', 'FinanceController@getReceivables')->middleware(['verify', 'receivables']);
+Route::get('details-charges', 'FinanceController@getDetailsCharges')->middleware(['verify', 'receivables']);
+Route::post('charge/create', 'FinanceController@saveCharges')->middleware(['verify', 'receivables']);

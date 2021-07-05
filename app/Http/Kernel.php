@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
         'redirect' => \App\Http\Middleware\RedirectSession::class,
         'verify' => \App\Http\Middleware\VerifySession::class,
         'receivables' => \App\Http\Middleware\AccessReceivables::class,
+        'edit.proforma' => \App\Http\Middleware\AccessEditProforma::class,
 
     ];
 

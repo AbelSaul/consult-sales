@@ -1,6 +1,12 @@
+@php
+$user = session('user');
+
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
   {{-- <div class="head">
     <a class="white--text" href="/">
@@ -9,19 +15,18 @@
       </v-btn>
     </a>
   </div> --}}
-  <list-proformas></list-proformas>
+  <list-proformas :user="{{json_encode($user)}}"></list-proformas>
 </div>
 @endsection
 
 <style>
-.head {
+  .head {
     text-align: right;
     width: 100%;
     padding: 1em 0 !important;
-}
+  }
 
-.head button{
-  margin: 0;
-}
-
+  .head button {
+    margin: 0;
+  }
 </style>

@@ -7,7 +7,7 @@
           id="datepicker-trigger"
           placeholder="Seleccione fechas"
           :value="formatDates(startDate, endDate)"
-        >
+        />
 
         <AirbnbStyleDatepicker
           :trigger-element-id="'datepicker-trigger'"
@@ -17,8 +17,16 @@
           :date-two="endDate"
           :end-date="new Date()"
           mobileHeader="Seleccionar Fechas"
-          @date-one-selected="val => { startDate = val }"
-          @date-two-selected="val => { endDate = val }"
+          @date-one-selected="
+            (val) => {
+              startDate = val;
+            }
+          "
+          @date-two-selected="
+            (val) => {
+              endDate = val;
+            }
+          "
         />
       </div>
       <v-btn color="primary darken-1" outline @click="onSearch">Buscar</v-btn>
@@ -39,30 +47,36 @@
               color="error"
               icon="warning"
               v-if="!loading"
-            >Ninguna proforma coincide con las fechas :(</v-alert>
+              >Ninguna proforma coincide con las fechas :(</v-alert
+            >
           </template>
           <template slot="items" slot-scope="props">
             <td>{{ props.item.documento }}</td>
-            <td>{{ props.item.seller ? props.item.seller.nombre : '' }}</td>
-            <td>{{ props.item.client.cliente ? props.item.client.cliente : '' }}</td>
-            <td>{{Number(props.item.total).toFixed(2)}}</td>
+            <td>{{ props.item.seller ? props.item.seller.nombre : "" }}</td>
+            <td>
+              {{ props.item.client.cliente ? props.item.client.cliente : "" }}
+            </td>
+            <td>{{ Number(props.item.total).toFixed(2) }}</td>
             <td>{{ props.item.fecha }}</td>
             <td>
               <button @click="showPdf(props.item)">
                 <v-icon ligth>remove_red_eye</v-icon>
               </button>
-              <button @click="onEdit(props.item)">
+              <button
+                @click="onEdit(props.item)"
+                v-if="user.ven_emision_modifica"
+              >
                 <v-icon ligth>edit</v-icon>
               </button>
             </td>
           </template>
         </v-data-table>
-          <div class="total-flex">
-            <div class="total-header elevation-1">
-              <div>Total: </div>
-              <div> {{Number(this.total).toFixed(2)}}</div>
-            </div>
+        <div class="total-flex">
+          <div class="total-header elevation-1">
+            <div>Total:</div>
+            <div>{{ Number(this.total).toFixed(2) }}</div>
           </div>
+        </div>
         <div class="text-xs-center pt-2">
           <v-pagination
             v-model="pagination.current"
@@ -79,6 +93,7 @@
 import { format, subMonths, subDays } from "date-fns";
 
 export default {
+  props: ["user"],
   data() {
     return {
       baseUrl: "",
@@ -91,7 +106,7 @@ export default {
         { text: "Cliente", sortable: false, value: "idcliente" },
         { text: "Total", sortable: false, value: "total" },
         { text: "Fecha", sortable: false, value: "fecha" },
-        { text: "Acciones", sortable: false, value: "fecha" }
+        { text: "Acciones", sortable: false, value: "fecha" },
       ],
       loading: true,
       proformas: [],
@@ -99,8 +114,8 @@ export default {
       pagination: {
         rowsPerPage: 10,
         current: 1,
-        total: 0
-      }
+        total: 0,
+      },
     };
   },
   mounted() {
@@ -132,17 +147,16 @@ export default {
       const params = {
         startDate: this.startDate,
         endDate: this.endDate,
-        page: this.pagination.current
+        page: this.pagination.current,
       };
       axios
         .get(`/api/total-proformas`, { params })
         .then(({ data }) => {
           this.total = data;
-          console.log("data es : ",this.total);
-
+          console.log("data es : ", this.total);
         })
-        .catch(error => {
-          notify.error(error.response.data.message);          
+        .catch((error) => {
+          notify.error(error.response.data.message);
         });
     },
 
@@ -150,7 +164,7 @@ export default {
       const params = {
         startDate: this.startDate,
         endDate: this.endDate,
-        page: this.pagination.current
+        page: this.pagination.current,
       };
       axios
         .get(`/api/search-proformas`, { params })
@@ -162,7 +176,7 @@ export default {
           this.pagination.total = data.last_page;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           notify.error(error.response.data.message);
           this.loading = false;
         });
@@ -174,7 +188,7 @@ export default {
 
     onEdit(proforma) {
       // proforma.fecha === format(new Date(), "YYYY-MM-DD")
-      if (proforma.estado === "PE" ) {
+      if (proforma.estado === "PE") {
         window.location = `${this.baseUrl}/proformas/${proforma.idproforma}`;
       } else {
         notify.error("La proforma no se puede editar");
@@ -183,8 +197,8 @@ export default {
 
     showPdf(proforma) {
       window.open(`${this.baseUrl}/proforma/${proforma.documento}`, "_blank");
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
@@ -202,8 +216,6 @@ export default {
 .total-flex {
   display: flex;
   justify-content: flex-end;
-  margin: 16px 0 !important; 
+  margin: 16px 0 !important;
 }
-
-
 </style>
