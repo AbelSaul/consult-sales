@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Empresa;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Proforma;
+use Illuminate\Support\Facades\Storage;
+use Mpdf\Mpdf;
+use Mpdf\HTMLParserMode;
+
 
 class PdfController extends Controller
 {
@@ -12,10 +17,16 @@ class PdfController extends Controller
     {
         $doc = request('doc');
         $proforma = Proforma::where('documento', $doc)->first();
-        // dd($proforma->client);
-        $pdf = PDF::loadView('reports.ticket', compact('proforma'));
+        $empresa = Empresa::first();
+        $pdf = PDF::loadView('reports.report', compact('proforma', 'empresa'));
         return $pdf->stream();
-        // return view('reports.ticket', compact('proforma'));
-
     }
+
+    // public function ticket()
+    // {
+    //     $pdf = new Mpdf();
+    //     $html =  view('reports.report')->render();
+    //     $pdf->WriteHTML($html, HTMLParserMode::HTML_BODY);
+    //     Storage::disk('public')->put("documento.pdf", $pdf->output('', 'S'));
+    // }
 }
