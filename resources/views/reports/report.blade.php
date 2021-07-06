@@ -64,7 +64,7 @@
         <thead class="">
             <tr class="bg-grey">
                 <th class="border-top-bottom text-center py-2" width="8%">Item</th>
-                <th class="border-top-bottom text-center py-2" width="8%">Código</th>
+                <th class="border-top-bottom text-center py-2" width="12%">Código</th>
                 <th class="border-top-bottom text-center py-2" width="8%">Cant.</th>
                 <th class="border-top-bottom text-left py-2">Descripción</th>
                 <th class="border-top-bottom text-left py-2" width="12%">Uni. Med</th>
