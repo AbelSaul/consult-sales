@@ -9,11 +9,10 @@
           dark
           class="mb-2"
           @click="initialProducts"
-        >AGREGAR PRODUCTOS</v-btn>
+          >AGREGAR PRODUCTOS</v-btn
+        >
         <v-card>
           <v-card-title>
-            <span class="headline">Seleccionar</span>
-            <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
               append-icon="search"
@@ -44,20 +43,26 @@
                   </template>-->
                   <template slot="items" slot-scope="props">
                     <td>
-                      <v-checkbox v-model="props.selected" @change="modifySelected" hide-details></v-checkbox>
+                      <v-checkbox
+                        v-model="props.selected"
+                        @change="modifySelected"
+                        hide-details
+                      ></v-checkbox>
                     </td>
-                    <td
-                      class="text-right product-td"
-                    >{{ props.item.descripcion + ' - ' + props.item.codigo }}</td>
+                    <td class="text-right product-td">
+                      {{ props.item.descripcion + " - " + props.item.codigo }}
+                    </td>
                     <td class="text-xs-rigth">
-                      <template v-if="props.item.fraccion == 1">{{ props.item.medida }}</template>
+                      <template v-if="props.item.fraccion == 1">{{
+                        props.item.medida
+                      }}</template>
                       <template v-else>
                         <v-select
                           v-model="props.item.num_um"
                           :items="[
-                                    { id:1, text: props.item.medida },
-                                    { id: 2, text: props.item.medida_fra }
-                                  ]"
+                            { id: 1, text: props.item.medida },
+                            { id: 2, text: props.item.medida_fra },
+                          ]"
                           item-value="id"
                           item-text="text"
                         ></v-select>
@@ -65,11 +70,14 @@
                     </td>
 
                     <td class="text-xs-center super-price">
-                      <template
-                        v-if="props.item.num_um == 2"
-                      >{{ Number(props.item.precio_fra).toFixed(2) }}</template>
+                      <template v-if="props.item.num_um == 2">{{
+                        Number(props.item.precio_fra).toFixed(2)
+                      }}</template>
                       <template v-else>
-                        <SelectEdit :items="props.item.prices" v-model="props.item.precio"></SelectEdit>
+                        <SelectEdit
+                          :items="props.item.prices"
+                          v-model="props.item.precio"
+                        ></SelectEdit>
                       </template>
                     </td>
                     <td class="text-right">{{ props.item.marca }}</td>
@@ -109,7 +117,7 @@ export default {
       pagination: {
         rowsPerPage: 5,
         current: 1,
-        total: 0
+        total: 0,
       },
       headers_products: [
         { text: "#", sortable: false, value: "" },
@@ -119,12 +127,16 @@ export default {
         { text: "Marca", sortable: false, value: "marca" },
         { text: "Stock Físico", sortable: false, value: "stock_fisico" },
         { text: "Stock Reservado", sortable: false, value: "stock_reservado" },
-        { text: "Stock Disponible", sortable: false, value: "stock_disponible" }
+        {
+          text: "Stock Disponible",
+          sortable: false,
+          value: "stock_disponible",
+        },
       ],
       dialog: false,
       search: "",
       products: [],
-      selected: []
+      selected: [],
     };
   },
   mounted() {
@@ -138,7 +150,7 @@ export default {
     ).content;
   },
   computed: {
-    ...mapGetters(["countSelected"])
+    ...mapGetters(["countSelected"]),
   },
   methods: {
     ...mapMutations(["MODIFY_SELECTED"]),
@@ -146,11 +158,11 @@ export default {
       this.search = "";
       this.dialog = false;
     },
-    modifySelected: function() {
+    modifySelected: function () {
       this.MODIFY_SELECTED(this.selected);
     },
 
-    initialProducts: function() {
+    initialProducts: function () {
       if (this.countSelected === 0) {
         // this.getSearchProduct();
         this.products = [];
@@ -170,7 +182,7 @@ export default {
     getSearchProduct() {
       const params = {
         search: this.search,
-        page: this.pagination.current
+        page: this.pagination.current,
       };
       axios
         .get(`/api/search-products`, { params })
@@ -181,7 +193,7 @@ export default {
           this.pagination.total = data.last_page;
           this.loading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           notify.error(error.response.data.message);
           this.loading = false;
         });
@@ -189,8 +201,8 @@ export default {
     },
     onPageChange() {
       this.getSearchProduct();
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
