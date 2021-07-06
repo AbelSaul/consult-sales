@@ -2,7 +2,7 @@
   <div>
     <v-toolbar flat color="white">
       <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="1250px">
+      <v-dialog v-model="dialog" max-width="1200px">
         <v-btn
           slot="activator"
           color="primary"
@@ -20,7 +20,10 @@
               single-line
               hide-details
             ></v-text-field>
+            <v-spacer></v-spacer>
+            <v-btn color="error darken-1" flat @click="close">Cerrar</v-btn>
           </v-card-title>
+
           <v-card-text>
             <v-layout wrap>
               <v-flex xs12 sm12 md12>
@@ -96,10 +99,6 @@
               </v-flex>
             </v-layout>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="error darken-1" flat @click="close">Cerrar</v-btn>
-          </v-card-actions>
         </v-card>
       </v-dialog>
     </v-toolbar>
