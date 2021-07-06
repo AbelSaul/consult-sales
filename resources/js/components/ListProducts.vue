@@ -2,7 +2,7 @@
   <div>
     <v-toolbar flat color="white">
       <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="1200px">
+      <v-dialog v-model="dialog" max-width="1250px">
         <v-btn
           slot="activator"
           color="primary"
