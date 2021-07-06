@@ -63,12 +63,11 @@
     <table class="full-width mt-10 mb-10">
         <thead class="">
             <tr class="bg-grey">
-                <th class="border-top-bottom text-center py-2" width="8%">Item</th>
-                <th class="border-top-bottom text-center py-2" width="12%">Código</th>
+                <th class="border-top-bottom text-center py-2" width="6%">Item</th>
+                <th class="border-top-bottom text-left py-2" width="12%">Código</th>
                 <th class="border-top-bottom text-center py-2" width="8%">Cant.</th>
-                <th class="border-top-bottom text-left py-2">Descripción</th>
                 <th class="border-top-bottom text-left py-2" width="12%">Uni. Med</th>
-                <th class="border-top-bottom text-right py-2" width="8%">Marca</th>
+                <th class="border-top-bottom text-left py-2">Descripción</th>
                 <th class="border-top-bottom text-right py-2" width="12%">Precio Unit</th>
                 <th class="border-top-bottom text-right py-2" width="12%">Desc. %</th>
                 <th class="border-top-bottom text-right py-2" width="12%">Importe</th>
@@ -79,26 +78,25 @@
             @foreach($proforma->details as $detail)
             <tr>
                 <td class="text-center"> {{ $loop->iteration < 9 ? '0':'' }}{{ $loop->iteration }} </td>
-                <td class="text-right">{{ $detail->codigo }}</td>
-                <td class="text-center">{{ number_format($detail->cantidad, 0) }}</td>
-                <td>{{ $detail->descripcion }}</td>}
+                <td class="text-left">{{ $detail->codigo }}</td>
+                <td class="text-center">{{ number_format($detail->cantidad, 2) }}</td>
                 <td class="text-left">{{ $detail->medida }}</td>
-                <td class="text-center">{{ $detail->marca }}</td>
+                <td>{{ $detail->descripcion }}</td>}
                 <td class="text-right">{{ number_format($detail->precio, 2) }}</td>
                 <td class="text-right">{{ $detail->descuento }}</td>
                 <td class="text-right">{{ number_format($detail->precio * $detail->cantidad, 2) }}</td>
             </tr>
             <tr>
-                <td colspan="9" class="border-bottom"></td>
+                <td colspan="8" class="border-bottom"></td>
             </tr>
             @endforeach
             <tr>
-                <td colspan="6" class="text-uppercase"></td>
+                <td colspan="5" class="text-uppercase"></td>
                 <td colspan="2" class="text-right font-bold">NETO:</td>
                 <td class="text-right font-bold">{{ number_format($proforma->total, 2) }}</td>
             </tr>
             <tr>
-                <td colspan="6">
+                <td colspan="5">
                     <div class="font-bold">Condiciones generales</div>
                 </td>
                 <td colspan="2" class="text-right font-bold">
@@ -109,7 +107,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="6">
+                <td colspan="5">
                     <span class="font-bold">Condicion de pago:</span>
                     <span class="text-uppercase">{{ $proforma->condicion }}</span>
                 </td>
@@ -121,7 +119,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="6">
+                <td colspan="5">
                     <span class="font-bold">Observaciones:</span>
                     <span class="text-uppercase">{{ $proforma->observac }}</span>
                 </td>
