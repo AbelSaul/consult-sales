@@ -9,7 +9,7 @@
         <tr>
             <td width="20%">
                 <div class="company_logo_box">
-                    <img src="img/logo.png" class="company_logo" style="max-width: 150px;">
+                    <img src="img/logo.jpg" class="company_logo" style="max-width: 150px;">
                 </div>
             </td>
             <td width="50%" class="pl-3">
